@@ -1,0 +1,5 @@
+@use 'sass:color';
+
+$dark-color: rgba(0 0 0);
+$text-color--primary: color.change($dark-color, $alpha: 0.87);
+$text-color--secondary: color.change($dark-color, $alpha: 0.54);
