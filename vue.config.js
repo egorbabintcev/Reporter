@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 const {
   proxy = 'http://localhost:8888',
@@ -15,5 +16,13 @@ module.exports = defineConfig({
         changeOrigin: true,
       },
     },
+  },
+
+  configureWebpack: {
+    plugins: [
+      new StyleLintPlugin({
+        files: ['src/**/*.{vue,scss}'],
+      }),
+    ],
   },
 });
