@@ -1,9 +1,13 @@
 import '@/styles/index.scss';
 
 import { createApp } from 'vue';
-import { createPinia } from 'pinia';
+
+import store from '@/core/store';
+import router from '@/router';
+
 import App from './App.vue';
 
 createApp(App)
-  .use(createPinia())
+  .use(store)
+  .use(router)
   .mount('#app');
