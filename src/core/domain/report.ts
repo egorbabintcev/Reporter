@@ -1,6 +1,6 @@
 import { HTMLString, UniqueId, UnixTimestamp } from '@/shared-kernel';
 
-export type ReportDisplayName = string;
+export type ReportTitle = string;
 
 export type Report = {
   id: UniqueId
@@ -8,7 +8,7 @@ export type Report = {
   creatorId: UniqueId
   createdAt: UnixTimestamp
 
-  displayName: ReportDisplayName
+  title: ReportTitle
 
   startTime: UnixTimestamp
   endTime: UnixTimestamp
@@ -20,16 +20,18 @@ export type Report = {
 
 export type OmittedReport = Omit<Report, 'id' | 'createdAt' | 'creatorId'>
 
+export type PickedReport = Pick<Report, 'id'>
+
 /* eslint-disable camelcase */
 
-export type RawReportDisplayName = string;
+export type RawReportTitle = string;
 
 export type RawReport = {
   id: UniqueId
   creator_id: UniqueId
   created_at: UnixTimestamp
 
-  display_name: RawReportDisplayName
+  title: RawReportTitle
 
   start_time: UnixTimestamp
   end_time: UnixTimestamp
@@ -38,5 +40,9 @@ export type RawReport = {
 
   body: HTMLString
 }
+
+export type OmittedRawReport = Omit<RawReport, 'id' | 'created_at' | 'creator_id'>
+
+export type PickedRawReport = Pick<RawReport, 'id'>
 
 /* eslint-enable camelcase */

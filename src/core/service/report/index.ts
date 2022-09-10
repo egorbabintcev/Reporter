@@ -1,5 +1,5 @@
 import { storeToRefs } from 'pinia';
-import { Report, OmittedReport } from '@/core/domain/report';
+import { Report, OmittedReport, PickedReport } from '@/core/domain/report';
 import { ReportServicePort } from '@/core/ports/report/servicePort';
 import useReportApi from '@/core/api/report';
 import useReportStore from '@/core/store/report';
@@ -22,9 +22,12 @@ export default function useReportService(): ReportServicePort {
   }
 
   async function createReport(report: OmittedReport) {
-    const pickedReport: Pick<Report, 'id'> = await reportApi.createReport(report);
+    const pickedReport: PickedReport = await reportApi.createReport(report);
 
-    await readReport(pickedReport.id);
+    await Promise.all([
+      readReports(),
+      readReport(pickedReport.id),
+    ]);
   }
 
   return {

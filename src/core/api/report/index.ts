@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { RawReport, Report, OmittedReport } from '@/core/domain/report';
+import {
+  RawReport,
+  Report,
+  OmittedReport,
+  PickedRawReport,
+} from '@/core/domain/report';
 import { ReportApiPort } from '@/core/ports/report/apiPort';
 import useReportAdapter from '@/core/adapters/report';
 
@@ -21,9 +26,9 @@ export default function useReportApi(): ReportApiPort {
   }
 
   async function createReport(report: OmittedReport) {
-    const response = await axios.post<Pick<Report, 'id'>>('api/v1/reports', report);
+    const response = await axios.post<PickedRawReport>('api/v1/reports', reportAdapter.convertReportToAPI(report));
 
-    return response.data;
+    return reportAdapter.convertCreatedReportFromAPI(response.data);
   }
 
   async function updateReport(id: Report['id'], report: OmittedReport) {
