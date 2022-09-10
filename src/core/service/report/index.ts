@@ -1,6 +1,5 @@
 import { storeToRefs } from 'pinia';
-import { Report } from '@/core/domain/report';
-import { OmittedReport } from '@/core/ports/report/apiPort';
+import { Report, OmittedReport } from '@/core/domain/report';
 import { ReportServicePort } from '@/core/ports/report/servicePort';
 import useReportApi from '@/core/api/report';
 import useReportStore from '@/core/store/report';

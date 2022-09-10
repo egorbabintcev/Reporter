@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { RawReport, Report } from '@/core/domain/report';
-import { OmittedReport, ReportApiPort } from '@/core/ports/report/apiPort';
+import { RawReport, Report, OmittedReport } from '@/core/domain/report';
+import { ReportApiPort } from '@/core/ports/report/apiPort';
 import useReportAdapter from '@/core/adapters/report';
 
 export default function useReportApi(): ReportApiPort {

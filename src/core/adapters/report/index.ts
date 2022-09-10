@@ -10,12 +10,14 @@ export default function useReportAdapter(): ReportAdapterPort {
       creatorId: { key: 'creator_id' },
       createdAt: { callback: ({ created_at: createdAt }) => createdAt * 1000 },
 
+      displayName: { key: 'display_name' },
+
       startTime: { callback: ({ start_time: startTime }) => startTime * 1000 },
       endTime: { callback: ({ end_time: endTime }) => endTime * 1000 },
       workTime: { callback: ({ work_time: workTime }) => workTime * 1000 },
       breakTime: { callback: ({ break_time: breakTime }) => breakTime * 1000 },
 
-      template: { key: 'template' },
+      body: { key: 'body' },
     });
   }
 
@@ -26,12 +28,14 @@ export default function useReportAdapter(): ReportAdapterPort {
       creatorId: { key: 'creator_id' },
       createdAt: { key: 'created_at' },
 
+      displayName: { key: 'display_name' },
+
       startTime: { callback: ({ start_time: startTime }) => startTime * 1000 },
       endTime: { callback: ({ end_time: endTime }) => endTime * 1000 },
       workTime: { callback: ({ work_time: workTime }) => workTime * 1000 },
       breakTime: { callback: ({ break_time: breakTime }) => breakTime * 1000 },
 
-      template: { key: 'template' },
+      body: { key: 'body' },
     }));
   }
 

@@ -1,6 +1,5 @@
 import { Ref } from 'vue';
-import { Report } from '@/core/domain/report';
-import { OmittedReport } from '@/core/ports/report/apiPort';
+import { Report, OmittedReport } from '@/core/domain/report';
 
 export type ReportServicePort = {
   report: Ref<Report | null>
