@@ -1,3 +1,13 @@
 @use 'reset-css/sass/reset';
+@use 'bootstrap/scss/bootstrap-utilities';
+
+@use 'fonts';
 
 @use 'modules';
+
+
+
+html {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
