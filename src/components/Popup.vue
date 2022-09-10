@@ -2,41 +2,42 @@
   <div class="popup-wrapper">
     <div
     class="popup">
-      <div class="popup-header">
-        <p
-        v-if="headerText"
-        v-html="headerText"
-        class="popup-header__text">
-        </p>
+      <div class="flex-grow-1 main-section-32">
+        <div class="popup-header">
+          <p
+          v-if="headerText"
+          v-html="headerText"
+          class="popup-header__text"/>
 
-        <div class="popup__spacer"></div>
+          <div class="popup__spacer"/>
 
-        <button
-        @click="$emit('close')"
-        class="popup-header__button">
-          Close
-        </button>
-      </div>
-
-      <div class="popup-content">
-        <slot/>
-      </div>
-
-      <div class="popup-footer">
-        <div class="popup__spacer"></div>
-
-        <div class="main-row-12">
           <button
           @click="$emit('close')"
-          class="popup-footer__button">
-            Cancel
+          class="popup-header__button">
+            Close
           </button>
+        </div>
 
-          <button
-          @click="$emit('confirm')"
-          class="popup-footer__button">
-            Confirm
-          </button>
+        <div class="popup-content">
+          <slot/>
+        </div>
+
+        <div class="popup-footer">
+          <div class="popup__spacer"/>
+
+          <div class="main-row-12">
+            <button
+            @click="$emit('close')"
+            class="popup-footer__button">
+              Cancel
+            </button>
+
+            <button
+            @click="$emit('confirm')"
+            class="popup-footer__button">
+              Confirm
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -98,6 +99,11 @@
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+  }
+
+  .popup-header__text {
+    font-size: 18px;
+    font-weight: 500;
   }
 
   .popup-content {
