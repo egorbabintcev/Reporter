@@ -1,6 +1,4 @@
-import { Report } from '@/core/domain/report';
-
-export type OmittedReport = Omit<Report, 'id' | 'createdAt' | 'creatorId'>
+import { Report, OmittedReport } from '@/core/domain/report';
 
 export type ReportApiPort = {
   readReport(id: Report['id']): Promise<Report | null>
