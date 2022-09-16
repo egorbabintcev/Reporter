@@ -1,11 +1,15 @@
 <template>
   <div class="reports-screen">
     <div class="reports-screen-content">
-      <div class="main-row-12">
-        <button
-        @click="setShowPopup('createReportPopup', true)">
-          Создать
-        </button>
+      <div class="main-section-24 flex-grow-1">
+        <div class="main-row-12">
+          <button
+          @click="setShowPopup('createReportPopup', true)">
+            Создать
+          </button>
+        </div>
+
+        <ReportsTable/>
       </div>
     </div>
 
@@ -16,6 +20,7 @@
 </template>
 
 <script lang="ts">
+  import ReportsTable from './ReportsTable.vue';
   import CreateReportPopup from './Popups/CreateReportPopup.vue';
 
   import useReportService from '@/core/service/report';
@@ -24,6 +29,7 @@
   export default {
     name: 'ReportsScreen',
     components: {
+      ReportsTable,
       CreateReportPopup,
     },
     setup() {
