@@ -92,6 +92,7 @@
 
   import { getDateFromTimeString, getDateStringFromDate } from '@/core/utils/time';
   import useReportApi from '@/core/api/report';
+  import useReportService from '@/core/service/report';
 
   import Popup from '@/components/Popup.vue';
 
@@ -103,6 +104,7 @@
     emits: ['close'],
     setup(_, { emit }) {
       const reportApi = useReportApi();
+      const reportService = useReportService();
 
       const form = reactive<Record<keyof OmittedReport, string>>({
         title: `Отчет за ${getDateStringFromDate(new Date())}`,
@@ -143,6 +145,8 @@
 
             body: form.body,
           });
+
+          reportService.readReports();
         } finally {
           emit('close');
         }
