@@ -4,7 +4,7 @@
       <div class="main-section-24 flex-grow-1">
         <div class="main-row-12">
           <button
-          @click="setShowPopup('createReportPopup', true)">
+          @click="createReportHandler">
             Создать
           </button>
         </div>
@@ -13,15 +13,17 @@
       </div>
     </div>
 
-    <CreateReportPopup
+    <ManageReportPopup
     v-if="showPopups.createReportPopup"
     @close="setShowPopup('createReportPopup', false)"/>
   </div>
 </template>
 
 <script lang="ts">
+  import { useRouter } from 'vue-router';
+
   import ReportsTable from './ReportsTable.vue';
-  import CreateReportPopup from './Popups/CreateReportPopup.vue';
+  import ManageReportPopup from './Popups/ManageReportPopup.vue';
 
   import useReportService from '@/core/service/report';
   import useShowPopups from './useShowPopups';
@@ -30,7 +32,7 @@
     name: 'ReportsScreen',
     components: {
       ReportsTable,
-      CreateReportPopup,
+      ManageReportPopup,
     },
     setup() {
       const {
@@ -43,7 +45,19 @@
         setShowPopup,
       } = useShowPopups();
 
+      const router = useRouter();
+
       readReports();
+
+      async function createReportHandler() {
+        await router.push({
+          params: {
+            action: 'create',
+          },
+        });
+
+        setShowPopup('createReportPopup', true);
+      }
 
       return {
         reports,
@@ -51,6 +65,8 @@
 
         showPopups,
         setShowPopup,
+
+        createReportHandler,
       };
     },
   };

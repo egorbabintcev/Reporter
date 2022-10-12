@@ -26,13 +26,13 @@ export default function useReportApi(): ReportApiPort {
   }
 
   async function createReport(report: OmittedReport) {
-    const response = await axios.post<PickedRawReport>('api/v1/reports', reportAdapter.convertReportToAPI(report));
+    const response = await axios.post<PickedRawReport>('/api/v1/reports', reportAdapter.convertReportToAPI(report));
 
     return reportAdapter.convertCreatedReportFromAPI(response.data);
   }
 
   async function updateReport(id: Report['id'], report: OmittedReport) {
-    await axios.patch<void>(`/api/v1/reports/${id}`, report);
+    await axios.put<void>(`/api/v1/reports/${id}`, reportAdapter.convertReportToAPI(report));
   }
 
   async function deleteReport(id: Report['id']) {
