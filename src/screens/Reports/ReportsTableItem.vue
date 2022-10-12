@@ -36,7 +36,7 @@
         </button>
 
         <button
-        disabled>
+        @click="deleteReportHandler">
           Удалить
         </button>
       </div>
@@ -48,8 +48,8 @@
   import { defineComponent, PropType, computed } from 'vue';
 
   import { getTimeStringFromDate } from '@/core/utils/time';
-  import { Report } from '@/core/domain/report';
   import useReportService from '@/core/service/report';
+  import { Report } from '@/core/domain/report';
 
   export default defineComponent({
     name: 'ReportsTableItem',
@@ -59,18 +59,24 @@
         required: true,
       },
       index: {
-        type: Object as PropType<number>,
+        type: Number,
         required: true,
       },
     },
-    setup() {
+    setup(props) {
       const reportService = useReportService();
 
       const maxIndex = computed(() => reportService.reports.value.length - 1);
 
+      function deleteReportHandler() {
+        reportService.deleteReport(props.report.id);
+      }
+
       return {
         maxIndex,
         getTimeStringFromDate,
+
+        deleteReportHandler,
       };
     },
   });

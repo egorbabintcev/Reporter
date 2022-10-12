@@ -7,4 +7,5 @@ export type ReportServicePort = {
 
   readReport(id: Report['id']): Promise<void>
   readReports(): Promise<void>
+  deleteReport(id: Report['id']): Promise<void>
 }

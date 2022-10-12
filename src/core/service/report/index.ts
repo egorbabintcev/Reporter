@@ -21,10 +21,16 @@ export default function useReportService(): ReportServicePort {
     reportStore.setReports(reports);
   }
 
+  async function deleteReport(id: Report['id']) {
+    await reportApi.deleteReport(id);
+    await readReports();
+  }
+
   return {
     report: reportStoreRefs.report,
     reports: reportStoreRefs.reports,
     readReport,
     readReports,
+    deleteReport,
   };
 }
