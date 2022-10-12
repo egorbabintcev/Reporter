@@ -13,9 +13,11 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onBeforeMount } from 'vue';
+  import { defineComponent } from 'vue';
+  import { storeToRefs } from 'pinia';
 
-  import useReportService from '@/core/service/report';
+  import useReportStore from '@/core/store/report';
+
   import ReportsTableHeader from '@/screens/Reports/ReportsTableHeader.vue';
   import ReportsTableItem from '@/screens/Reports/ReportsTableItem.vue';
 
@@ -26,14 +28,11 @@
       ReportsTableItem,
     },
     setup() {
-      const reportService = useReportService();
-
-      onBeforeMount(() => {
-        reportService.readReports();
-      });
+      const reportStore = useReportStore();
+      const reportStoreRefs = storeToRefs(reportStore);
 
       return {
-        reports: reportService.reports,
+        reports: reportStoreRefs.reports,
       };
     },
   });

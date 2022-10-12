@@ -93,7 +93,7 @@
 
   import { getDateFromTimeString, getDateStringFromDate, getTimeStringFromDate } from '@/core/utils/time';
   import useReportApi from '@/core/api/report';
-  import useReportService from '@/core/service/report';
+  import useReportStore from '@/core/store/report';
 
   import Popup from '@/components/Popup.vue';
 
@@ -105,7 +105,8 @@
     emits: ['close'],
     setup(_, { emit }) {
       const reportApi = useReportApi();
-      const reportService = useReportService();
+      const reportStore = useReportStore();
+
       const router = useRouter();
       const route = useRoute();
 
@@ -121,8 +122,8 @@
       });
 
       onBeforeMount(async () => {
-        if (route.params.id) {
-          const report = await reportApi.readReport(route.params.id as Report['id']);
+        if (route.query.id) {
+          const report = await reportApi.readReport(route.query.id as Report['id']);
 
           if (report) {
             form.title = report.title;
@@ -153,10 +154,7 @@
 
       function closeHandler() {
         router.push({
-          params: {
-            id: null,
-            action: null,
-          },
+          query: {},
         });
 
         emit('close');
@@ -177,13 +175,14 @@
             body: form.body,
           };
 
-          if (route.params.action === 'edit') {
-            await reportApi.updateReport(route.params.id as Report['id'], newReport);
-          } else if (route.params.action === 'create') {
+          if (route.query.action === 'edit') {
+            await reportApi.updateReport(route.query.id as Report['id'], newReport);
+          } else if (route.query.action === 'create') {
             await reportApi.createReport(newReport);
           }
 
-          await reportService.readReports();
+          const reports = await reportApi.readReports();
+          reportStore.setReports(reports);
         } finally {
           closeHandler();
         }

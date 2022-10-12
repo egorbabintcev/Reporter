@@ -14,19 +14,19 @@
     </div>
 
     <ManageReportPopup
-    v-if="showPopups.createReportPopup"
-    @close="setShowPopup('createReportPopup', false)"/>
+    v-if="showManagePopup"/>
   </div>
 </template>
 
 <script lang="ts">
-  import { useRouter } from 'vue-router';
+  import { computed, onBeforeMount } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
+
+  import useReportApi from '@/core/api/report';
+  import useReportStore from '@/core/store/report';
 
   import ReportsTable from './ReportsTable.vue';
   import ManageReportPopup from './Popups/ManageReportPopup.vue';
-
-  import useReportService from '@/core/service/report';
-  import useShowPopups from './useShowPopups';
 
   export default {
     name: 'ReportsScreen',
@@ -35,36 +35,30 @@
       ManageReportPopup,
     },
     setup() {
-      const {
-        reports,
-        readReports,
-      } = useReportService();
-
-      const {
-        showPopups,
-        setShowPopup,
-      } = useShowPopups();
+      const reportApi = useReportApi();
+      const reportStore = useReportStore();
 
       const router = useRouter();
+      const route = useRoute();
 
-      readReports();
+      const showManagePopup = computed(() => ['create', 'edit'].includes(route.query.action as 'create' | 'edit'));
+
+      onBeforeMount(async () => {
+        const reports = await reportApi.readReports();
+
+        reportStore.setReports(reports);
+      });
 
       async function createReportHandler() {
         await router.push({
-          params: {
+          query: {
             action: 'create',
           },
         });
-
-        setShowPopup('createReportPopup', true);
       }
 
       return {
-        reports,
-        readReports,
-
-        showPopups,
-        setShowPopup,
+        showManagePopup,
 
         createReportHandler,
       };
