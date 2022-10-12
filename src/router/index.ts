@@ -11,7 +11,7 @@ const router = createRouter({
       component: ReportsScreen,
     },
     {
-      path: '/(.*)',
+      path: '/:redirectAll(.*)',
       redirect: {
         name: 'reports',
       },
