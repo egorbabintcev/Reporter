@@ -31,7 +31,7 @@
     <div class="main-table-el">
       <div class="main-row-12">
         <button
-        disabled>
+        @click="editReportHandler">
           Редактировать
         </button>
 
@@ -46,10 +46,12 @@
 
 <script lang="ts">
   import { defineComponent, PropType, computed } from 'vue';
+  import { useRouter } from 'vue-router';
 
   import { getTimeStringFromDate } from '@/core/utils/time';
-  import useReportService from '@/core/service/report';
   import { Report } from '@/core/domain/report';
+  import useReportService from '@/core/service/report';
+  import useShowPopups from '@/screens/Reports/useShowPopups';
 
   export default defineComponent({
     name: 'ReportsTableItem',
@@ -65,8 +67,22 @@
     },
     setup(props) {
       const reportService = useReportService();
+      const {
+        setShowPopup,
+      } = useShowPopups();
+      const router = useRouter();
 
       const maxIndex = computed(() => reportService.reports.value.length - 1);
+
+      async function editReportHandler() {
+        await router.push({
+          params: {
+            id: props.report.id,
+            action: 'edit',
+          },
+        });
+        setShowPopup('createReportPopup', true);
+      }
 
       function deleteReportHandler() {
         reportService.deleteReport(props.report.id);
@@ -76,6 +92,7 @@
         maxIndex,
         getTimeStringFromDate,
 
+        editReportHandler,
         deleteReportHandler,
       };
     },

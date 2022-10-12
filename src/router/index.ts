@@ -7,7 +7,7 @@ const router = createRouter({
   routes: [
     {
       name: 'reports',
-      path: '/reports',
+      path: '/reports/:id?/:action?',
       component: ReportsScreen,
     },
     {

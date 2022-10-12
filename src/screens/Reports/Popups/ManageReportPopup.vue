@@ -1,7 +1,7 @@
 <template>
   <Popup
-  @close="$emit('close')"
-  @confirm="confirmCreateHandler"
+  @close="closeHandler"
+  @confirm="confirmHandler"
   headerText="Создать отчет"
   class="create-report-popup">
     <div class="flex-grow-1 main-section-32">
@@ -85,12 +85,13 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive } from 'vue';
+  import { defineComponent, reactive, onBeforeMount } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
 
   import { TimeString } from '@/shared-kernel';
-  import { OmittedReport } from '@/core/domain/report';
+  import { OmittedReport, Report } from '@/core/domain/report';
 
-  import { getDateFromTimeString, getDateStringFromDate } from '@/core/utils/time';
+  import { getDateFromTimeString, getDateStringFromDate, getTimeStringFromDate } from '@/core/utils/time';
   import useReportApi from '@/core/api/report';
   import useReportService from '@/core/service/report';
 
@@ -105,6 +106,8 @@
     setup(_, { emit }) {
       const reportApi = useReportApi();
       const reportService = useReportService();
+      const router = useRouter();
+      const route = useRoute();
 
       const form = reactive<Record<keyof OmittedReport, string>>({
         title: `Отчет за ${getDateStringFromDate(new Date())}`,
@@ -115,6 +118,23 @@
         breakTime: '01:00',
 
         body: 'Я сделал всю работу, отпустите меня домой',
+      });
+
+      onBeforeMount(async () => {
+        if (route.params.id) {
+          const report = await reportApi.readReport(route.params.id as Report['id']);
+
+          if (report) {
+            form.title = report.title;
+
+            form.startTime = getTimeStringFromDate(new Date(report.startTime));
+            form.endTime = getTimeStringFromDate(new Date(report.endTime));
+            form.workTime = getTimeStringFromDate(new Date(report.workTime));
+            form.breakTime = getTimeStringFromDate(new Date(report.breakTime));
+
+            form.body = report.body;
+          }
+        }
       });
 
       function timeStringFormatter(string: string): TimeString {
@@ -131,9 +151,20 @@
         return string;
       }
 
-      async function confirmCreateHandler() {
+      function closeHandler() {
+        router.push({
+          params: {
+            id: null,
+            action: null,
+          },
+        });
+
+        emit('close');
+      }
+
+      async function confirmHandler() {
         try {
-          await reportApi.createReport({
+          const newReport = {
             title: form.title,
 
             startTime: getDateFromTimeString(form.startTime).getTime(),
@@ -144,18 +175,25 @@
               - getDateFromTimeString(form.breakTime).getTime(),
 
             body: form.body,
-          });
+          };
 
-          reportService.readReports();
+          if (route.params.action === 'edit') {
+            await reportApi.updateReport(route.params.id as Report['id'], newReport);
+          } else if (route.params.action === 'create') {
+            await reportApi.createReport(newReport);
+          }
+
+          await reportService.readReports();
         } finally {
-          emit('close');
+          closeHandler();
         }
       }
 
       return {
         form,
         timeStringFormatter,
-        confirmCreateHandler,
+        closeHandler,
+        confirmHandler,
       };
     },
   });
