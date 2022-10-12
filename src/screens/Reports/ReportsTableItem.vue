@@ -48,10 +48,11 @@
   import { defineComponent, PropType, computed } from 'vue';
   import { useRouter } from 'vue-router';
 
-  import { getTimeStringFromDate } from '@/core/utils/time';
   import { Report } from '@/core/domain/report';
-  import useReportService from '@/core/service/report';
-  import useShowPopups from '@/screens/Reports/useShowPopups';
+
+  import { getTimeStringFromDate } from '@/core/utils/time';
+  import useReportApi from '@/core/api/report';
+  import useReportStore from '@/core/store/report';
 
   export default defineComponent({
     name: 'ReportsTableItem',
@@ -66,26 +67,27 @@
       },
     },
     setup(props) {
-      const reportService = useReportService();
-      const {
-        setShowPopup,
-      } = useShowPopups();
+      const reportApi = useReportApi();
+      const reportStore = useReportStore();
+
       const router = useRouter();
 
-      const maxIndex = computed(() => reportService.reports.value.length - 1);
+      const maxIndex = computed(() => reportStore.reports.length - 1);
 
       async function editReportHandler() {
         await router.push({
-          params: {
+          query: {
             id: props.report.id,
             action: 'edit',
           },
         });
-        setShowPopup('createReportPopup', true);
       }
 
-      function deleteReportHandler() {
-        reportService.deleteReport(props.report.id);
+      async function deleteReportHandler() {
+        await reportApi.deleteReport(props.report.id);
+
+        const reports = await reportApi.readReports();
+        reportStore.setReports(reports);
       }
 
       return {
