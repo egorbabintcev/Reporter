@@ -1,8 +1,20 @@
 <template>
-  <div class="main-table">
+  <div
+  v-if="reports.length"
+  class="
+    max-w-screen-xl
+    flex
+    flex-col
+    flex-nowrap
+    flex-grow
+    border
+    border-solid
+    border-gray-300
+    rounded
+  ">
     <ReportsTableHeader/>
 
-    <div class="main-table-body">
+    <div class="flex flex-col">
       <ReportsTableItem
       v-for="(report, index) in reports"
       :key="index"
@@ -39,7 +51,5 @@
 </script>
 
 <style lang="scss">
-  .reports-table-el__title {
-    min-width: 320px;
-  }
+
 </style>

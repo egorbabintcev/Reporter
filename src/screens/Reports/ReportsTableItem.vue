@@ -1,42 +1,124 @@
 <template>
   <div
-  class="main-table-line"
+  class="
+    flex
+    flex-row
+    border-b
+    border-b-gray-200
+    border-solid
+  "
   :class="{
-    'border-bottom-0': index === maxIndex
+    'border-b-0': index === maxIndex
   }">
-    <div class="main-table-el reports-table-el__title">
+    <div
+    class="
+      flex
+      flex-row
+      items-center
+      flex-1
+      px-3
+      py-1.5
+      overflow-hidden
+      min-w-0
+    ">
       <p>
         {{ report.title }}
       </p>
     </div>
 
-    <div class="main-table-el">
+    <div
+    class="
+      flex
+      flex-row
+      items-center
+      flex-initial
+      w-40
+      px-3
+      py-1.5
+      overflow-hidden
+      min-w-0
+    ">
       <p>
         {{ getTimeStringFromDate(new Date(report.startTime)) }}
       </p>
     </div>
 
-    <div class="main-table-el">
+    <div
+    class="
+      flex
+      flex-row
+      items-center
+      flex-initial
+      w-40
+      px-3
+      py-1.5
+      overflow-hidden
+      min-w-0
+    ">
       <p>
         {{ getTimeStringFromDate(new Date(report.endTime)) }}
       </p>
     </div>
 
-    <div class="main-table-el">
+    <div
+    class="
+      flex
+      flex-row
+      items-center
+      flex-initial
+      w-40
+      px-3
+      py-1.5
+      overflow-hidden
+      min-w-0
+    ">
       <p>
         {{ getTimeStringFromDate(new Date(report.breakTime)) }}
       </p>
     </div>
 
-    <div class="main-table-el">
-      <div class="main-row-12">
+    <div class="w-32 flex-shrink"/>
+
+    <div
+    class="
+      flex
+      flex-row
+      items-center
+      flex-initial
+      w-72
+      px-3
+      py-1.5
+      overflow-hidden
+      min-w-0
+    ">
+      <div class="flex flex-row items-center gap-3">
         <button
-        @click="editReportHandler">
+        @click="editReportHandler"
+        class="
+          px-4
+          py-2
+          rounded
+          border
+          border-solid
+          border-gra-200
+          hover:bg-gray-200
+          focus:active:border-gray-400
+        ">
           Редактировать
         </button>
 
         <button
-        @click="deleteReportHandler">
+        @click="deleteReportHandler"
+        class="
+          px-4
+          py-2
+          rounded
+          border
+          border-red-200
+          border-solid
+          hover:bg-red-200
+          focus:active:border-red-300
+        ">
           Удалить
         </button>
       </div>

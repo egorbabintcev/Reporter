@@ -1,41 +1,62 @@
 <template>
-  <div class="popup-wrapper">
+  <div class="flex flex-col justify-center items-center w-full h-full fixed top-0 left-0 bg-black/30">
     <div
-    class="popup">
-      <div class="flex-grow-1 main-section-32">
-        <div class="popup-header">
+    class="popup flex flex-col max-w-[90vw] max-h-[90vh] p-6 bg-white rounded-md">
+      <div class="flex flex-col flex-grow gap-6">
+        <div class="flex flex-row flex-nowrap overflow-hidden items-center">
           <p
           v-if="headerText"
           v-html="headerText"
-          class="popup-header__text"/>
+          class="text-2xl text-gray-800 font-semibold truncate"/>
 
-          <div class="popup__spacer"/>
+          <div class="flex-grow"/>
 
           <button
           @click="$emit('close')"
-          class="popup-header__button">
-            Close
+          class="
+            px-4
+            py-2
+            rounded
+            border
+            hover:bg-gray-100
+            focus:active:border-gray-400
+          ">
+            Закрыть
           </button>
         </div>
 
-        <div class="popup-content">
+        <div class="flex flex-col flex-grow overflow-hidden">
           <slot/>
         </div>
 
-        <div class="popup-footer">
-          <div class="popup__spacer"/>
+        <div class="flex flex-row flex-nowrap overflow-hidden items-center">
+          <div class="flex-grow"/>
 
-          <div class="main-row-12">
+          <div class="flex gap-3">
             <button
             @click="$emit('close')"
-            class="popup-footer__button">
-              Cancel
+            class="
+              px-4
+              py-2
+              rounded
+              border
+              hover:bg-gray-100
+              focus:active:border-gray-400
+            ">
+              Отмена
             </button>
 
             <button
             @click="$emit('confirm')"
-            class="popup-footer__button">
-              Confirm
+            class="
+              px-4
+              py-2
+              rounded
+              border
+              hover:bg-gray-100
+              focus:active:border-gray-400
+            ">
+              Подтвердить
             </button>
           </div>
         </div>
@@ -45,78 +66,43 @@
 </template>
 
 <script lang="ts">
-  import { PropType } from 'vue';
+  import {
+    defineComponent, onBeforeMount, onBeforeUnmount, PropType,
+  } from 'vue';
 
   import { HTMLString } from '@/shared-kernel';
 
-  export default {
+  export default defineComponent({
     name: 'PopupComponent',
+    emits: ['close', 'confirm'],
     props: {
       headerText: {
         type: String as PropType<HTMLString>,
+        default: '',
       },
     },
-  };
+    setup(_, { emit }) {
+      function keyupHandler(event: KeyboardEvent) {
+        if (event.key === 'Escape') {
+          emit('close');
+        }
+
+        if (event.key === 'Enter') {
+          emit('confirm');
+        }
+      }
+
+      onBeforeMount(() => {
+        window.addEventListener('keyup', keyupHandler);
+      });
+
+      onBeforeUnmount(() => {
+        window.removeEventListener('keyup', keyupHandler);
+      });
+    },
+  });
 </script>
 
 <style lang="scss">
-  @use '@/styles/variables';
 
-  .popup-wrapper {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    height: 100%;
-
-    position: fixed;
-    top: 0;
-    left: 0;
-
-    background-color: rgba(variables.$dark-color, 0.32);
-  }
-
-  .popup {
-    display: flex;
-    flex-flow: column nowrap;
-
-    max-width: 90vw;
-    max-height: 90vh;
-    padding: 16px;
-
-    background-color: variables.$light-color;
-  }
-
-  .popup__spacer {
-    flex-grow: 1;
-
-    margin: 0 !important;
-  }
-
-  .popup-header {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-  }
-
-  .popup-header__text {
-    font-size: 18px;
-    font-weight: 500;
-  }
-
-  .popup-content {
-    display: flex;
-    flex-flow: column nowrap;
-    flex-grow: 1;
-
-    overflow: hidden;
-  }
-
-  .popup-footer {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-  }
 </style>
