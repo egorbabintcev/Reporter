@@ -1,5 +1,5 @@
 const cssProperties = {
-  typography : [
+  typography: [
     'font',
     'font-family',
     'font-size',
@@ -77,7 +77,7 @@ const cssProperties = {
   ],
   display: [
     'box-sizing',
-    'display'
+    'display',
   ],
   flex: [
     'flex',
@@ -111,7 +111,7 @@ const cssProperties = {
   gap: [
     'gap',
     'row-gap',
-    'column-gap'
+    'column-gap',
   ],
   alignment: [
     'place-content',
@@ -215,7 +215,7 @@ const cssProperties = {
     'background',
     'background-color',
     'background-image',
-    "-ms-filter:\\'progid:DXImageTransform.Microsoft.gradient",
+    '-ms-filter:\\\'progid:DXImageTransform.Microsoft.gradient',
     'filter:progid:DXImageTransform.Microsoft.gradient',
     'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader',
     'filter',
@@ -292,7 +292,7 @@ const cssProperties = {
     'box-shadow',
     'mix-blend-mode',
     'filter:progid:DXImageTransform.Microsoft.Alpha(Opacity',
-    "-ms-filter:\\'progid:DXImageTransform.Microsoft.Alpha",
+    '-ms-filter:\\\'progid:DXImageTransform.Microsoft.Alpha',
     'opacity',
     '-ms-interpolation-mode',
   ],
@@ -349,7 +349,7 @@ const cssProperties = {
     'animation-iteration-count',
     'animation-direction',
   ],
-}
+};
 
 module.exports = {
   extends: [
@@ -357,6 +357,18 @@ module.exports = {
     'stylelint-config-html/vue',
   ],
   rules: {
+    'scss/at-rule-no-unknown': [
+      true,
+      {
+        ignoreAtRules: [
+          'tailwind',
+          'apply',
+          'variants',
+          'responsive',
+          'screen',
+        ],
+      },
+    ],
     'max-nesting-depth': 2,
     'selector-class-pattern': /^[_\-a-z0-9]+$/i,
     'order/properties-alphabetical-order': null,
