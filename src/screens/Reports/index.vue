@@ -1,15 +1,36 @@
 <template>
-  <div class="reports-screen">
-    <div class="reports-screen-content">
-      <div class="main-section-24 flex-grow-1">
-        <div class="main-row-12">
-          <button
-          @click="createReportHandler">
-            Создать
-          </button>
+  <div class="flex flex-grow flex-col p-5 bg-neutral-100">
+    <div class="flex flex-grow flex-col p-6 rounded-2xl shadow-xl bg-white">
+      <div class="flex flex-col gap-12">
+        <div class="flex flex-col gap-2 max-w-screen-lg">
+          <ReportsHeader/>
+
+          <!--<ReportsStats/>-->
         </div>
 
-        <ReportsTable/>
+        <div class="flex flex-col gap-5">
+          <div class="flex flex-row gap-4 max-w-screen-lg">
+            <button
+            @click="createReportHandler"
+            class="
+              px-4
+              py-2
+              rounded
+              border
+              hover:bg-gray-100
+              focus:active:border-gray-400
+            ">
+              Создать
+            </button>
+
+            <InputComponent
+            placeholder="Поиск"
+            class="flex-grow"
+            disabled/>
+          </div>
+
+          <ReportsTable/>
+        </div>
       </div>
     </div>
 
@@ -25,14 +46,20 @@
   import useReportApi from '@/core/api/report';
   import useReportStore from '@/core/store/report';
 
-  import ReportsTable from './ReportsTable.vue';
+  import ReportsHeader from '@/screens/Reports/ReportsHeader.vue';
+  // import ReportsStats from '@/screens/Reports/ReportsStats.vue';
+  import ReportsTable from '@/screens/Reports/ReportsTable.vue';
   import ManageReportPopup from './Popups/ManageReportPopup.vue';
+  import InputComponent from '@/components/Input.vue';
 
   export default {
     name: 'ReportsScreen',
     components: {
+      ReportsHeader,
+      // ReportsStats,
       ReportsTable,
       ManageReportPopup,
+      InputComponent,
     },
     setup() {
       const reportApi = useReportApi();
@@ -67,20 +94,8 @@
 </script>
 
 <style lang="scss">
-  @use '@/styles/modules/screen' as *;
-
-  .reports-screen {
-    @extend %screen;
-  }
-
-  .reports-screen-content {
-    @extend %screen-content;
-
-    padding: 16px;
-  }
-
   .create-report-popup .popup {
-    width: 600px;
-    height: 700px;
+    width: 700px;
+    height: 800px;
   }
 </style>

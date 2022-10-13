@@ -4,79 +4,87 @@
   @confirm="confirmHandler"
   headerText="Создать отчет"
   class="create-report-popup">
-    <div class="flex-grow-1 main-section-32">
+    <div class="flex flex-col flex-grow gap-6">
       <label
       for="display_name"
       class="d-inline-flex">
-        <div class="flex-grow-1 main-section-4">
-          <p>Название:</p>
+        <div class="flex flex-col flex-grow gap-1">
+          <p class="text-base text-gray-600 font-medium">Название:</p>
 
-          <input
+          <InputComponent
           v-model="form.title"
-          type="text"
-          class="main-text-field"
-          id="display_name">
+          id="display_name"/>
         </div>
       </label>
 
-      <div class="main-row-16">
+      <div class="flex flex-row flex-nowrap gap-4">
         <label
         for="start-time"
-        class="d-inline-flex flex-grow-1">
-          <div class="flex-grow-1 main-section-4">
-            <p>Время начала:</p>
+        class="inline-flex min-w-0">
+          <div class="flex flex-col flex-grow gap-1 min-w-0">
+            <p class="text-base text-gray-600 font-medium">Время начала:</p>
 
-            <input
+            <InputComponent
             v-mask="{ mask: '##:##' }"
-            @input="form.startTime = $event.target.value"
-            :value="timeStringFormatter(form.startTime)"
-            type="text"
-            class="main-text-field">
+            @update:modelValue="form.startTime = $event.target.value"
+            :modelValue="timeStringFormatter(form.startTime)"
+            placeholder="__:__"
+            id="start-time"/>
           </div>
         </label>
 
         <label
         for="end-time"
-        class="d-inline-flex flex-grow-1">
-          <div class="flex-grow-1 main-section-4">
-            <p>Время завершения:</p>
+        class="inline-flex min-w-0">
+          <div class="flex flex-col flex-grow gap-1 min-w-0">
+            <p class="text-base text-gray-600 font-medium">Время завершения:</p>
 
-            <input
+            <InputComponent
             v-mask="{ mask: '##:##' }"
-            @input="form.endTime = $event.target.value"
-            :value="timeStringFormatter(form.endTime)"
-            type="text"
-            class="main-text-field"
-            id="end-time">
+            @update:modelValue="form.endTime = $event.target.value"
+            :modelValue="timeStringFormatter(form.endTime)"
+            placeholder="__:__"
+            id="end-time"/>
           </div>
         </label>
 
         <label
-        for="break-duration"
-        class="d-inline-flex flex-grow-1">
-          <div class="flex-grow-1 main-section-4">
-            <p>Перерыв:</p>
+        for="break-time"
+        class="inline-flex min-w-0">
+          <div class="flex flex-col flex-grow gap-1 min-w-0">
+            <p class="text-base text-gray-600 font-medium">Перерыв:</p>
 
-            <input
+            <InputComponent
             v-mask="{ mask: '##:##' }"
-            @input="form.breakTime = $event.target.value"
-            :value="timeStringFormatter(form.breakTime)"
-            type="text"
-            class="main-text-field"
-            id="break-duration">
+            @update:modelValue="form.breakTime = $event.target.value"
+            :modelValue="timeStringFormatter(form.breakTime)"
+            placeholder="__:__"
+            id="break-time"/>
           </div>
         </label>
       </div>
 
       <label
       for="body"
-      class="d-inline-flex flex-grow-1">
-        <div class="flex-grow-1 main-section-4">
-          <p>Содержание:</p>
+      class="inline-flex flex-grow min-w-0">
+        <div class="flex flex-col flex-grow gap-1 min-w-0">
+          <p class="text-base text-gray-600 font-medium">Содержание:</p>
 
           <textarea
           v-model="form.body"
-          class="main-text-area flex-grow-1"
+          class="
+            flex-grow
+            px-5 py-2.5
+            min-w-0
+            text-lg
+            border border-gray-300
+            hover:border-gray-400
+            focus:border-gray-600
+            active:border-gray-600
+            outline-0
+            rounded
+            resize-none
+          "
           id="body"/>
         </div>
       </label>
@@ -96,11 +104,13 @@
   import useReportStore from '@/core/store/report';
 
   import Popup from '@/components/Popup.vue';
+  import InputComponent from '@/components/Input.vue';
 
   export default defineComponent({
     name: 'CreateReportPopup',
     components: {
       Popup,
+      InputComponent,
     },
     emits: ['close'],
     setup(_, { emit }) {
