@@ -1,9 +1,12 @@
 @use 'reset-css/sass/reset';
-@use 'bootstrap/scss/bootstrap-utilities';
 
 @use 'fonts';
 
 @use 'modules';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 
 
