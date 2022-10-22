@@ -1,18 +1,27 @@
 <template>
   <div class="app">
-    <router-view v-slot="{ Component }">
-      <transition name="fade">
-        <component :is="Component"/>
-      </transition>
-    </router-view>
+    <div class="flex flex-row flex-grow">
+      <TheSidebar/>
+
+      <router-view v-slot="{ Component }">
+        <transition name="fade">
+          <component :is="Component"/>
+        </transition>
+      </router-view>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue';
 
+  import TheSidebar from '@/components/TheSidebar.vue';
+
   export default defineComponent({
     name: 'App',
+    components: {
+      TheSidebar,
+    },
   });
 </script>
 
