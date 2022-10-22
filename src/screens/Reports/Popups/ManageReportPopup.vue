@@ -26,7 +26,7 @@
 
             <InputComponent
             v-mask="{ mask: '##:##' }"
-            @update:modelValue="form.startTime = $event.target.value"
+            @update:modelValue="form.startTime = $event"
             :modelValue="timeStringFormatter(form.startTime)"
             placeholder="__:__"
             id="start-time"/>
@@ -41,7 +41,7 @@
 
             <InputComponent
             v-mask="{ mask: '##:##' }"
-            @update:modelValue="form.endTime = $event.target.value"
+            @update:modelValue="form.endTime = $event"
             :modelValue="timeStringFormatter(form.endTime)"
             placeholder="__:__"
             id="end-time"/>
@@ -56,7 +56,7 @@
 
             <InputComponent
             v-mask="{ mask: '##:##' }"
-            @update:modelValue="form.breakTime = $event.target.value"
+            @update:modelValue="form.breakTime = $event"
             :modelValue="timeStringFormatter(form.breakTime)"
             placeholder="__:__"
             id="break-time"/>
