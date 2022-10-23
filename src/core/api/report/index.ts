@@ -5,10 +5,9 @@ import {
   OmittedReport,
   PickedRawReport,
 } from '@/core/domain/report';
-import { ReportApiPort } from '@/core/ports/report/apiPort';
 import useReportAdapter from '@/core/adapters/report';
 
-export default function useReportApi(): ReportApiPort {
+export default function useReportApi() {
   const reportAdapter = useReportAdapter();
 
   async function readReport(id: Report['id']) {

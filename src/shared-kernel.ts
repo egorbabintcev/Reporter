@@ -7,6 +7,8 @@ export type HTMLString = string;
 export type TimeString = string;
 export type DateString = string;
 
+export type JWTString = string;
+
 export type Entries<T> = Array<{
   [k in keyof T]: [k, T[k]]
 }[keyof T]>
