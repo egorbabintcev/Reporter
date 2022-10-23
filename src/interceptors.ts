@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 import useAuthenticationStore from '@/core/store/authentication';
 
@@ -13,11 +13,11 @@ export default function setupAxiosInterceptors() {
     return config;
   });
 
-  axios.interceptors.response.use((res) => res, (response: AxiosResponse) => {
-    if (response.status === 401) {
+  axios.interceptors.response.use((res) => res, (error: AxiosError) => {
+    if (error.response?.status === 401) {
       authenticationStore.setAuthenticationToken(null);
     }
 
-    return response;
+    return error;
   });
 }

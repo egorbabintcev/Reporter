@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-grow flex-col p-5">
     <div class="flex flex-grow flex-col justify-center items-center">
-      <div class="flex flex-col gap-4 w-96">
+      <div
+      @keydown.enter="signInHandler"
+      class="flex flex-col gap-4 w-96">
         <InputComponent
         v-model="form.username"
         placeholder="Введите логин"/>
