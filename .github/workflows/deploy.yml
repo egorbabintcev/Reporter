@@ -1,0 +1,26 @@
+name: Deploy to production server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Setup ssh key
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2.3.1
+        with:
+          key: ${{ secrets.DEPLOY_SERVER_KEY }}
+          known_hosts: ${{ secrets.DEPLOY_SERVER_KNOWN_HOST }}
+
+      # Build project
+      - run: npm ci
+      - run: npm run build
+
+      # Upload files to server
+      - run: scp -r ./dist/* ${{ secrets.DEPLOY_SERVER_USER }}@${{ secrets.DEPLOY_SERVER_HOST }}:${{ secrets.DEPLOY_SERVER_UPLOAD_PATH }}
