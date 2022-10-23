@@ -1,7 +1,8 @@
 <template>
   <div class="app">
     <div class="flex flex-row flex-grow">
-      <TheSidebar/>
+      <TheSidebar
+      v-if="showSidebar"/>
 
       <router-view v-slot="{ Component }">
         <transition name="fade">
@@ -13,7 +14,8 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, computed } from 'vue';
+  import { useRoute } from 'vue-router';
 
   import TheSidebar from '@/components/TheSidebar.vue';
 
@@ -21,6 +23,15 @@
     name: 'App',
     components: {
       TheSidebar,
+    },
+    setup() {
+      const route = useRoute();
+
+      const showSidebar = computed(() => route.meta.authenticationRequired);
+
+      return {
+        showSidebar,
+      };
     },
   });
 </script>

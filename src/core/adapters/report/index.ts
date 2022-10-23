@@ -6,10 +6,9 @@ import {
   PickedRawReport,
   PickedReport,
 } from '@/core/domain/report';
-import { ReportAdapterPort } from '@/core/ports/report/adapterPort';
 import convertObject from '@/core/utils/convertObject';
 
-export default function useReportAdapter(): ReportAdapterPort {
+export default function useReportAdapter() {
   function convertReportFromAPI(report: RawReport): Report {
     return convertObject<RawReport, Report>(report, {
       id: { key: 'id' },

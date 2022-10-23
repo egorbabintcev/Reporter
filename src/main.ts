@@ -9,8 +9,12 @@ import router from '@/router';
 
 import App from './App.vue';
 
+import setupAxiosInterceptors from './interceptors';
+
 createApp(App)
   .directive('mask', maska)
   .use(store)
   .use(router)
   .mount('#app');
+
+setupAxiosInterceptors();

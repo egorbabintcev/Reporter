@@ -24,6 +24,7 @@
             </button>
 
             <InputComponent
+            modelValue=""
             placeholder="Поиск"
             class="flex-grow"
             disabled/>
