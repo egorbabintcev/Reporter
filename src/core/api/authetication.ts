@@ -9,7 +9,7 @@ export default function useAuthenticationApi() {
   const authenticationAdapter = useAuthenticationAdapter();
 
   async function signIn(payload: AuthenticationPayload): Promise<AuthenticationToken> {
-    const response = await axios.post<{ token: AuthenticationToken }>(`/api/v1/login`, authenticationAdapter.convertAuthenticationPayloadToAPI(payload));
+    const response = await axios.post<{ token: AuthenticationToken }>(`/api/v1/sign_in`, authenticationAdapter.convertAuthenticationPayloadToAPI(payload));
     const { token } = response.data;
 
     return token;
