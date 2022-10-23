@@ -72,6 +72,7 @@
 
           <textarea
           v-model="form.body"
+          @keyup.shift.enter.stop
           class="
             flex-grow
             px-5 py-2.5

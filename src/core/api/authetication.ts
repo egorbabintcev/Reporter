@@ -12,8 +12,6 @@ export default function useAuthenticationApi() {
     const response = await axios.post<{ token: AuthenticationToken }>(`/api/v1/login`, authenticationAdapter.convertAuthenticationPayloadToAPI(payload));
     const { token } = response.data;
 
-    console.warn(response);
-
     return token;
   }
 

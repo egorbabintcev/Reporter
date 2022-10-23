@@ -37,6 +37,10 @@ router.beforeEach((to, from, next) => {
       name: 'authentication',
       query: { redirect: to.fullPath },
     });
+  } else if (!to.meta.authenticationRequired && authenticationStore.token) {
+    next({
+      path: '/',
+    });
   } else {
     next();
   }
