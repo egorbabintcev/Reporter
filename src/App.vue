@@ -27,7 +27,7 @@
     setup() {
       const route = useRoute();
 
-      const showSidebar = computed(() => route.meta.authenticationRequired);
+      const showSidebar = computed(() => route.meta.authRequired);
 
       return {
         showSidebar,

@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import useAuthenticationStore from '@/core/store/authentication';
+import useAuthStore from '@/core/store/auth';
 
 const ReportsScreen = () => import('@/screens/Reports/index.vue');
-const AuthenticationScreen = () => import('@/screens/Authentication/index.vue');
+const AuthScreen = () => import('@/screens/Auth/index.vue');
 
 const router = createRouter({
   history: createWebHistory(),
@@ -12,13 +12,13 @@ const router = createRouter({
       path: '/reports',
       component: ReportsScreen,
       meta: {
-        authenticationRequired: true,
+        authRequired: true,
       },
     },
     {
-      name: 'authentication',
-      path: '/sign_in',
-      component: AuthenticationScreen,
+      name: 'auth',
+      path: '/auth',
+      component: AuthScreen,
     },
     {
       path: '/:redirectAll(.*)',
@@ -30,14 +30,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const authenticationStore = useAuthenticationStore();
+  const authStore = useAuthStore();
 
-  if (to.meta.authenticationRequired && !authenticationStore.token) {
+  if (to.meta.authRequired && !authStore.token) {
     next({
-      name: 'authentication',
-      query: { redirect: to.fullPath },
+      name: 'auth',
+      query: {
+        action: 'sign_in',
+        redirect: to.fullPath,
+      },
     });
-  } else if (!to.meta.authenticationRequired && authenticationStore.token) {
+  } else if (!to.meta.authRequired && authStore.token) {
     next({
       path: '/',
     });

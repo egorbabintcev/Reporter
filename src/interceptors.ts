@@ -1,13 +1,13 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
-import useAuthenticationStore from '@/core/store/authentication';
+import useAuthStore from '@/core/store/auth';
 
 export default function setupAxiosInterceptors() {
-  const authenticationStore = useAuthenticationStore();
+  const authStore = useAuthStore();
 
   axios.interceptors.request.use((config: AxiosRequestConfig) => {
-    if (authenticationStore.token && config.headers) {
-      config.headers.Authorization = `Bearer ${authenticationStore.token}`;
+    if (authStore.token && config.headers) {
+      config.headers.Authorization = `Bearer ${authStore.token}`;
     }
 
     return config;
@@ -15,9 +15,9 @@ export default function setupAxiosInterceptors() {
 
   axios.interceptors.response.use((res) => res, (error: AxiosError) => {
     if (error.response?.status === 401) {
-      authenticationStore.setAuthenticationToken(null);
+      authStore.setAuthToken(null);
     }
 
-    return error;
+    throw error;
   });
 }
