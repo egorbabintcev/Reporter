@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app bg-violet-600">
     <div class="flex flex-row flex-grow">
       <TheSidebar
       v-if="showSidebar"/>
@@ -17,7 +17,7 @@
   import { defineComponent, computed } from 'vue';
   import { useRoute } from 'vue-router';
 
-  import TheSidebar from '@/components/TheSidebar.vue';
+  import TheSidebar from '@/components/TheSidebar/index.vue';
 
   export default defineComponent({
     name: 'App',
