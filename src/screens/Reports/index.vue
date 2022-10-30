@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-grow flex-col p-5 bg-neutral-100">
+  <div class="flex flex-grow flex-col p-4">
     <div class="flex flex-grow flex-col p-6 rounded-2xl shadow-xl bg-white">
       <div class="flex flex-col gap-12">
         <div class="flex flex-col gap-2 max-w-screen-lg">
