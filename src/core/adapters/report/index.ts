@@ -18,6 +18,7 @@ export default function useReportAdapter() {
 
       title: { key: 'title' },
 
+      date: { callback: ({ date }) => date * 1000 },
       startTime: { callback: ({ start_time: startTime }) => startTime * 1000 },
       endTime: { callback: ({ end_time: endTime }) => endTime * 1000 },
       workTime: { callback: ({ work_time: workTime }) => workTime * 1000 },
@@ -38,10 +39,11 @@ export default function useReportAdapter() {
       id: { key: 'id' },
 
       creatorId: { key: 'creator_id' },
-      createdAt: { key: 'created_at' },
+      createdAt: { callback: ({ created_at: createdAt }) => createdAt * 1000 },
 
       title: { key: 'title' },
 
+      date: { callback: ({ date }) => date * 1000 },
       startTime: { callback: ({ start_time: startTime }) => startTime * 1000 },
       endTime: { callback: ({ end_time: endTime }) => endTime * 1000 },
       workTime: { callback: ({ work_time: workTime }) => workTime * 1000 },
@@ -55,6 +57,7 @@ export default function useReportAdapter() {
     return convertObject<OmittedReport, OmittedRawReport>(report, {
       title: { key: 'title' },
 
+      date: { callback: ({ date }) => (date / 1000) },
       start_time: { callback: ({ startTime }) => startTime / 1000 },
       end_time: { callback: ({ endTime }) => endTime / 1000 },
       work_time: { callback: ({ workTime }) => workTime / 1000 },

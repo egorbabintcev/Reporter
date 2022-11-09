@@ -22,7 +22,7 @@
       min-w-0
     ">
       <p>
-        {{ report.title }}
+        {{ report.title || `Отчет о работе за ${getDateStringFromDate(new Date(report.date))}` }}
       </p>
     </div>
 
@@ -132,7 +132,7 @@
 
   import { Report } from '@/core/domain/report';
 
-  import { getTimeStringFromDate } from '@/core/utils/time';
+  import { getTimeStringFromDate, getDateStringFromDate } from '@/core/utils/time';
   import useReportApi from '@/core/api/report';
   import useReportStore from '@/core/store/report';
 
@@ -175,6 +175,7 @@
       return {
         maxIndex,
         getTimeStringFromDate,
+        getDateStringFromDate,
 
         editReportHandler,
         deleteReportHandler,

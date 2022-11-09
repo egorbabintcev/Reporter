@@ -10,6 +10,7 @@ export type Report = {
 
   title: ReportTitle
 
+  date: UnixTimestamp
   startTime: UnixTimestamp
   endTime: UnixTimestamp
   workTime: UnixTimestamp
@@ -33,6 +34,7 @@ export type RawReport = {
 
   title: RawReportTitle
 
+  date: UnixTimestamp
   start_time: UnixTimestamp
   end_time: UnixTimestamp
   work_time: UnixTimestamp
