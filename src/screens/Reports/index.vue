@@ -48,16 +48,14 @@
   import useReportStore from '@/core/store/report';
 
   import ReportsHeader from '@/screens/Reports/ReportsHeader.vue';
-  // import ReportsStats from '@/screens/Reports/ReportsStats.vue';
   import ReportsTable from '@/screens/Reports/ReportsTable.vue';
-  import ManageReportPopup from './Popups/ManageReportPopup.vue';
+  import ManageReportPopup from './Popups/ManageReportPopup/index.vue';
   import InputComponent from '@/components/Input.vue';
 
   export default {
     name: 'ReportsScreen',
     components: {
       ReportsHeader,
-      // ReportsStats,
       ReportsTable,
       ManageReportPopup,
       InputComponent,

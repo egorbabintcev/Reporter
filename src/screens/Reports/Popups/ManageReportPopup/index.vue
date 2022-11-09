@@ -9,10 +9,11 @@
       for="display_name"
       class="d-inline-flex">
         <div class="flex flex-col flex-grow gap-1">
-          <p class="text-base text-gray-600 font-medium">Название:</p>
+          <p class="text-base text-gray-600 font-medium">Дата:</p>
 
-          <InputComponent
-          v-model="form.title"
+          <ManageReportPopupDatePicker
+          v-model="form.date"
+          :max="new Date().toISOString()"
           id="display_name"/>
         </div>
       </label>
@@ -100,18 +101,20 @@
   import { TimeString } from '@/shared-kernel';
   import { OmittedReport, Report } from '@/core/domain/report';
 
-  import { getDateFromTimeString, getDateStringFromDate, getTimeStringFromDate } from '@/core/utils/time';
+  import { getDateFromTimeString, getTimeStringFromDate } from '@/core/utils/time';
   import useReportApi from '@/core/api/report';
   import useReportStore from '@/core/store/report';
 
   import Popup from '@/components/Popup.vue';
   import InputComponent from '@/components/Input.vue';
+  import ManageReportPopupDatePicker from './DatePicker.vue';
 
   export default defineComponent({
     name: 'CreateReportPopup',
     components: {
       Popup,
       InputComponent,
+      ManageReportPopupDatePicker,
     },
     emits: ['close'],
     setup(_, { emit }) {
@@ -122,8 +125,9 @@
       const route = useRoute();
 
       const form = reactive<Record<keyof OmittedReport, string>>({
-        title: `Отчет за ${getDateStringFromDate(new Date())}`,
+        title: '',
 
+        date: new Date().toISOString(),
         startTime: '10:00',
         endTime: '19:00',
         workTime: '',
@@ -139,6 +143,7 @@
           if (report) {
             form.title = report.title;
 
+            form.date = new Date(report.date).toISOString();
             form.startTime = getTimeStringFromDate(new Date(report.startTime));
             form.endTime = getTimeStringFromDate(new Date(report.endTime));
             form.workTime = getTimeStringFromDate(new Date(report.workTime));
@@ -176,6 +181,7 @@
           const newReport = {
             title: form.title,
 
+            date: new Date(form.date).getTime(),
             startTime: getDateFromTimeString(form.startTime).getTime(),
             endTime: getDateFromTimeString(form.endTime).getTime(),
             breakTime: getDateFromTimeString(form.breakTime).getTime(),
