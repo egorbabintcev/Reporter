@@ -98,5 +98,9 @@ module.exports = {
       switchCase: 0,
       ignores: [],
     }],
+    'vuejs-accessibility/form-control-has-label': 0,
+    'vuejs-accessibility/label-has-for': 0,
+    'vuejs-accessibility/click-events-have-key-events': 0,
+    'vuejs-accessibility/alt-text': 0,
   },
 };
