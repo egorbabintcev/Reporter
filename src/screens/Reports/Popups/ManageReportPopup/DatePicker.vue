@@ -46,6 +46,7 @@
         default: () => null,
       },
     },
+    emits: ['update:modelValue'],
     setup(props, { emit }) {
       function getDateInputStringFromString(string: ISODateTimeString): DateInputString {
         if (!string) return '';

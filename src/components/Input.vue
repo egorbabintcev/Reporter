@@ -32,6 +32,7 @@
         default: 'text',
       },
     },
+    emits: ['update:modelValue'],
   });
 </script>
 
