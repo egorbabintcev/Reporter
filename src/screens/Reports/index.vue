@@ -93,8 +93,5 @@
 </script>
 
 <style lang="scss">
-  .create-report-popup .popup {
-    width: 700px;
-    height: 800px;
-  }
+
 </style>
