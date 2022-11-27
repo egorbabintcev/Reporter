@@ -6,23 +6,20 @@
     border-b
     border-b-gray-200
     border-solid
-  "
-  :class="{
-    'border-b-0': index === maxIndex
-  }">
+  ">
     <div
     class="
       flex
       flex-row
       items-center
-      flex-1
       px-3
       py-1.5
       overflow-hidden
+      w-3/12
       min-w-0
     ">
       <p>
-        {{ report.title || `Отчет о работе за ${getDateStringFromDate(new Date(report.date))}` }}
+        {{ getDateStringFromDate(new Date(report.date)) }}
       </p>
     </div>
 
@@ -31,11 +28,10 @@
       flex
       flex-row
       items-center
-      flex-initial
-      w-40
       px-3
       py-1.5
       overflow-hidden
+      w-2/12
       min-w-0
     ">
       <p>
@@ -48,11 +44,10 @@
       flex
       flex-row
       items-center
-      flex-initial
-      w-40
       px-3
       py-1.5
       overflow-hidden
+      w-2/12
       min-w-0
     ">
       <p>
@@ -65,11 +60,10 @@
       flex
       flex-row
       items-center
-      flex-initial
-      w-40
       px-3
       py-1.5
       overflow-hidden
+      w-2/12
       min-w-0
     ">
       <p>
@@ -77,41 +71,63 @@
       </p>
     </div>
 
-    <div class="w-32 flex-shrink"/>
-
     <div
     class="
       flex
       flex-row
       items-center
-      flex-initial
-      w-72
       px-3
       py-1.5
       overflow-hidden
-      min-w-0
+      w-3/12
+      min-w-fit
     ">
       <div class="flex flex-row items-center gap-3">
         <button
-        @click="editReportHandler"
+        @click="copyReportHandler"
+        title="Скопировать HTML"
         class="
-          px-4
-          py-2
+          w-10
+          h-10
+          p-1.5
           rounded
           border
+          border-slate-200
           border-solid
-          border-gra-200
-          hover:bg-gray-200
-          focus:active:border-gray-400
+          hover:bg-slate-200
+          focus:active:border-slate-300
         ">
-          Редактировать
+          <IconComponent
+          icon="file_copy"
+          class="text-slate-500"/>
+        </button>
+
+        <button
+        @click="editReportHandler"
+        title="Редактировать"
+        class="
+          w-10
+          h-10
+          p-1.5
+          rounded
+          border
+          border-slate-200
+          border-solid
+          hover:bg-slate-200
+          focus:active:border-slate-300
+        ">
+          <IconComponent
+          icon="edit"
+          class="text-slate-500"/>
         </button>
 
         <button
         @click="deleteReportHandler"
+        title="Удалить"
         class="
-          px-4
-          py-2
+          w-10
+          h-10
+          p-1.5
           rounded
           border
           border-red-200
@@ -119,7 +135,9 @@
           hover:bg-red-200
           focus:active:border-red-300
         ">
-          Удалить
+          <IconComponent
+          icon="delete"
+          class="text-red-500"/>
         </button>
       </div>
     </div>
@@ -130,14 +148,22 @@
   import { defineComponent, PropType, computed } from 'vue';
   import { useRouter } from 'vue-router';
 
+  import MarkdownIt from 'markdown-it';
+
+  import IconComponent from '@/components/Icon.vue';
+
   import { Report } from '@/core/domain/report';
 
   import { getTimeStringFromDate, getDateStringFromDate } from '@/core/utils/time';
   import useReportApi from '@/core/api/report';
   import useReportStore from '@/core/store/report';
+  import useReportAdapter from '@/core/adapters/report';
 
   export default defineComponent({
     name: 'ReportsTableItem',
+    components: {
+      IconComponent,
+    },
     props: {
       report: {
         type: Object as PropType<Report>,
@@ -151,6 +177,7 @@
     setup(props) {
       const reportApi = useReportApi();
       const reportStore = useReportStore();
+      const reportAdapters = useReportAdapter();
 
       const router = useRouter();
 
@@ -172,6 +199,26 @@
         reportStore.setReports(reports);
       }
 
+      async function copyReportHandler() {
+        let template = 'Дата: {{date}}\nВремя: {{startTime}}-{{endTime}}\nПерерыв: {{breakTime}}\nРабочих часов: {{workTime}}\n\n{{body}}';
+
+        const reportHTML = reportAdapters.convertReportToHTML(props.report);
+
+        Object.entries(reportHTML).forEach(([key, value]) => {
+          template = template.replaceAll(new RegExp(`{{${key}}}`, 'g'), value);
+        });
+
+        const html = MarkdownIt({ breaks: true }).render(template);
+
+        // eslint-disable-next-line no-undef
+        await window.navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([template], { type: 'text/plain' }),
+        })]);
+
+        return template;
+      }
+
       return {
         maxIndex,
         getTimeStringFromDate,
@@ -179,6 +226,7 @@
 
         editReportHandler,
         deleteReportHandler,
+        copyReportHandler,
       };
     },
   });

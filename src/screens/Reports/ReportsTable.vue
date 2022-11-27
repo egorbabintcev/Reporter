@@ -7,6 +7,7 @@
     flex-col
     flex-nowrap
     flex-grow
+    overflow-hidden
     border
     border-solid
     border-gray-300
@@ -14,7 +15,7 @@
   ">
     <ReportsTableHeader/>
 
-    <div class="flex flex-col">
+    <div class="reports-table-body flex flex-col overflow-auto">
       <ReportsTableItem
       v-for="(report, index) in reports"
       :key="index"
@@ -51,5 +52,9 @@
 </script>
 
 <style lang="scss">
+  @use '@/styles/mixins';
 
+  .reports-table-body {
+    @include mixins.scrollbar;
+  }
 </style>

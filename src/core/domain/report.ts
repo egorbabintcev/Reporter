@@ -23,6 +23,8 @@ export type OmittedReport = Omit<Report, 'id' | 'createdAt' | 'creatorId'>
 
 export type PickedReport = Pick<Report, 'id'>
 
+export type ReportHTML<T = Report> = Record<keyof T, string>
+
 /* eslint-disable camelcase */
 
 export type RawReportTitle = string;

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-80 py-10 pl-10 relative">
+  <div class="w-80 min-w-[16rem] py-10 pl-10 relative">
     <div class="h-full flex flex-col gap-6">
       <ProductInfo/>
 
@@ -45,14 +45,17 @@
         {
           text: 'Статистика',
           icon: 'poll',
+          isDisabled: true,
         },
         {
           text: 'Настройки',
           icon: 'settings',
+          isDisabled: true,
         },
         {
           text: 'Профиль',
           icon: 'person',
+          isDisabled: true,
         },
       ];
 

@@ -110,7 +110,7 @@
   import ManageReportPopupDatePicker from './DatePicker.vue';
 
   export default defineComponent({
-    name: 'CreateReportPopup',
+    name: 'ManageReportPopup',
     components: {
       Popup,
       InputComponent,
