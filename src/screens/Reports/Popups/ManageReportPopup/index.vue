@@ -7,7 +7,7 @@
     <div class="flex flex-col flex-grow gap-6">
       <label
       for="display_name"
-      class="d-inline-flex">
+      class="inline-flex">
         <div class="flex flex-col flex-grow gap-1">
           <p class="text-base text-gray-600 font-medium">Дата:</p>
 
@@ -217,7 +217,7 @@
 
 <style lang="scss">
   .create-report-popup .popup {
-    width: 600px;
-    height: 700px;
+    width: 700px;
+    height: 800px;
   }
 </style>

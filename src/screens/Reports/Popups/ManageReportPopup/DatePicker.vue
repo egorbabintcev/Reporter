@@ -6,9 +6,9 @@
   :min="getDateInputStringFromString(min)"
   type="date"
   class="
-    px-5 py-2.5
+    px-4 py-2
     min-w-0
-    text-lg
+    text-base
     border border-gray-300
     enabled:hover:border-gray-400
     enabled:focus:border-gray-600
