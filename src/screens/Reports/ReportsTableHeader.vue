@@ -13,10 +13,10 @@
         flex
         flex-row
         items-center
-        flex-1
         px-3
         py-1.5
         overflow-hidden
+        w-3/12
         min-w-0
       ">
         <p
@@ -26,7 +26,7 @@
           font-semibold
           truncate
        ">
-          Название
+          Дата
         </p>
       </div>
 
@@ -35,11 +35,10 @@
         flex
         flex-row
         items-center
-        flex-initial
-        w-40
         px-3
         py-1.5
         overflow-hidden
+        w-2/12
         min-w-0
       ">
         <p
@@ -58,11 +57,10 @@
         flex
         flex-row
         items-center
-        flex-initial
-        w-40
         px-3
         py-1.5
         overflow-hidden
+        w-2/12
         min-w-0
       ">
         <p
@@ -81,11 +79,10 @@
         flex
         flex-row
         items-center
-        flex-initial
-        w-40
         px-3
         py-1.5
         overflow-hidden
+        w-2/12
         min-w-0
       ">
         <p
@@ -95,11 +92,9 @@
           font-semibold
           truncate
        ">
-          Время перерыва
+          Перерыв
         </p>
       </div>
-
-      <div class="w-32 flex-shrink"/>
 
       <div
       class="
@@ -107,10 +102,10 @@
         flex-row
         items-center
         flex-initial
-        w-72
         px-3
         py-1.5
         overflow-hidden
+        w-3/12
         min-w-0
       ">
         <p
@@ -127,7 +122,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import { defineComponent } from 'vue';
 
   export default defineComponent({

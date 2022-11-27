@@ -1,14 +1,14 @@
 <template>
   <div class="flex flex-grow flex-col p-4">
-    <div class="flex flex-grow flex-col p-6 rounded-2xl shadow-xl bg-white">
-      <div class="flex flex-col gap-12">
+    <div class="flex flex-grow flex-col p-6 overflow-hidden rounded-2xl shadow-xl bg-white">
+      <div class="flex flex-col flex-grow gap-12 overflow-hidden">
         <div class="flex flex-col gap-2 max-w-screen-lg">
           <ReportsHeader/>
 
           <!--<ReportsStats/>-->
         </div>
 
-        <div class="flex flex-col gap-5">
+        <div class="flex flex-col flex-grow gap-5 overflow-hidden">
           <div class="flex flex-row gap-4 max-w-screen-lg">
             <button
             @click="createReportHandler"
@@ -68,6 +68,7 @@
       const route = useRoute();
 
       const showManagePopup = computed(() => ['create', 'edit'].includes(route.query.action as 'create' | 'edit'));
+      const showPreviewPopup = computed(() => route.query.action === 'preview');
 
       onBeforeMount(async () => {
         const reports = await reportApi.readReports();
@@ -85,6 +86,7 @@
 
       return {
         showManagePopup,
+        showPreviewPopup,
 
         createReportHandler,
       };

@@ -5,8 +5,10 @@ import {
   Report,
   PickedRawReport,
   PickedReport,
+  ReportHTML,
 } from '@/core/domain/report';
 import convertObject from '@/core/utils/convertObject';
+import { getDateStringFromDate, getTimeStringFromDate } from '@/core/utils/time';
 
 export default function useReportAdapter() {
   function convertReportFromAPI(report: RawReport): Report {
@@ -67,10 +69,30 @@ export default function useReportAdapter() {
     });
   }
 
+  function convertReportToHTML(report: Report) {
+    return convertObject<Report, ReportHTML>(report, {
+      id: { key: 'id' },
+
+      creatorId: { key: 'creatorId' },
+      createdAt: { callback: ({ createdAt }) => getDateStringFromDate(new Date(createdAt)) },
+
+      title: { key: 'title' },
+
+      date: { callback: ({ date }) => getDateStringFromDate(new Date(date)) },
+      startTime: { callback: ({ startTime }) => getTimeStringFromDate(new Date(startTime)) },
+      endTime: { callback: ({ endTime }) => getTimeStringFromDate(new Date(endTime)) },
+      breakTime: { callback: ({ breakTime }) => getTimeStringFromDate(new Date(breakTime)) },
+      workTime: { callback: ({ workTime }) => getTimeStringFromDate(new Date(workTime)) },
+
+      body: { key: 'body' },
+    });
+  }
+
   return {
     convertReportFromAPI,
     convertCreatedReportFromAPI,
     convertReportListFromAPI,
     convertReportToAPI,
+    convertReportToHTML,
   };
 }

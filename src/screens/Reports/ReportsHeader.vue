@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-1.5">
     <h1 class="text-xl font-bold text-gray-800">
-      Добро пожаловать, Егор!
+      Добро пожаловать!
     </h1>
 
     <h2 class="text-lg text-gray-600">

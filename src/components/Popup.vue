@@ -29,7 +29,9 @@
           <slot/>
         </div>
 
-        <div class="flex flex-row flex-nowrap overflow-hidden items-center">
+        <div
+        v-if="!footerless"
+        class="flex flex-row flex-nowrap overflow-hidden items-center">
           <div class="flex-grow"/>
 
           <div class="flex gap-3">
@@ -47,6 +49,7 @@
             </button>
 
             <button
+            v-if="showConfirm"
             @click="$emit('confirm')"
             class="
               px-4
@@ -78,7 +81,15 @@
     props: {
       headerText: {
         type: String as PropType<HTMLString>,
-        default: '',
+        default: () => '',
+      },
+      showConfirm: {
+        type: Boolean as PropType<boolean>,
+        default: () => true,
+      },
+      footerless: {
+        type: Boolean as PropType<boolean>,
+        default: () => false,
       },
     },
     setup(_, { emit }) {
