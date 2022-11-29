@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import useAuthStore from '@/core/store/auth';
+import useProfileStore from '@/core/store/profile';
+import useProfileApi from '@/core/api/profile';
 
 const ReportsScreen = () => import('@/screens/Reports/index.vue');
 const AuthScreen = () => import('@/screens/Auth/index.vue');
@@ -40,12 +42,16 @@ router.beforeEach((to, from, next) => {
         redirect: to.fullPath,
       },
     });
-  } else if (!to.meta.authRequired && authStore.token) {
-    next({
-      path: '/',
-    });
   } else {
     next();
+
+    const profileStore = useProfileStore();
+    const profileApi = useProfileApi();
+
+    profileApi.readProfile()
+      .then((profile) => {
+        profileStore.setProfile(profile);
+      });
   }
 });
 

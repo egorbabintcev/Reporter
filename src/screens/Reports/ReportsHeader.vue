@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-1.5">
     <h1 class="text-xl font-bold text-gray-800">
-      Добро пожаловать!
+      {{ greetingText }}
     </h1>
 
     <h2 class="text-lg text-gray-600">
@@ -11,10 +11,26 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { computed, defineComponent } from 'vue';
+  import useProfileStore from '@/core/store/profile';
 
   export default defineComponent({
     name: 'ReportsHeader',
+    setup() {
+      const profileStore = useProfileStore();
+
+      const greetingText = computed<string>(() => {
+        if (profileStore.profile) {
+          return `Добро пожаловать, ${profileStore.profile.displayName}!`;
+        }
+
+        return `Добро пожаловать!`;
+      });
+
+      return {
+        greetingText,
+      };
+    },
   });
 </script>
 
