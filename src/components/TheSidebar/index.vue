@@ -1,71 +1,100 @@
 <template>
-  <div class="w-80 min-w-[16rem] py-10 pl-10 relative">
-    <div class="h-full flex flex-col gap-6">
-      <ProductInfo/>
+  <div class="sidebar">
+    <a-menu
+    v-model:selected-keys="selectedKeys"
+    mode="inline">
+      <a-menu-item
+      key="1"
+      active>
+        <template #icon>
+          <home-filled/>
+        </template>
+        Главная
+      </a-menu-item>
 
-      <div
-      class="
-        flex
-        flex-col
-        gap-2
-        flex-[0_0_50%]
-      ">
-        <SectionItem
-        v-for="(section, index) in sectionList"
-        :key="index"
-        :section="section"/>
-      </div>
+      <a-menu-item
+      key="2"
+      disabled>
+        <template #icon>
+          <setting-filled/>
+        </template>
+        Настройки
+      </a-menu-item>
 
-      <ProfileActions/>
-    </div>
+      <a-menu-item
+      key="3"
+      disabled>
+        <template #icon>
+          <project-filled/>
+        </template>
+        Статистика
+      </a-menu-item>
+    </a-menu>
+
+    <a-button
+    @click="logoutHandler"
+    type="text"
+    size="large">
+      <template #icon>
+        <logout-outlined/>
+      </template>
+
+      Logout
+    </a-button>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
-
-  import ProductInfo from './ProductInfo.vue';
-  import SectionItem, { Section } from './SectionItem.vue';
-  import ProfileActions from './ProfileActions.vue';
+  import { defineComponent, ref } from 'vue';
+  import {
+    HomeFilled, SettingFilled, ProjectFilled, LogoutOutlined,
+  } from '@ant-design/icons-vue';
+  import { useRouter } from 'vue-router';
+  import useAuthStore from '@/core/store/auth';
 
   export default defineComponent({
     name: 'TheSidebar',
     components: {
-      ProductInfo,
-      SectionItem,
-      ProfileActions,
+      HomeFilled,
+      SettingFilled,
+      ProjectFilled,
+      LogoutOutlined,
     },
     setup() {
-      const sectionList: Array<Section> = [
-        {
-          text: 'Главная',
-          icon: 'home',
-          isActive: true,
-        },
-        {
-          text: 'Статистика',
-          icon: 'poll',
-          isDisabled: true,
-        },
-        {
-          text: 'Настройки',
-          icon: 'settings',
-          isDisabled: true,
-        },
-        {
-          text: 'Профиль',
-          icon: 'person',
-          isDisabled: true,
-        },
-      ];
+      const selectedKeys = ref<string[]>(['1']);
+
+      const router = useRouter();
+      const authStore = useAuthStore();
+
+      async function logoutHandler() {
+        authStore.setAuthToken(null);
+
+        await router.push({
+          name: 'auth',
+          query: {
+            actions: 'sign_in',
+          },
+        });
+      }
 
       return {
-        sectionList,
+        selectedKeys,
+        logoutHandler,
       };
     },
   });
 </script>
 
 <style lang="scss">
+  .sidebar {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
 
+    width: 240px;
+    min-width: 240px;
+    padding-bottom: 16px;
+
+    border-right: 1px solid rgba(0 0 0 / 14%);
+  }
 </style>

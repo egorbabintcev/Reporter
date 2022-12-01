@@ -1,6 +1,6 @@
 <template>
   <div class="app bg-slate-700">
-    <div class="flex flex-row flex-grow overflow-hidden">
+    <div class="app-container">
       <TheSidebar
       v-if="showSidebar"/>
 
@@ -42,6 +42,14 @@
     flex-flow: column nowrap;
 
     height: 100vh;
+    overflow: hidden;
+  }
+
+  .app-container {
+    display: flex;
+    flex-flow: row nowrap;
+    flex-grow: 1;
+
     overflow: hidden;
   }
 </style>

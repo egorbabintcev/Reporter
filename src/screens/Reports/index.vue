@@ -1,99 +1,111 @@
 <template>
-  <div class="flex flex-grow flex-col p-4">
-    <div class="flex flex-grow flex-col p-6 overflow-hidden rounded-2xl shadow-xl bg-white">
-      <div class="flex flex-col flex-grow gap-12 overflow-hidden">
-        <div class="flex flex-col gap-2 max-w-screen-lg">
-          <ReportsHeader/>
-
-          <!--<ReportsStats/>-->
-        </div>
-
-        <div class="flex flex-col flex-grow gap-5 overflow-hidden">
-          <div class="flex flex-row gap-4 max-w-screen-lg">
-            <button
-            @click="createReportHandler"
-            class="
-              px-4
-              py-2
-              rounded
-              border
-              hover:bg-gray-100
-              focus:active:border-gray-400
-            ">
-              Создать
-            </button>
-
-            <InputComponent
-            modelValue=""
-            placeholder="Поиск"
-            class="flex-grow"
-            disabled/>
-          </div>
-
-          <ReportsTable/>
-        </div>
-      </div>
+  <div class="reports-screen">
+    <div class="reports-screen-info">
+      <p class="reports-screen-info__title">
+        {{ greetingText }}
+      </p>
     </div>
 
-    <ManageReportPopup
-    v-if="showManagePopup"/>
+    <ReportsCalendar/>
   </div>
 </template>
 
 <script lang="ts">
-  import { computed, onBeforeMount } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
+  import { defineComponent, computed } from 'vue';
+  import useProfileStore from '@/core/store/profile';
 
+  import ReportsCalendar from '@/screens/Reports/ReportsCalendar.vue';
   import useReportApi from '@/core/api/report';
   import useReportStore from '@/core/store/report';
 
-  import ReportsHeader from '@/screens/Reports/ReportsHeader.vue';
-  import ReportsTable from '@/screens/Reports/ReportsTable.vue';
-  import ManageReportPopup from './Popups/ManageReportPopup/index.vue';
-  import InputComponent from '@/components/Input.vue';
-
-  export default {
+  export default defineComponent({
     name: 'ReportsScreen',
     components: {
-      ReportsHeader,
-      ReportsTable,
-      ManageReportPopup,
-      InputComponent,
+      ReportsCalendar,
     },
     setup() {
+      const profileStore = useProfileStore();
+
+      const greetingText = computed<string>(() => {
+        if (profileStore.profile) {
+          return `Добро пожаловать, ${profileStore.profile.displayName}!`;
+        }
+
+        return `Добро пожаловать!`;
+      });
+
       const reportApi = useReportApi();
       const reportStore = useReportStore();
 
-      const router = useRouter();
-      const route = useRoute();
-
-      const showManagePopup = computed(() => ['create', 'edit'].includes(route.query.action as 'create' | 'edit'));
-      const showPreviewPopup = computed(() => route.query.action === 'preview');
-
-      onBeforeMount(async () => {
+      (async () => {
         const reports = await reportApi.readReports();
-
         reportStore.setReports(reports);
-      });
-
-      async function createReportHandler() {
-        await router.push({
-          query: {
-            action: 'create',
-          },
-        });
-      }
+      })();
 
       return {
-        showManagePopup,
-        showPreviewPopup,
-
-        createReportHandler,
+        greetingText,
       };
     },
-  };
+  });
 </script>
 
 <style lang="scss">
+  .reports-screen {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    gap: 16px;
 
+    padding: 16px;
+  }
+
+  .reports-screen-info__title {
+    font-size: 24px;
+    font-weight: 500;
+
+    margin: 0;
+  }
+
+  .ant-picker-calendar-header {
+    justify-content: flex-start;
+  }
+
+  .reports-date-cell-content {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  .reports-date-cell-content--disabled {
+    pointer-events: none;
+
+    opacity: 0.5;
+  }
+
+  .reports-date-cell__text {
+    color: #fff;
+    font-size: 14px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    margin: 0;
+    padding: 2px 4px;
+
+    user-select: none;
+
+    background-color: #87d068;
+    border-radius: 4px;
+  }
+
+  .reports-date-cell__text--neutral {
+    font-size: 12px;
+
+    background-color: #ccc;
+  }
 </style>

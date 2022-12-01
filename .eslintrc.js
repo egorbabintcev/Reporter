@@ -55,9 +55,7 @@ module.exports = {
         'GLOBAL',
       ],
     }],
-    'vue/attribute-hyphenation': [2, 'never', {
-      ignore: [],
-    }],
+    'vue/attribute-hyphenation': [2, 'always'],
     'vue/html-indent': [2, 2, {
       attribute: 0,
       baseIndent: 1,
