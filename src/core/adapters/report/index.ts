@@ -18,7 +18,7 @@ export default function useReportAdapter() {
       creatorId: { key: 'creator_id' },
       createdAt: { callback: ({ created_at: createdAt }) => createdAt * 1000 },
 
-      title: { key: 'title' },
+      displayName: { key: 'display_name' },
 
       date: { callback: ({ date }) => date * 1000 },
       startTime: { callback: ({ start_time: startTime }) => startTime * 1000 },
@@ -43,7 +43,7 @@ export default function useReportAdapter() {
       creatorId: { key: 'creator_id' },
       createdAt: { callback: ({ created_at: createdAt }) => createdAt * 1000 },
 
-      title: { key: 'title' },
+      displayName: { key: 'display_name' },
 
       date: { callback: ({ date }) => date * 1000 },
       startTime: { callback: ({ start_time: startTime }) => startTime * 1000 },
@@ -57,7 +57,7 @@ export default function useReportAdapter() {
 
   function convertReportToAPI(report: OmittedReport): OmittedRawReport {
     return convertObject<OmittedReport, OmittedRawReport>(report, {
-      title: { key: 'title' },
+      display_name: { key: 'displayName' },
 
       date: { callback: ({ date }) => (date / 1000) },
       start_time: { callback: ({ startTime }) => startTime / 1000 },
@@ -76,7 +76,7 @@ export default function useReportAdapter() {
       creatorId: { key: 'creatorId' },
       createdAt: { callback: ({ createdAt }) => getDateStringFromDate(new Date(createdAt)) },
 
-      title: { key: 'title' },
+      displayName: { key: 'displayName' },
 
       date: { callback: ({ date }) => getDateStringFromDate(new Date(date)) },
       startTime: { callback: ({ startTime }) => getTimeStringFromDate(new Date(startTime)) },

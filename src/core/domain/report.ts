@@ -8,7 +8,7 @@ export type Report = {
   creatorId: UniqueId
   createdAt: UnixTimestamp
 
-  title: ReportTitle
+  displayName: ReportTitle
 
   date: UnixTimestamp
   startTime: UnixTimestamp
@@ -34,7 +34,7 @@ export type RawReport = {
   creator_id: UniqueId
   created_at: UnixTimestamp
 
-  title: RawReportTitle
+  display_name: RawReportTitle
 
   date: UnixTimestamp
   start_time: UnixTimestamp

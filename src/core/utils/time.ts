@@ -31,3 +31,17 @@ export function getDateFromTimeString(timeString: TimeString): Date {
 
   return date;
 }
+
+export function timeStringFormatter(str: string): TimeString {
+  str = str.replace(/\D/g, '');
+  let hours = str.slice(0, 2);
+  let minutes = str.slice(2, 4);
+
+  if (Number(hours) > 23) hours = '23';
+  if (Number(minutes) > 59) minutes = '59';
+
+  if (str.length > 2) str = `${hours}:${minutes}`;
+  if (str.length > 5) str = str.slice(0, 5);
+
+  return str;
+}
