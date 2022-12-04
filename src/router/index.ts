@@ -54,13 +54,15 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
 
-    const profileStore = useProfileStore();
-    const profileApi = useProfileApi();
+    if (to.meta.authRequired) {
+      const profileStore = useProfileStore();
+      const profileApi = useProfileApi();
 
-    profileApi.readProfile()
-      .then((profile) => {
-        profileStore.setProfile(profile);
-      });
+      profileApi.readProfile()
+        .then((profile) => {
+          profileStore.setProfile(profile);
+        });
+    }
   }
 });
 

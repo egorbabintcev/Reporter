@@ -1,31 +1,9 @@
 <template>
-  <div class="flex flex-grow flex-row justify-center bg-violet-700">
+  <div class="auth-screen">
     <div
-    class="
-      flex
-      flex-grow
-      flex-row
-      justify-center
-      xl:justify-between
-      items-center
-      max-w-screen-xl
-      py-16
-      px-12
-      xl:pl-28
-    ">
+    class="auth-form__container">
       <component
       :is="authFormComponent"/>
-
-      <img
-      :src="illustration"
-      class="
-        hidden
-        xl:block
-
-        w-[670px]
-
-        object-contain
-      ">
     </div>
   </div>
 </template>
@@ -36,8 +14,6 @@
 
   import AuthSignInForm from './AuthSignInForm.vue';
   import AuthSignUpForm from './AuthSignUpForm.vue';
-
-  import illustration from './assets/illustration.svg';
 
   export default defineComponent({
     name: 'AuthScreen',
@@ -52,12 +28,70 @@
       return {
         authAction,
         authFormComponent,
-        illustration,
       };
     },
   });
 </script>
 
 <style lang="scss">
+  .auth-screen {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  }
 
+  .auth-form__container {
+    min-height: 400px;
+    max-width: 768px;
+    width: 100%;
+    padding: 32px;
+
+    border: 1px solid rgba(0 0 0 / 14%);
+    border-radius: 4px;
+  }
+
+  .auth-form {
+    display: flex;
+    flex-flow: row nowrap;
+
+    height: 100%;
+  }
+
+  .auth-form__inputs {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    justify-content: center;
+    gap: 12px;
+
+    max-width: 40%;
+  }
+
+  .auth-form__separator {
+    width: 1px;
+    margin: 0 auto;
+
+    background-color: rgba(0 0 0 / 14%);
+  }
+
+  .auth-form__hint {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    flex-grow: 1;
+
+    max-width: 40%;
+  }
+
+  .auth-form__hint-text {
+    color: rgba(0 0 0 / 54%);
+  }
+
+  .auth-form__hint-text--link {
+    color: #40a9ff;
+
+    cursor: pointer;
+  }
 </style>
