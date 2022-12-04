@@ -1,93 +1,48 @@
 <template>
-  <form
-  @submit.prevent="signUpHandler"
-  class="
-    flex
-    flex-col
-    items-center
+  <div class="auth-form">
+    <form
+    @submit.prevent
+    class="auth-form__inputs">
+      <div class="section-16">
+        <div class="section-12">
+          <AuthFormInput
+          v-model="form.displayName"
+          :error="formErrors.displayName"
+          size="large"
+          placeholder="Ваше имя"/>
 
-    w-[335px]
-    h-[500px]
-    pt-14
-    pb-8
-    px-8
+          <AuthFormInput
+          v-model="form.username"
+          :error="formErrors.username"
+          size="large"
+          placeholder="Логин"/>
 
-    bg-white
-    rounded-2xl
-    shadow-2xl
-  ">
-    <p
-    class="
-      mb-9
-      text-4xl
-      text-gray-900
-    ">
-      Регистрация
-    </p>
+          <AuthFormInput
+          v-model="form.password"
+          :error="formErrors.password"
+          type="password"
+          size="large"
+          placeholder="Пароль"/>
+        </div>
 
-    <AuthFormInput
-    v-model="form.displayName"
-    @input="clearFormErrorsHandler"
-    placeholder="Ваше имя"
-    :error="formErrors.displayName"
-    class="mb-3"/>
+        <a-button
+        @click="signUpHandler"
+        type="primary"
+        html-type="submit"
+        size="large">
+          Зарегистрироваться
+        </a-button>
+      </div>
+    </form>
 
-    <AuthFormInput
-    v-model="form.username"
-    @input="clearFormErrorsHandler"
-    placeholder="Логин"
-    :error="formErrors.username"
-    class="mb-3"/>
+    <div class="auth-form__separator"/>
 
-    <AuthFormInput
-    v-model="form.password"
-    @input="clearFormErrorsHandler"
-    type="password"
-    placeholder="Пароль"
-    :error="formErrors.password"
-    class="mb-5"/>
-
-    <button
-    :disabled="isFormEmpty || isFormHasErrors"
-    type="submit"
-    class="
-      uppercase
-
-      w-full
-      py-2.5
-      mb-auto
-
-      outline-0
-      bg-amber-500
-      rounded-full
-      shadow-xl
-
-      hover:bg-amber-400
-      disabled:pointer-events-none
-      disabled:opacity-50
-
-      transition-all
-    ">
-      Создать
-    </button>
-
-    <div
-    @click="goToSignInHandler"
-    class="inline-flex items-center gap-1.5 cursor-pointer">
-      <p
-      class="
-        text-base
-        text-violet-500
-        font-medium
-      ">
-        Уже есть аккаунт? Войти
+    <div class="auth-form__hint">
+      <p class="auth-form__hint-text">
+        Уже есть учетная запись? <span @click="goToSignInHandler" class="auth-form__hint-text--link">Войти</span>
       </p>
-
-      <IconComponent
-      icon="trending_flat"
-      class="text-violet-500 font-light"/>
     </div>
-  </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -97,13 +52,11 @@
   import { AuthSignUpPayload } from '@/core/domain/auth';
   import useAuthApi from '@/core/api/auth';
 
-  import IconComponent from '@/components/Icon.vue';
   import AuthFormInput from './AuthFormInput.vue';
 
   export default defineComponent({
     name: 'AuthSignUpForm',
     components: {
-      IconComponent,
       AuthFormInput,
     },
     setup() {

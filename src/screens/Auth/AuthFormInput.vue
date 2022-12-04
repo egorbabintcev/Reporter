@@ -1,31 +1,13 @@
 <template>
   <div
   v-bind="{ style: $attrs.style, class: $attrs.class }"
-  class="inline-flex flex-col gap-0.5 w-full">
-    <input
+  class="auth-form-input">
+    <a-input
     v-bind="{ ...$attrs, class: null, style: null }"
-    @input="$emit('update:modelValue', $event.target.value)"
-    :value="modelValue"
-    class="
-      text-base
-      text-gray-900
-      font-medium
+    @change="$emit('update:modelValue', $event.target.value)"
+    :value="modelValue"/>
 
-      w-full
-      py-2.5
-      px-4
-
-      border
-      border-solid
-      outline-0
-      rounded-xl
-    "
-    :class="{
-      'border-red-600 text-red-600': !!error,
-      'border-violet-500 placeholder-shown:text-gray-400': !error,
-    }">
-
-    <p class="text-right text-sm text-red-600 h-4 px-2">
+    <p class="auth-form-input__error">
       {{ error }}
     </p>
   </div>
@@ -51,5 +33,22 @@
 </script>
 
 <style lang="scss">
+  .auth-form-input {
+    display: inline-flex;
+    flex-flow: column nowrap;
+    gap: 4px;
 
+    width: 100%;
+  }
+
+  .auth-form-input__error {
+    color: #ff4554;
+    font-size: 14px;
+    text-align: right;
+    line-height: 1;
+
+    height: 14px;
+    padding: 0 8px;
+    margin: 0;
+  }
 </style>

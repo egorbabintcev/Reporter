@@ -114,7 +114,7 @@
 
   const emailHeader = `
     <div>
-        <p>Дата %date</p>
+        <p>Дата: %date</p>
         <p>Время: %startTime-%endTime</p>
         <p>Перерыв: %breakTime</p>
         <p>Рабочих часов: %workTime</p>

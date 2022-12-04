@@ -1,87 +1,42 @@
 <template>
-  <form
-  @submit.prevent="signInHandler"
-  class="
-    flex
-    flex-col
-    items-center
+  <div class="auth-form">
+    <form
+    @submit.prevent
+    class="auth-form__inputs">
+      <div class="section-16">
+        <div class="section-12">
+          <AuthFormInput
+          v-model="form.username"
+          :error="formErrors.username"
+          size="large"
+          placeholder="Логин"/>
 
-    w-[335px]
-    h-[500px]
-    pt-14
-    pb-8
-    px-8
+          <AuthFormInput
+          v-model="form.password"
+          :error="formErrors.password"
+          type="password"
+          size="large"
+          placeholder="Пароль"/>
+        </div>
 
-    bg-white
-    rounded-2xl
-    shadow-2xl
-  ">
-    <p
-    class="
-          mb-9
-          text-4xl
-          text-gray-900
-        ">
-      Вход
-    </p>
+        <a-button
+        @click="signInHandler"
+        type="primary"
+        html-type="submit"
+        size="large">
+          Войти
+        </a-button>
+      </div>
+    </form>
 
-    <AuthFormInput
-    v-model="form.username"
-    @input="clearFormErrorsHandler"
-    placeholder="Логин"
-    :error="formErrors.username"
-    class="mb-3"/>
+    <div class="auth-form__separator"/>
 
-    <AuthFormInput
-    v-model="form.password"
-    @input="clearFormErrorsHandler"
-    type="password"
-    placeholder="Пароль"
-    :error="formErrors.password"
-    class="mb-5"/>
-
-    <button
-    :disabled="isFormEmpty || isFormHasErrors"
-    type="submit"
-    class="
-          uppercase
-
-          w-full
-          py-2.5
-          mb-auto
-
-          outline-0
-          bg-amber-500
-          shadow-xl
-
-          hover:bg-amber-400
-          disabled:pointer-events-none
-          disabled:opacity-50
-
-          rounded-full
-
-          transition-all
-        ">
-      Войти
-    </button>
-
-    <div
-    @click="goToSignUpHandler"
-    class="inline-flex items-center gap-1.5 cursor-pointer">
-      <p
-      class="
-        text-base
-        text-violet-500
-        font-medium
-      ">
-        Создать аккаунт
+    <div class="auth-form__hint">
+      <p class="auth-form__hint-text">
+        Нет учетной записи? <span @click="goToSignUpHandler" class="auth-form__hint-text--link">Зарегистрироваться</span>
       </p>
-
-      <IconComponent
-      icon="trending_flat"
-      class="text-violet-500 font-light"/>
     </div>
-  </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -92,13 +47,11 @@
   import useAuthApi from '@/core/api/auth';
   import useAuthStore from '@/core/store/auth';
 
-  import IconComponent from '@/components/Icon.vue';
   import AuthFormInput from './AuthFormInput.vue';
 
   export default defineComponent({
     name: 'AuthSignInForm',
     components: {
-      IconComponent,
       AuthFormInput,
     },
     setup() {
@@ -139,7 +92,7 @@
         } catch (error) {
           if (error?.response?.status === 401) {
             formErrors.username = ' ';
-            formErrors.password = 'Введены неверные данные';
+            formErrors.password = 'Неверный логин или пароль';
           }
         }
       }
