@@ -1,21 +1,25 @@
 <template>
-  <div class="app bg-slate-700">
-    <div class="app-container">
-      <TheSidebar
-      v-if="showSidebar"/>
+  <a-config-provider :locale="locale">
+    <div class="app bg-slate-700">
+      <div class="app-container">
+        <TheSidebar
+        v-if="showSidebar"/>
 
-      <router-view v-slot="{ Component }">
-        <transition name="fade">
-          <component :is="Component"/>
-        </transition>
-      </router-view>
+        <router-view v-slot="{ Component }">
+          <transition name="fade">
+            <component :is="Component"/>
+          </transition>
+        </router-view>
+      </div>
     </div>
-  </div>
+  </a-config-provider>
 </template>
 
 <script lang="ts">
   import { defineComponent, computed } from 'vue';
   import { useRoute } from 'vue-router';
+
+  import ruRU from 'ant-design-vue/es/locale/ru_RU';
 
   import TheSidebar from '@/components/TheSidebar/index.vue';
 
@@ -31,6 +35,7 @@
 
       return {
         showSidebar,
+        locale: ruRU,
       };
     },
   });
