@@ -42,15 +42,16 @@
             previewStyle: 'tab',
             usageStatistics: false,
             extendedAutolinks: true,
+            hideModeSwitch: true,
           });
 
           editorInstance?.on('change', () => {
-            context.emit('update:modelValue', editorInstance?.getHTML() ?? '');
+            context.emit('update:modelValue', editorInstance?.getMarkdown() ?? '');
           });
 
           watch(modelValue, (value, oldValue) => {
-            if (value !== oldValue && value !== editorInstance?.getHTML()) {
-              editorInstance?.setHTML(modelValue.value);
+            if (value !== oldValue && value !== editorInstance?.getMarkdown()) {
+              editorInstance?.setMarkdown(modelValue.value);
             }
           });
         }
