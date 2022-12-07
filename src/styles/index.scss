@@ -4,6 +4,10 @@
 @import '~ant-design-vue/dist/antd.min.css';
 @import '~@toast-ui/editor/dist/toastui-editor.css';
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   font-family: 'Roboto', sans-serif;
 }

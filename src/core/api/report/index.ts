@@ -17,8 +17,10 @@ export default function useReportApi() {
     return reportAdapter.convertReportFromAPI(report);
   }
 
-  async function readReports() {
-    const response = await axios.get<{ reports: RawReport[] }>('/api/v1/reports');
+  async function readReports(params: Record<string, unknown>) {
+    const response = await axios.get<{ reports: RawReport[] }>('/api/v1/reports', {
+      params,
+    });
     const { reports } = response.data;
 
     return reportAdapter.convertReportListFromAPI(reports);

@@ -1,6 +1,7 @@
 <template>
   <div
-  ref="wysiwig-editor"/>
+  ref="wysiwig-editor"
+  class="wisywig-editor"/>
 </template>
 
 <script lang="ts">
@@ -65,7 +66,21 @@
 </script>
 
 <style lang="scss">
-  .toastui-editor-contents h3 {
-    margin-bottom: 12px;
+  .wisywig-editor {
+    .toastui-editor-contents,
+    .ProseMirror {
+      font-size: 16px !important;
+      font-family: 'Segoe UI', 'Roboto', sans-serif !important;
+    }
+
+    .toastui-editor-contents {
+      h3 {
+        margin-bottom: 12px;
+      }
+    }
+
+    .toastui-editor-defaultUI {
+      font-family: 'Segoe UI', 'Roboto', sans-serif !important;
+    }
   }
 </style>

@@ -4,7 +4,6 @@ import useProfileStore from '@/core/store/profile';
 import useProfileApi from '@/core/api/profile';
 
 const ReportsScreen = () => import('@/screens/Reports/index.vue');
-const ReportsEditor = () => import('@/screens/ReportsEditor/index.vue');
 const AuthScreen = () => import('@/screens/Auth/index.vue');
 
 const router = createRouter({
@@ -14,14 +13,6 @@ const router = createRouter({
       name: 'reports',
       path: '/reports',
       component: ReportsScreen,
-      meta: {
-        authRequired: true,
-      },
-    },
-    {
-      name: 'reports-editor',
-      path: '/reports/:id/edit',
-      component: ReportsEditor,
       meta: {
         authRequired: true,
       },
@@ -58,10 +49,12 @@ router.beforeEach((to, from, next) => {
       const profileStore = useProfileStore();
       const profileApi = useProfileApi();
 
-      profileApi.readProfile()
-        .then((profile) => {
-          profileStore.setProfile(profile);
-        });
+      if (profileStore.profile === null) {
+        profileApi.readProfile()
+          .then((profile) => {
+            profileStore.setProfile(profile);
+          });
+      }
     }
   }
 });

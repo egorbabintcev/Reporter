@@ -6,19 +6,21 @@ type ReportState = {
   reports: Report[]
 }
 
-const useReportStore = defineStore('report', {
-  state: (): ReportState => ({
-    report: null,
-    reports: [],
-  }),
-  actions: {
-    setReport(report: Report | null): void {
-      this.report = report;
+const useReportStore = (id = 'report') => {
+  return defineStore(id, {
+    state: (): ReportState => ({
+      report: null,
+      reports: [],
+    }),
+    actions: {
+      setReport(report: Report | null): void {
+        this.report = report;
+      },
+      setReports(report: Report[]): void {
+        this.reports = report;
+      },
     },
-    setReports(report: Report[]): void {
-      this.reports = report;
-    },
-  },
-});
+  })();
+};
 
 export default useReportStore;
