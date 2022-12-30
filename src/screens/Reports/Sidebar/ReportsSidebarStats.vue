@@ -72,7 +72,7 @@
 
       const totalWorkHours = computed(() => {
         if (statsStore.stats) {
-          return (statsStore.stats.hours.total.work ?? 0) / 60 / 60;
+          return Math.round(((statsStore.stats.hours.total.work ?? 0) / 60 / 60) * 10) / 10;
         }
 
         return null;
