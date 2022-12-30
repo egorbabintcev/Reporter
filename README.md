@@ -1,23 +1,47 @@
-# Reporter
+# Reporter UI
 
-Web UI for working reports
+В этом репозитории ведется разработка веб-интерфейса приложения Reporter
 
-## Project setup
-```
-npm ci
-```
+## Быстрый старт
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Для установки пакетов и сборки проекта требуется установить node.js и npm (рекоммендую [nvm](https://github.com/nvm-sh/nvm))
 
-### Compiles and minifies for production
 ```
-npm run build
+/.env.development.local
+
+proxy=ip_адрес_сервера
 ```
 
-### Lints and fixes files
+```sh
+$ npm ci
+$ npm run serve
 ```
-npm run lint
+
+## Доступные скрипты
+
+В **package.json** есть ряд доступных скриптов для сборки исходного кода, линтинга и форматирования
+
+<br>
+
+```shell
+$ npm run serve
 ```
+
+Запускает webpack-dev-server и сборку исходников в dev режиме с пересборкой при изменении.
+Основной скрипт, используемый для разработки
+
+<br>
+
+```shell
+$ npm run build
+```
+
+Запускает сборку исходников в production режиме, результаты находятся в директории dist/
+
+<br>
+
+```shell
+$ npm run lint
+```
+
+Запускает линтинг и форматирование стилей с помощью stylelint и eslint. Конфигурация в файлах **.stylelintrc.js** и **.eslintrc.js**
