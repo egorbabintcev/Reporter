@@ -8,28 +8,28 @@
           <AuthFormInput
           v-model="form.displayName"
           :error="formErrors.displayName"
-          size="large"
-          placeholder="Ваше имя"/>
+          placeholder="Ваше имя"
+          size="large"/>
 
           <AuthFormInput
           v-model="form.username"
           :error="formErrors.username"
-          size="large"
-          placeholder="Логин"/>
+          placeholder="Логин"
+          size="large"/>
 
           <AuthFormInput
           v-model="form.password"
           :error="formErrors.password"
-          type="password"
+          placeholder="Пароль"
           size="large"
-          placeholder="Пароль"/>
+          type="password"/>
         </div>
 
         <a-button
         @click="signUpHandler"
-        type="primary"
         html-type="submit"
-        size="large">
+        size="large"
+        type="primary">
           Зарегистрироваться
         </a-button>
       </div>

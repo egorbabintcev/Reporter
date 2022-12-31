@@ -6,8 +6,8 @@
         <div class="flex flex-row flex-nowrap overflow-hidden items-center">
           <p
           v-if="headerText"
-          v-html="headerText"
-          class="text-2xl text-gray-800 font-semibold truncate"/>
+          class="text-2xl text-gray-800 font-semibold truncate"
+          v-html="headerText"/>
 
           <div class="flex-grow"/>
 

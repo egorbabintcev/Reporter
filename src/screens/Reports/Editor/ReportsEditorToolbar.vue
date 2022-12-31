@@ -2,49 +2,49 @@
   <div class="reports-editor-toolbar">
     <a-button
     @click="saveHandler({ silent: false })"
-    type="outlined"
-    size="large">
+    size="large"
+    type="outlined">
       <template #icon>
         <icon-component
-        icon="save"
-        class="reports-editor-toolbar-button__icon"/>
+        class="reports-editor-toolbar-button__icon"
+        icon="save"/>
       </template>
     </a-button>
 
     <a-button
     @click="showMailPopup = true"
-    type="outlined"
-    size="large">
+    size="large"
+    type="outlined">
       <template #icon>
         <icon-component
-        icon="email"
-        class="reports-editor-toolbar-button__icon"/>
+        class="reports-editor-toolbar-button__icon"
+        icon="email"/>
       </template>
     </a-button>
 
     <a-button
     @click="copyHandler"
-    type="outlined"
-    size="large">
+    size="large"
+    type="outlined">
       <template #icon>
         <icon-component
-        icon="file_copy"
-        class="reports-editor-toolbar-button__icon"/>
+        class="reports-editor-toolbar-button__icon"
+        icon="file_copy"/>
       </template>
     </a-button>
 
     <a-popconfirm
     @confirm="deleteHandler"
-    title="Вы уверены, что хотите удалить отчет?"
-    placement="rightTop">
+    placement="rightTop"
+    title="Вы уверены, что хотите удалить отчет?">
       <a-button
-      type="outlined"
+      danger
       size="large"
-      danger>
+      type="outlined">
         <template #icon>
           <icon-component
-          icon="delete"
-          class="reports-editor-toolbar-button__icon"/>
+          class="reports-editor-toolbar-button__icon"
+          icon="delete"/>
         </template>
       </a-button>
     </a-popconfirm>
@@ -52,27 +52,27 @@
     <a-modal
     v-model:visible="showMailPopup"
     @ok="mailReportHandler"
-    title="Отправить отчет по почте"
     cancel-text="Отмена"
+    centered
     ok-text="Сохранить и отправить"
-    centered>
+    title="Отправить отчет по почте">
       <div class="section-16">
         <a-input
         v-model:value="emailForm.email"
-        size="large"
-        placeholder="Ваша почта"/>
+        placeholder="Ваша почта"
+        size="large"/>
 
         <a-input-password
         v-model:value="emailForm.password"
+        placeholder="Пароль"
         size="large"
-        type="password"
-        placeholder="Пароль"/>
+        type="password"/>
 
         <a-select
         v-model:value="emailForm.recipients"
-        size="large"
         mode="tags"
         placeholder="Получатели"
+        size="large"
         :token-separators="[',']"/>
       </div>
     </a-modal>

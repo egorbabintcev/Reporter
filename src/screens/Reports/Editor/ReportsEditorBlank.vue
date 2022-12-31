@@ -2,8 +2,8 @@
   <div class="reports-editor-blank">
     <div class="section-20">
       <img
-      :src="iconEmptyFolder"
-      class="reports-editor-blank__image">
+      class="reports-editor-blank__image"
+      :src="iconEmptyFolder">
 
       <div class="section-4">
         <p class="reports-editor-blank__title">
@@ -17,10 +17,10 @@
 
       <a-button
       @click="createReportHandler"
+      class="reports-editor-blank__button"
       :loading="loading"
-      type="primary"
       size="large"
-      class="reports-editor-blank__button">
+      type="primary">
         Добавить
       </a-button>
     </div>
@@ -36,7 +36,6 @@
   import useReportStore from '@/core/store/report';
 
   import iconEmptyFolder from '@/assets/empty-folder-icon.png';
-  import useStatsStore from '@/core/store/stats';
 
   export default defineComponent({
     name: 'ReportsEditorBlank',

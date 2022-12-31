@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-row gap-2 items-center mb-auto">
     <IconComponent
-    icon="description"
-    class="w-[3rem] h-[3rem] text-white text-[3rem]"/>
+    class="w-[3rem] h-[3rem] text-white text-[3rem]"
+    icon="description"/>
 
     <div class="flex flex-col">
       <p class="text-2xl text-white">

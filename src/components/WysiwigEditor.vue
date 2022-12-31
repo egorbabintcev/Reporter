@@ -1,7 +1,7 @@
 <template>
   <div
-  ref="wysiwig-editor"
-  class="wisywig-editor"/>
+  class="wisywig-editor"
+  ref="wysiwig-editor"/>
 </template>
 
 <script lang="ts">

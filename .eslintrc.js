@@ -27,6 +27,7 @@ module.exports = {
     'import/order': 0,
     'import/extensions': 0,
     'import/first': 0,
+    'import/no-duplicates': 0,
     'linebreak-style': 0,
     'max-len': [2, {
       code: 180,
@@ -44,16 +45,20 @@ module.exports = {
 
     'vue/attributes-order': [2, {
       order: [
-        'OTHER_DIRECTIVES',
-        'RENDER_MODIFIERS',
-        'LIST_RENDERING',
-        'CONDITIONALS',
-        'TWO_WAY_BINDING',
-        'DEFINITION',
-        'CONTENT',
-        ['OTHER_ATTR', 'EVENTS', 'UNIQUE'],
-        'GLOBAL',
+        'DEFINITION', //  'is', 'v-is'
+        'LIST_RENDERING', // 'v-for item in items'
+        'CONDITIONALS', // 'v-if', 'v-else-if', 'v-else', 'v-show', 'v-cloak'
+        'RENDER_MODIFIERS', // 'v-once', 'v-pre'
+        'SLOT', // 'v-slot'
+        'OTHER_DIRECTIVES', // 'v-custom-directive'
+        'TWO_WAY_BINDING', // 'v-model'
+        'EVENTS', // '@click="functionCall"', 'v-on="event"'
+        'OTHER_ATTR', // 'custom-prop="foo"', 'v-bind:prop="foo"', ':prop="foo"'
+        'CONTENT', // 'v-text', 'v-html'
+        'UNIQUE', // 'ref', 'key'
+        'GLOBAL', //  'id'
       ],
+      alphabetical: true,
     }],
     'vue/attribute-hyphenation': [2, 'always'],
     'vue/html-indent': [2, 2, {

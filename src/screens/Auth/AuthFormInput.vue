@@ -3,8 +3,8 @@
   v-bind="{ style: $attrs.style, class: $attrs.class }"
   class="auth-form-input">
     <a-input
-    v-bind="{ ...$attrs, class: null, style: null }"
     @change="$emit('update:modelValue', $event.target.value)"
+    v-bind="{ ...$attrs, class: null, style: null }"
     :value="modelValue"/>
 
     <p class="auth-form-input__error">

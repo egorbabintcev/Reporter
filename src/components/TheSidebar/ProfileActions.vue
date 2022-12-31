@@ -15,8 +15,8 @@
     hover:opacity-100
   ">
     <IconComponent
-    icon="logout"
-    class="w-[3rem] h-[3rem] text-white text-[3rem]"/>
+    class="w-[3rem] h-[3rem] text-white text-[3rem]"
+    icon="logout"/>
 
     <p class="text text-lg text-white">
       Выход

@@ -8,13 +8,13 @@
           </p>
 
           <a-input
-          @change="form.startTime = $event.target.value"
           @blur="form.startTime = timeStringFormatter(form.startTime)"
-          :value="timeStringFormatter(form.startTime)"
-          size="large"
-          placeholder="__:__"
+          @change="form.startTime = $event.target.value"
+          allow-clear
           class="reports-editor-form__input"
-          allow-clear/>
+          placeholder="__:__"
+          size="large"
+          :value="timeStringFormatter(form.startTime)"/>
         </div>
 
         <div class="reports-editor-form-label">
@@ -24,11 +24,11 @@
 
           <a-input
           @change="form.endTime = $event.target.value"
-          :value="timeStringFormatter(form.endTime)"
-          size="large"
-          placeholder="__:__"
+          allow-clear
           class="reports-editor-form__input"
-          allow-clear/>
+          placeholder="__:__"
+          size="large"
+          :value="timeStringFormatter(form.endTime)"/>
         </div>
 
         <div class="reports-editor-form-label">
@@ -38,11 +38,11 @@
 
           <a-input
           @change="form.breakTime = $event.target.value"
-          :value="timeStringFormatter(form.breakTime)"
-          size="large"
-          placeholder="__:__"
+          allow-clear
           class="reports-editor-form__input"
-          allow-clear/>
+          placeholder="__:__"
+          size="large"
+          :value="timeStringFormatter(form.breakTime)"/>
         </div>
 
         <div class="reports-editor-form-label">
@@ -51,11 +51,11 @@
           </p>
 
           <a-input
-          :value="form.workTime"
-          size="large"
-          placeholder="__:__"
           class="reports-editor-form__input"
-          disabled/>
+          disabled
+          placeholder="__:__"
+          size="large"
+          :value="form.workTime"/>
         </div>
       </div>
 

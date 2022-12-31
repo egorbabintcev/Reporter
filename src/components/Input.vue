@@ -1,8 +1,6 @@
 <template>
   <input
   @input="$emit('update:modelValue', $event.target.value)"
-  :value="modelValue"
-  :type="type"
   class="
     px-4 py-2
     min-w-0
@@ -14,7 +12,9 @@
     disabled:opacity-75
     outline-0
     rounded
-  ">
+  "
+  :type="type"
+  :value="modelValue">
 </template>
 
 <script lang="ts">

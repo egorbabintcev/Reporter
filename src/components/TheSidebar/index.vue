@@ -4,8 +4,8 @@
     v-model:selected-keys="selectedKeys"
     mode="inline">
       <a-menu-item
-      key="1"
-      active>
+      active
+      key="1">
         <template #icon>
           <home-filled/>
         </template>
@@ -13,8 +13,8 @@
       </a-menu-item>
 
       <a-menu-item
-      key="2"
-      disabled>
+      disabled
+      key="2">
         <template #icon>
           <setting-filled/>
         </template>
@@ -22,8 +22,8 @@
       </a-menu-item>
 
       <a-menu-item
-      key="3"
-      disabled>
+      disabled
+      key="3">
         <template #icon>
           <project-filled/>
         </template>
@@ -33,8 +33,8 @@
 
     <a-button
     @click="logoutHandler"
-    type="text"
-    size="large">
+    size="large"
+    type="text">
       <template #icon>
         <logout-outlined/>
       </template>

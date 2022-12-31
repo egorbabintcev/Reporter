@@ -2,16 +2,16 @@
   <a-calendar
   v-model:value="selectedDate"
   @panel-change="selectedPanel = $event"
-  :fullscreen="false"
-  class="reports-sidebar-calendar">
+  class="reports-sidebar-calendar"
+  :fullscreen="false">
     <template #dateCellRender="{ current }">
       <a-badge
+      class="reports-sidebar-calendar__badge"
       :status="
         reports.some(report => current.isSame(report.date, 'day'))
           ? 'success'
           : null
-      "
-      class="reports-sidebar-calendar__badge"/>
+      "/>
     </template>
   </a-calendar>
 </template>
@@ -34,7 +34,6 @@
 
   import useReportStore from '@/core/store/report';
   import useStatsStore from '@/core/store/stats';
-  import report from '@/core/store/report';
 
   export default defineComponent({
     name: 'ReportsSidebarCalendar',

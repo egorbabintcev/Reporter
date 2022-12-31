@@ -1,13 +1,13 @@
 <template>
   <div
+  class="flex flex-row items-center gap-4 py-2 rounded-l-xl cursor-pointer"
   :class="{
     'opacity-50 pointer-events-none': section.isDisabled,
     [activeSectionClass]: section.isActive,
-  }"
-  class="flex flex-row items-center gap-4 py-2 rounded-l-xl cursor-pointer">
+  }">
     <IconComponent
-    :icon="section.icon"
-    class="w-[2.4rem] h-[2.4rem] text-white text-[2.4rem]"/>
+    class="w-[2.4rem] h-[2.4rem] text-white text-[2.4rem]"
+    :icon="section.icon"/>
 
     <p class="text-xl text-white">
       {{ section.text }}
