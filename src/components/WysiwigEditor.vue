@@ -52,7 +52,7 @@
 
           watch(modelValue, (value, oldValue) => {
             if (value !== oldValue && value !== editorInstance?.getMarkdown()) {
-              editorInstance?.setMarkdown(modelValue.value);
+              editorInstance?.setMarkdown(modelValue.value, false);
             }
           });
         }
