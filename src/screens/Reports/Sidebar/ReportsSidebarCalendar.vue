@@ -1,19 +1,8 @@
 <template>
-  <a-calendar
-  v-model:value="selectedDate"
+  <CalendarComponent
+  v-model:modelValue="selectedDate"
   @panel-change="selectedPanel = $event"
-  class="reports-sidebar-calendar"
-  :fullscreen="false">
-    <template #dateCellRender="{ current }">
-      <a-badge
-      class="reports-sidebar-calendar__badge"
-      :status="
-        reports.some(report => current.isSame(report.date, 'day'))
-          ? 'success'
-          : null
-      "/>
-    </template>
-  </a-calendar>
+  :events="reports.map((report) => report.date)"/>
 </template>
 
 <script lang="ts">
@@ -34,9 +23,11 @@
 
   import useReportStore from '@/core/store/report';
   import useStatsStore from '@/core/store/stats';
+  import CalendarComponent from '@/components/Calendar.vue';
 
   export default defineComponent({
     name: 'ReportsSidebarCalendar',
+    components: { CalendarComponent },
     setup() {
       const router = useRouter();
       const route = useRoute();
@@ -81,6 +72,8 @@
       }
 
       async function fetchReportsForMonth(date: Dayjs) {
+        calendarReportStore.setReports([]);
+
         const reports = await reportApi.readReports({
           date_from: date.startOf('month').unix(),
           date_to: date.endOf('month').unix(),
@@ -147,24 +140,5 @@
 </script>
 
 <style lang="scss">
-  .reports-sidebar-calendar {
-    border: 1px solid rgba(0 0 0 / 14%);
-    border-radius: 2px;
 
-    .ant-picker-calendar-header {
-      justify-content: flex-start;
-    }
-
-    .ant-picker-calendar-date-content {
-      line-height: 0 !important;
-
-      height: 0 !important;
-    }
-  }
-
-  .reports-sidebar-calendar__badge {
-    position: absolute;
-    top: -2px;
-    right: -12px;
-  }
 </style>

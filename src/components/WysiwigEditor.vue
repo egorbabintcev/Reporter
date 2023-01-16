@@ -1,5 +1,6 @@
 <template>
   <div
+  @keydown="shortcutsHandler"
   class="wisywig-editor"
   ref="wysiwig-editor"/>
 </template>
@@ -46,6 +47,8 @@
             hideModeSwitch: true,
           });
 
+          console.log(editorInstance);
+
           editorInstance?.on('change', () => {
             context.emit('update:modelValue', editorInstance?.getMarkdown() ?? '');
           });
@@ -58,8 +61,57 @@
         }
       });
 
+      // TODO: pls, refactor naming in this shit
+      function shortcutsHandler(event: KeyboardEvent) {
+        if (!editorInstance) return;
+
+        // handle non shift keys
+        if (!event.shiftKey) {
+          // handle ctrl+k
+          if (event.ctrlKey && event.code === 'KeyK') {
+            event.preventDefault();
+
+            const selectedText = editorInstance.getSelectedText();
+            editorInstance.exec('addLink', {
+              linkText: selectedText && 'text',
+              linkUrl: selectedText || 'url',
+            });
+
+            const selection = editorInstance.getSelection();
+            const selectionEnd = selection[1];
+
+            if (Array.isArray(selectionEnd)) {
+              const [endLineOffset, endCursorOffset] = selectionEnd;
+
+              if (selectedText) {
+                const { range } = editorInstance.getRangeInfoOfNode([endLineOffset, endCursorOffset - 8 - selectedText.length]);
+                const rangeSelectionStart = range[0];
+
+                if (Array.isArray(rangeSelectionStart)) {
+                  const [startLineOffset, startCursorOffset] = rangeSelectionStart;
+
+                  editorInstance.setSelection([startLineOffset, startCursorOffset + 1], [startLineOffset, startCursorOffset + 5]);
+                }
+              } else {
+                const { range } = editorInstance.getRangeInfoOfNode([endLineOffset, endCursorOffset - 5]);
+
+                const rangeSelectionEnd = range[1];
+
+                if (Array.isArray(rangeSelectionEnd)) {
+                  const [rangeEndLineOffset, rangeEndCursorOffset] = rangeSelectionEnd;
+
+                  editorInstance.setSelection([rangeEndLineOffset, rangeEndCursorOffset - 4], [rangeEndLineOffset, rangeEndCursorOffset - 1]);
+                }
+              }
+            }
+          }
+        }
+      }
+
       return {
         'wysiwig-editor': editorElement,
+
+        shortcutsHandler,
       };
     },
   });
