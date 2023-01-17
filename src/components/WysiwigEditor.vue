@@ -45,6 +45,8 @@
             usageStatistics: false,
             extendedAutolinks: true,
             hideModeSwitch: true,
+            // TODO: переместить в пропсы
+            placeholder: 'Напишите сюда о результатах и планах работы',
           });
 
           console.log(editorInstance);
