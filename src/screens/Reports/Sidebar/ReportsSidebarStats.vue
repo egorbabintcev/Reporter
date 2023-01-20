@@ -16,6 +16,7 @@
         </span>
       </div>
 
+      <!--
       <div class="row-8">
         <strong>
           Среднее время начала:
@@ -25,7 +26,9 @@
           {{ averageStartTime }}
         </span>
       </div>
+      -->
 
+      <!--
       <div class="row-8">
         <strong>
           Среднее время окончания:
@@ -35,6 +38,7 @@
           {{ averageEndTime }}
         </span>
       </div>
+      -->
 
       <div class="row-8">
         <strong>
@@ -46,6 +50,7 @@
         </span>
       </div>
 
+      <!--
       <div class="row-8">
         <strong>
           Среднее время перерыва:
@@ -55,6 +60,7 @@
           {{ averageBreakTime }}
         </span>
       </div>
+      -->
     </div>
   </div>
 </template>
@@ -78,6 +84,7 @@
         return null;
       });
 
+      /*
       const averageStartTime = computed(() => {
         if (statsStore.stats) {
           return getTimeStringFromDate(new Date(statsStore.stats.hours.average.start ?? 0));
@@ -85,7 +92,9 @@
 
         return null;
       });
+      */
 
+      /*
       const averageEndTime = computed(() => {
         if (statsStore.stats) {
           return getTimeStringFromDate(new Date(
@@ -97,6 +106,7 @@
 
         return null;
       });
+      */
 
       const averageWorkTime = computed(() => {
         if (statsStore.stats) {
@@ -106,6 +116,7 @@
         return null;
       });
 
+      /*
       const averageBreakTime = computed(() => {
         if (statsStore.stats) {
           return getTimeStringFromDate(new Date(statsStore.stats.hours.average.break));
@@ -113,13 +124,14 @@
 
         return null;
       });
+      */
 
       return {
         totalWorkHours,
-        averageStartTime,
-        averageEndTime,
+        // averageStartTime,
+        // averageEndTime,
         averageWorkTime,
-        averageBreakTime,
+        // averageBreakTime,
       };
     },
   });

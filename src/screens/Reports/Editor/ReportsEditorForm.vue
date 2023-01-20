@@ -61,7 +61,8 @@
 
       <div class="reports-editor-form-wysiwig">
         <WysiwigEditor
-        v-model="form.body"/>
+        v-model="form.body"
+        placeholder="Напишите сюда о результатах и планах работы"/>
       </div>
     </div>
   </div>
@@ -92,14 +93,22 @@
 
       watch(
         report,
-        () => {
-          if (report.value) {
-            form.startTime = getTimeStringFromDate(new Date(report.value.startTime));
-            form.endTime = getTimeStringFromDate(new Date(report.value.endTime));
-            form.breakTime = getTimeStringFromDate(new Date(report.value.breakTime));
-            form.workTime = getTimeStringFromDate(new Date(report.value.workTime));
+        (value, oldValue) => {
+          if (value && value?.id !== oldValue?.id) {
+            const {
+              startTime,
+              endTime,
+              breakTime,
+              workTime,
+              body,
+            } = value;
 
-            form.body = report.value.body;
+            form.startTime = startTime > 0 ? getTimeStringFromDate(new Date(startTime)) : '';
+            form.endTime = endTime > 0 ? getTimeStringFromDate(new Date(endTime)) : '';
+            form.breakTime = breakTime > 0 ? getTimeStringFromDate(new Date(breakTime)) : '';
+            form.workTime = workTime > 0 ? getTimeStringFromDate(new Date(workTime)) : '';
+
+            form.body = body;
           }
         },
         {
@@ -108,11 +117,19 @@
       );
 
       watch(form, () => {
-        form.workTime = getTimeStringFromDate(new Date(
-          getDateFromTimeString(form.endTime).getTime()
-            - getDateFromTimeString(form.startTime).getTime()
-            - getDateFromTimeString(form.breakTime).getTime(),
-        ));
+        if (form.startTime && form.endTime) {
+          const diff = new Date(
+            getDateFromTimeString(form.endTime).getTime()
+              - getDateFromTimeString(form.startTime).getTime()
+              - getDateFromTimeString(form.breakTime).getTime(),
+          );
+
+          form.workTime = diff.getTime() < 0
+            ? ''
+            : getTimeStringFromDate(diff);
+        } else {
+          form.workTime = '';
+        }
       });
 
       return {

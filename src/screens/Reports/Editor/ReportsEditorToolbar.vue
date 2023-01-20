@@ -138,7 +138,7 @@
         }
       }
 
-      watch(form, debounce(() => { saveHandler(); }, 1000));
+      watch(form, debounce(() => { saveHandler(); }, 200));
 
       function parseReport(report: Report) {
         const headerDate = `Дата: ${getDateStringFromDate(new Date(report.date))}`;

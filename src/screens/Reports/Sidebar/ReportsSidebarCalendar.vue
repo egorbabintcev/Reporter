@@ -72,8 +72,6 @@
       }
 
       async function fetchReportsForMonth(date: Dayjs) {
-        calendarReportStore.setReports([]);
-
         const reports = await reportApi.readReports({
           date_from: date.startOf('month').unix(),
           date_to: date.endOf('month').unix(),

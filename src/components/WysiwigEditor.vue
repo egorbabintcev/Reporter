@@ -24,6 +24,10 @@
         type: String as PropType<HTMLString>,
         required: true,
       },
+      placeholder: {
+        type: String as PropType<string>,
+        default: () => '',
+      },
     },
     emits: ['update:modelValue'],
     setup(props, context) {
@@ -32,6 +36,7 @@
 
       const {
         modelValue,
+        placeholder,
       } = toRefs(props);
 
       onMounted(() => {
@@ -45,11 +50,8 @@
             usageStatistics: false,
             extendedAutolinks: true,
             hideModeSwitch: true,
-            // TODO: переместить в пропсы
-            placeholder: 'Напишите сюда о результатах и планах работы',
+            placeholder: placeholder.value,
           });
-
-          console.log(editorInstance);
 
           editorInstance?.on('change', () => {
             context.emit('update:modelValue', editorInstance?.getMarkdown() ?? '');
