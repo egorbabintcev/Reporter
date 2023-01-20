@@ -51,6 +51,7 @@
             extendedAutolinks: true,
             hideModeSwitch: true,
             placeholder: placeholder.value,
+            previewHighlight: false,
           });
 
           editorInstance?.on('change', () => {
