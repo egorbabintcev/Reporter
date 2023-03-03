@@ -91,7 +91,7 @@
   import MarkdownIt from 'markdown-it';
   import { notification } from 'ant-design-vue';
 
-  import IconComponent from '@/components/Icon.vue';
+  import IconComponent from '@/components/Icon/index.vue';
 
   import { Report } from '@/core/domain/report';
   import { EmailPayload } from '@/core/domain/email';
