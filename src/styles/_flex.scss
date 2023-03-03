@@ -1,0 +1,53 @@
+.flex--dir--horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex--dir--vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex--align--start {
+  align-items: flex-start;
+}
+
+.flex--align--end {
+  align-items: flex-end;
+}
+
+.flex--align--stretch {
+  align-items: stretch;
+}
+
+.flex--align--center {
+  align-items: center;
+}
+
+.flex--justify--start {
+  justify-content: flex-start;
+}
+
+.flex--justify--end {
+  justify-content: flex-end;
+}
+
+.flex--justify--center {
+  justify-content: center;
+}
+
+.flex--justify--between {
+  justify-content: space-between;
+}
+
+.flex--grow {
+  flex-grow: 1;
+}
+
+$gaps: 2, 4, 6, 8, 12, 16, 18, 20, 24, 28, 32, 36, 48;
+
+@each $gap in $gaps {
+  .flex--gap--#{$gap} {
+    gap: #{$gap}px;
+  }
+}
