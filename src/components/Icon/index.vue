@@ -6,7 +6,8 @@
       'icon--size--s': size === 'small',
       'icon--size--m': size === 'medium',
       'icon--size--l': size === 'large',
-    }">
+    }"
+    :title="title">
       {{ icon }}
     </span>
   </div>
@@ -27,6 +28,10 @@
       size: {
         type: String as PropType<TIconProps['size']>,
         default: () => 'm',
+      },
+      title: {
+        type: String,
+        default: () => '',
       },
     },
   });
