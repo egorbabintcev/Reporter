@@ -11,7 +11,7 @@ export default function useSickLeaveApi() {
   const sickLeaveAdapter = useSickLeaveAdapter();
 
   async function getSickLeave(id: TSickLeave['id']) {
-    const response = await axios.get<{sick_leave: TRawSickLeave}>(`/api/v3/sick_leaves/${id}`);
+    const response = await axios.get<{sick_leave: TRawSickLeave}>(`/api/v1/sick_leaves/${id}`);
 
     const { sick_leave } = response.data;
 
@@ -19,17 +19,17 @@ export default function useSickLeaveApi() {
   }
 
   async function createSickLeave(sickLeave: TNewSickLeave) {
-    const response = await axios.post<TRawCreatedSickLeave>(`/api/v3/sick_leaves`, sickLeave);
+    const response = await axios.post<TRawCreatedSickLeave>(`/api/v1/sick_leaves`, sickLeaveAdapter.convertSickLeaveToAPI(sickLeave));
 
     return sickLeaveAdapter.convertCreatedSickLeaveFromAPI(response.data);
   }
 
   async function updateSickLeave(id: TSickLeave['id'], sickLeave: TNewSickLeave) {
-    await axios.put<void>(`/api/v3/sick_leaves/${id}`, sickLeave);
+    await axios.put<void>(`/api/v1/sick_leaves/${id}`, sickLeave);
   }
 
   async function deleteSickLeave(id: TSickLeave['id']) {
-    await axios.delete<void>(`/api/v3/sick_leaves/${id}`);
+    await axios.delete<void>(`/api/v1/sick_leaves/${id}`);
   }
 
   return {
