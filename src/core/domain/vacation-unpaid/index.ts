@@ -4,7 +4,7 @@ import {
   UnixTimestamp,
 } from '@/shared-kernel';
 
-export type TVacation = {
+export type TVacationUnpaid = {
   id: UniqueId
 
   dateFrom: UnixTimestamp
@@ -12,24 +12,20 @@ export type TVacation = {
 
   description: HTMLString
   status: string
-
-  isPaid: boolean,
 }
 
-export type TCreatedVacation = {
+export type TCreatedVacationUnpaid = {
   id: UniqueId
 }
 
-export type TNewVacation = {
+export type TNewVacationUnpaid = {
   dateFrom: UnixTimestamp
   dateTo: UnixTimestamp
 
   description: HTMLString
-
-  isPaid: boolean
 }
 
-export type TRawVacation = {
+export type TRawVacationUnpaid = {
   id: UniqueId
 
   date_from: UnixTimestamp
@@ -37,19 +33,15 @@ export type TRawVacation = {
 
   description: HTMLString
   status: string
-
-  is_paid: boolean
 }
 
-export type TRawCreatedVacation = {
+export type TRawCreatedVacationUnpaid = {
   id: UniqueId
 }
 
-export type TRawNewVacation = {
+export type TRawNewVacationUnpaid = {
   date_from: UnixTimestamp
   date_to: UnixTimestamp
 
   description: HTMLString
-
-  is_paid: boolean
 }

@@ -60,7 +60,7 @@
 
 <script lang="ts">
   import {
-    computed, defineComponent, onMounted, reactive, readonly, ref, watch,
+    computed, defineComponent, reactive, ref, watch,
   } from 'vue';
   import { storeToRefs } from 'pinia';
   import dayjs from 'dayjs';
@@ -71,7 +71,7 @@
   import Card from './Card.vue';
 
   import useSickLeaveApi from '@/core/api/sick-leave';
-  import useVacationApi from '@/core/api/vacation';
+  import useVacationPaidApi from '@/core/api/vacation-paid';
   import useCalendarApi from '@/core/api/calendar';
 
   import useCalendarStore from '@/core/store/calendar';
