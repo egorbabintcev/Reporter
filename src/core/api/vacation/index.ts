@@ -19,7 +19,7 @@ export default function useVacationApi() {
   }
 
   async function createVacation(vacation: TNewVacation) {
-    const response = await axios.post<TRawCreatedVacation>(`/api/v1/vacations`, vacation);
+    const response = await axios.post<TRawCreatedVacation>(`/api/v1/vacations`, vacationAdapter.convertVacationToAPI(vacation));
 
     return vacationAdapter.convertCreatedVacationFromAPI(response.data);
   }

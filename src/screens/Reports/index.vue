@@ -1,8 +1,8 @@
 <template>
   <div class="reports-screen">
-    <ReportsEditor/>
-
     <ReportsSidebar/>
+
+    <ReportsEditor/>
   </div>
 </template>
 

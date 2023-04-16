@@ -19,13 +19,13 @@
           type="password"/>
         </div>
 
-        <a-button
+        <el-button
         @click="signInHandler"
         html-type="submit"
         size="large"
         type="primary">
           Войти
-        </a-button>
+        </el-button>
       </div>
     </form>
 

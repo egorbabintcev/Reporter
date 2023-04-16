@@ -10,7 +10,7 @@ export default function useCalendarApi() {
       params,
     });
 
-    const { events } = response.data;
+    const { events = [] } = response.data;
 
     return calendarAdapter.convertEventListFromApi(events);
   }

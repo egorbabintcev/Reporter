@@ -25,13 +25,13 @@
           type="password"/>
         </div>
 
-        <a-button
+        <el-button
         @click="signUpHandler"
         html-type="submit"
         size="large"
         type="primary">
           Зарегистрироваться
-        </a-button>
+        </el-button>
       </div>
     </form>
 

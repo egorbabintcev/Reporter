@@ -29,9 +29,7 @@ module.exports = {
     'import/first': 0,
     'import/no-duplicates': 0,
     'linebreak-style': 0,
-    'max-len': [2, {
-      code: 180,
-    }],
+    'max-len': 0,
     'no-param-reassign': 0,
     'no-plusplus': 0,
     'no-multiple-empty-lines': [2, {

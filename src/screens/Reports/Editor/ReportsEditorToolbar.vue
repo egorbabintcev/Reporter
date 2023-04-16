@@ -1,81 +1,114 @@
 <template>
   <div class="reports-editor-toolbar">
-    <a-button
-    @click="saveHandler({ silent: false })"
-    size="large"
-    type="outlined">
+    <el-button
+    @click="saveHandler({ silent: false})"
+    size="large">
       <template #icon>
-        <icon-component
-        class="reports-editor-toolbar-button__icon"
-        icon="save"/>
+        <el-icon
+        size="20">
+          <GSymbol
+          fill
+          grade="-25.0"
+          icon="save"
+          type="outlined"/>
+        </el-icon>
       </template>
-    </a-button>
 
-    <a-button
+      Сохранить
+    </el-button>
+
+    <el-button
     @click="showMailPopup = true"
-    size="large"
-    type="outlined">
+    size="large">
       <template #icon>
-        <icon-component
-        class="reports-editor-toolbar-button__icon"
-        icon="email"/>
+        <el-icon
+        size="18">
+          <GSymbol
+          fill
+          grade="-25.0"
+          icon="mail"
+          type="outlined"/>
+        </el-icon>
       </template>
-    </a-button>
 
-    <a-button
+      Отправить
+    </el-button>
+
+    <el-button
     @click="copyHandler"
-    size="large"
-    type="outlined">
+    size="large">
       <template #icon>
-        <icon-component
-        class="reports-editor-toolbar-button__icon"
-        icon="file_copy"/>
+        <el-icon
+        size="18">
+          <GSymbol
+          fill
+          grade="-25.0"
+          icon="content_copy"
+          type="outlined"/>
+        </el-icon>
       </template>
-    </a-button>
 
-    <a-popconfirm
-    @confirm="deleteHandler"
-    placement="rightTop"
-    title="Вы уверены, что хотите удалить отчет?">
-      <a-button
-      danger
-      size="large"
-      type="outlined">
-        <template #icon>
-          <icon-component
-          class="reports-editor-toolbar-button__icon"
-          icon="delete"/>
-        </template>
-      </a-button>
-    </a-popconfirm>
+      Копировать
+    </el-button>
 
-    <a-modal
-    v-model:visible="showMailPopup"
-    @ok="mailReportHandler"
+    <el-button
+    @click="deleteHandler"
+    plain
+    size="large"
+    type="danger">
+      <template #icon>
+        <el-icon
+        size="18">
+          <GSymbol
+          fill
+          grade="-25.0"
+          icon="delete"
+          type="outlined"/>
+        </el-icon>
+      </template>
+
+      Удалить
+    </el-button>
+
+    <el-dialog
+    v-model="showMailPopup"
+    align-center
     cancel-text="Отмена"
     centered
-    ok-text="Сохранить и отправить"
-    title="Отправить отчет по почте">
+    title="Отправить отчет по почте"
+    width="520">
       <div class="section-16">
-        <a-input
-        v-model:value="emailForm.email"
+        <el-input
+        v-model="emailForm.email"
         placeholder="Ваша почта"
         size="large"/>
 
-        <a-input-password
-        v-model:value="emailForm.password"
+        <el-input
+        v-model="emailForm.password"
         placeholder="Пароль"
-        size="large"
-        type="password"/>
+        show-password
+        size="large"/>
 
-        <a-select
-        v-model:value="emailForm.recipients"
-        mode="tags"
-        placeholder="Получатели"
-        size="large"
-        :token-separators="[',']"/>
+        <el-input
+        v-model="emailForm.recipients"
+        placeholder="Получатели (через запятую)"
+        size="large"/>
       </div>
-    </a-modal>
+
+      <template #footer>
+        <div class="flex--dir--horizontal flex--align--center flex--justify--end flex--gap--8">
+          <el-button @click="showMailPopup = false">
+            Отмена
+          </el-button>
+
+          <el-button
+          @click="mailReportHandler"
+          type="primary">
+            Сохранить и отправить
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -89,9 +122,8 @@
   import { useRoute, useRouter } from 'vue-router';
   import { debounce } from 'lodash';
   import MarkdownIt from 'markdown-it';
-  import { notification } from 'ant-design-vue';
-
-  import IconComponent from '@/components/Icon/index.vue';
+  import { ElMessage, ElMessageBox } from 'element-plus';
+  import { GSymbol } from 'vue-material-symbols';
 
   import { Report } from '@/core/domain/report';
   import { EmailPayload } from '@/core/domain/email';
@@ -104,7 +136,7 @@
   export default defineComponent({
     name: 'ReportsEditorToolbar',
     components: {
-      IconComponent,
+      GSymbol,
     },
     setup() {
       const router = useRouter();
@@ -128,9 +160,8 @@
           });
 
           if (!options.silent) {
-            notification.success({
+            ElMessage.success({
               message: 'Отчет успешно сохранен',
-              placement: 'bottomRight',
             });
           }
 
@@ -138,7 +169,20 @@
         }
       }
 
-      watch(form, debounce(() => { saveHandler(); }, 200));
+      watch(form, debounce(async () => {
+        if (reportStore.report) {
+          await reportApi.updateReport(reportStore.report.id, {
+            ...reportStore.report,
+
+            startTime: getDateFromTimeString(form.startTime).getTime(),
+            endTime: getDateFromTimeString(form.endTime).getTime(),
+            workTime: getDateFromTimeString(form.workTime).getTime(),
+            breakTime: getDateFromTimeString(form.breakTime).getTime(),
+
+            body: form.body,
+          });
+        }
+      }, 1000));
 
       function parseReport(report: Report) {
         const headerDate = `Дата: ${getDateStringFromDate(new Date(report.date))}`;
@@ -195,10 +239,10 @@
 
       const emailApi = useEmailApi();
       const showMailPopup = ref<boolean>(false);
-      const emailForm = reactive<EmailPayload>({
+      const emailForm = reactive<Record<keyof EmailPayload, string>>({
         email: localStorage.getItem('emailFormFieldEmail') ?? '',
         password: localStorage.getItem('emailFormFieldPassword') ?? '',
-        recipients: JSON.parse(localStorage.getItem('emailFormFieldRecipients') ?? '[]'),
+        recipients: JSON.parse(localStorage.getItem('emailFormFieldRecipients') ?? ''),
         subject: '',
         body: '',
       });
@@ -221,22 +265,20 @@
             await emailApi.sendEmail({
               email: emailForm.email,
               password: emailForm.password,
-              recipients: emailForm.recipients,
+              recipients: emailForm.recipients.split(',').map((value) => value.trim()),
               subject: `ОТЧЕТ О РАБОТЕ ЗА ДЕНЬ ${getDateStringFromDate(new Date(reportStore.report.date))}`,
               body: html,
             });
 
             showMailPopup.value = false;
 
-            notification.success({
+            ElMessage.success({
               message: 'Отчет успешно отправлен на почту',
-              placement: 'bottomRight',
             });
           }
         } catch {
-          notification.error({
+          ElMessage.error({
             message: 'При отправке произошла ошибка',
-            placement: 'bottomRight',
           });
         }
       }
@@ -265,31 +307,41 @@
             }),
           ]);
 
-          notification.success({
+          ElMessage.success({
             message: 'Скопировано в буфер обмена',
-            placement: 'bottomRight',
           });
         }
       }
 
       async function deleteHandler() {
-        if (reportStore.report) {
-          await reportApi.deleteReport(reportStore.report.id);
-
-          notification.info({
-            message: 'Отчет успешно удален',
-            placement: 'bottomRight',
-          });
-
-          reportStore.setReport(null);
-
-          await router.push({
-            query: {
-              ...route.query,
-              id: undefined,
+        try {
+          await ElMessageBox.confirm(
+            'Вы точно хотите выполнить удаление? Отменить это действие будет невозможно',
+            'Удалить',
+            {
+              confirmButtonText: 'Да',
+              cancelButtonText: 'Отмена',
+              type: 'warning',
             },
-          });
-        }
+          );
+
+          if (reportStore.report) {
+            await reportApi.deleteReport(reportStore.report.id);
+
+            ElMessage.info({
+              message: 'Отчет успешно удален',
+            });
+
+            reportStore.setReport(null);
+
+            await router.push({
+              query: {
+                ...route.query,
+                id: undefined,
+              },
+            });
+          }
+        } catch {}
       }
 
       return {

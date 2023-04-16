@@ -7,14 +7,13 @@
             Время начала
           </p>
 
-          <a-input
+          <el-input
           @blur="form.startTime = timeStringFormatter(form.startTime)"
-          @change="form.startTime = $event.target.value"
-          allow-clear
+          @input="form.startTime = $event"
           class="reports-editor-form__input"
+          :model-value="timeStringFormatter(form.startTime)"
           placeholder="__:__"
-          size="large"
-          :value="timeStringFormatter(form.startTime)"/>
+          size="large"/>
         </div>
 
         <div class="reports-editor-form-label">
@@ -22,13 +21,13 @@
             Время окончания
           </p>
 
-          <a-input
-          @change="form.endTime = $event.target.value"
-          allow-clear
+          <el-input
+          @blur="form.endTime = timeStringFormatter(form.endTime)"
+          @input="form.endTime = $event"
           class="reports-editor-form__input"
+          :model-value="timeStringFormatter(form.endTime)"
           placeholder="__:__"
-          size="large"
-          :value="timeStringFormatter(form.endTime)"/>
+          size="large"/>
         </div>
 
         <div class="reports-editor-form-label">
@@ -36,13 +35,13 @@
             Перерыв
           </p>
 
-          <a-input
-          @change="form.breakTime = $event.target.value"
-          allow-clear
+          <el-input
+          @blur="form.breakTime = timeStringFormatter(form.breakTime)"
+          @input="form.breakTime = $event"
           class="reports-editor-form__input"
+          :model-value="timeStringFormatter(form.breakTime)"
           placeholder="__:__"
-          size="large"
-          :value="timeStringFormatter(form.breakTime)"/>
+          size="large"/>
         </div>
 
         <div class="reports-editor-form-label">
@@ -50,12 +49,12 @@
             Время работы
           </p>
 
-          <a-input
+          <el-input
           class="reports-editor-form__input"
           disabled
+          :model-value="form.workTime"
           placeholder="__:__"
-          size="large"
-          :value="form.workTime"/>
+          size="large"/>
         </div>
       </div>
 
@@ -157,6 +156,10 @@
   }
 
   .reports-editor-form-label__text {
+    color: rgba(0 0 0 / 54%);
+    font-size: 14px;
+    font-weight: 700;
+
     margin: 0;
   }
 

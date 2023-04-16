@@ -1,10 +1,37 @@
+@use '~reset-css/sass/reset';
+
 @use '@/styles/fonts';
 @use '@/styles/sections';
 @use '@/styles/flex';
 
-@import '~ant-design-vue/dist/antd.min.css';
+@use '~element-plus/theme-chalk/src/index';
+
 @import '~@toast-ui/editor/dist/toastui-editor.css';
+
+:root {
+  --el-font-family: 'Nunito', sans-serif;
+}
 
 * {
   box-sizing: border-box;
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+}
+
+body {
+  font-family: 'Nunito', sans-serif !important;
+}
+
+.el-button + .el-button {
+  margin: unset;
+}
+
+.material-symbols-outlined,
+.material-symbols-rounded,
+.material-symbols-sharp {
+  font-size: inherit;
 }

@@ -5,9 +5,9 @@
       class="reports-editor-blank__image"
       :src="iconEmptyFolder">
 
-      <div class="section-4">
+      <div class="flex--dir--vertical flex--gap--8">
         <p class="reports-editor-blank__title">
-          За этот день пока нет отчетов
+          За этот день пока нет отчета
         </p>
 
         <p class="reports-editor-blank__subtitle">
@@ -15,14 +15,14 @@
         </p>
       </div>
 
-      <a-button
+      <el-button
       @click="createReportHandler"
       class="reports-editor-blank__button"
       :loading="loading"
       size="large"
       type="primary">
         Добавить
-      </a-button>
+      </el-button>
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { notification } from 'ant-design-vue';
+  import { ElMessage } from 'element-plus';
 
   import useReportApi from '@/core/api/report';
   import useReportStore from '@/core/store/report';
@@ -70,9 +70,8 @@
             body: '',
           });
 
-          notification.success({
+          ElMessage.success({
             message: 'Отчет успешно добавлен',
-            placement: 'bottomRight',
           });
 
           reportStore.setReport(await reportApi.readReport(report.id));
@@ -118,8 +117,6 @@
   .reports-editor-blank__title,
   .reports-editor-blank__subtitle {
     text-align: center;
-
-    margin: 0;
   }
 
   .reports-editor-blank__title {

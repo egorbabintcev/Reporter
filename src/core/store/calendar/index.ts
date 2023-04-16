@@ -5,7 +5,7 @@ type CalendarState = {
   eventList: TCalendarEvent[]
 }
 
-const useCalendarStore = (id = 'report') => {
+const useCalendarStore = (id = 'calendar') => {
   return defineStore(id, {
     state: (): CalendarState => ({
       eventList: [],

@@ -3,16 +3,43 @@ import useAuthStore from '@/core/store/auth';
 import useProfileStore from '@/core/store/profile';
 import useProfileApi from '@/core/api/profile';
 
+const HomeScreen = () => import('@/screens/Home/index.vue');
 const ReportsScreen = () => import('@/screens/Reports/index.vue');
+const NonWorkingDaysScreen = () => import('@/screens/NonWorkingDays/index.vue');
+const MenteesScreen = () => import('@/screens/Mentees/index.vue');
 const AuthScreen = () => import('@/screens/Auth/index.vue');
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      name: 'home',
+      path: '/home',
+      component: HomeScreen,
+      meta: {
+        authRequired: true,
+      },
+    },
+    {
       name: 'reports',
       path: '/reports',
       component: ReportsScreen,
+      meta: {
+        authRequired: true,
+      },
+    },
+    {
+      name: 'mentees',
+      path: '/mentees',
+      component: MenteesScreen,
+      meta: {
+        authRequired: true,
+      },
+    },
+    {
+      name: 'non-working-days',
+      path: '/non_working_days',
+      component: NonWorkingDaysScreen,
       meta: {
         authRequired: true,
       },

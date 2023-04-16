@@ -1,41 +1,36 @@
 <template>
-  <a-config-provider :locale="locale">
-    <div class="app bg-slate-700">
-      <div class="app-container">
-        <TheSidebar
-        v-if="showSidebar"/>
+  <div class="app">
+    <div class="app-container">
+      <TheMenu
+      v-if="showMenu"/>
 
-        <router-view v-slot="{ Component }">
-          <transition name="fade">
-            <component :is="Component"/>
-          </transition>
-        </router-view>
-      </div>
+      <router-view v-slot="{ Component }">
+        <transition mode="out-in" name="fade">
+          <component :is="Component"/>
+        </transition>
+      </router-view>
     </div>
-  </a-config-provider>
+  </div>
 </template>
 
 <script lang="ts">
   import { defineComponent, computed } from 'vue';
   import { useRoute } from 'vue-router';
 
-  import ruRU from 'ant-design-vue/es/locale/ru_RU';
-
-  import TheSidebar from '@/components/TheSidebar/index.vue';
+  import TheMenu from '@/components/TheMenu/index.vue';
 
   export default defineComponent({
     name: 'App',
     components: {
-      TheSidebar,
+      TheMenu,
     },
     setup() {
       const route = useRoute();
 
-      const showSidebar = computed(() => route.meta.authRequired);
+      const showMenu = computed(() => route.meta.authRequired);
 
       return {
-        showSidebar,
-        locale: ruRU,
+        showMenu,
       };
     },
   });
@@ -52,9 +47,19 @@
 
   .app-container {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: column nowrap;
     flex-grow: 1;
 
     overflow: hidden;
+  }
+
+  .fade-animation-enter-active,
+  .fade-animation-leave-active {
+    transition: opacity 0.2s;
+  }
+
+  .fade-animation-enter-from,
+  .fade-animation-leave-to {
+    opacity: 0;
   }
 </style>

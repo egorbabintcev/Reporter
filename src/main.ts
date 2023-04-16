@@ -3,7 +3,7 @@ import '@/styles/index.scss';
 import { createApp } from 'vue';
 
 import { maska } from 'maska';
-import Antd from 'ant-design-vue';
+import ElementPlus from 'element-plus';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
@@ -34,7 +34,12 @@ import setupAxiosInterceptors from './interceptors';
 
 createApp(App)
   .directive('mask', maska)
-  .use(Antd)
+  .mixin({
+    created() {
+      this.console = window.console;
+    },
+  })
+  .use(ElementPlus)
   .use(store)
   .use(router)
   .mount('#app');
