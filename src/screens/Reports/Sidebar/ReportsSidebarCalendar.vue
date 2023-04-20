@@ -2,27 +2,26 @@
   <CalendarComponent
   v-model:modelValue="selectedDate"
   @panel-change="selectedPanel = $event"
-  :events="reports.map((report) => report.date)"/>
+  :events="events"/>
 </template>
 
 <script lang="ts">
   import {
+    computed,
     defineComponent,
     ref,
     watch,
+    onBeforeMount,
   } from 'vue';
-  import {
-    useRouter,
-    useRoute,
-  } from 'vue-router';
+  import { useRouter } from 'vue-router';
   import { storeToRefs } from 'pinia';
   import dayjs, { Dayjs } from 'dayjs';
 
-  import useReportApi from '@/core/api/report';
-  import useStatsApi from '@/core/api/stats';
+  import useReportsStore from '@/store/reports';
+  import useStatsStore from '@/store/stats';
+  import useReportsScreenStore from '@/screens/Reports/useReportsScreenStore';
+  import useLaborCalendarStore from '@/store/labor-calendar';
 
-  import useReportStore from '@/core/store/report';
-  import useStatsStore from '@/core/store/stats';
   import CalendarComponent from '@/components/Calendar.vue';
 
   export default defineComponent({
@@ -30,108 +29,63 @@
     components: { CalendarComponent },
     setup() {
       const router = useRouter();
-      const route = useRoute();
-      const reportApi = useReportApi();
-      const statsApi = useStatsApi();
 
-      const calendarReportStore = useReportStore('report/calendar');
-      const calendarReportStoreRefs = storeToRefs((calendarReportStore));
-      const reportStore = useReportStore();
-      const reportStoreRefs = storeToRefs(reportStore);
+      const monthReportsStore = useReportsStore('month-reports');
+      const monthReportsStoreRefs = storeToRefs(monthReportsStore);
 
-      const statsStore = useStatsStore();
+      const monthStatsStore = useStatsStore('month-stats');
 
-      const selectedDate = ref<Dayjs>(dayjs());
-      const selectedPanel = ref<Dayjs>(selectedDate.value);
+      const monthLaborCalendarStore = useLaborCalendarStore('month-labor-calendar');
 
-      async function fetchReportsForDay(date: Dayjs) {
-        const reports = await reportApi.readReports({
-          date_from: date.startOf('day').unix(),
-          date_to: date.endOf('day').unix(),
-        });
+      const reportsScreenStore = useReportsScreenStore();
+      const reportsScreenStoreRefs = storeToRefs(reportsScreenStore);
 
-        if (reports.length > 0) {
-          reportStore.setReport(reports[0]);
-
-          await router.push({
-            query: {
-              ...route.query,
-              id: reports[0].id,
-            },
-          });
-        } else {
-          reportStore.setReport(null);
-
-          await router.push({
-            query: {
-              ...route.query,
-              id: undefined,
-            },
-          });
-        }
-      }
-
-      async function fetchReportsForMonth(date: Dayjs) {
-        const reports = await reportApi.readReports({
-          date_from: date.startOf('month').unix(),
-          date_to: date.endOf('month').unix(),
-        });
-
-        calendarReportStore.setReports(reports);
-      }
-
-      async function fetchStatsForMonth(date: Dayjs) {
-        const stats = await statsApi.readStats({
-          from_date: date.startOf('month').unix(),
-          to_date: date.endOf('month').unix(),
-        });
-
-        statsStore.setStats(stats);
-      }
-
-      watch(
-        selectedDate,
-        () => {
-          fetchReportsForDay(selectedDate.value);
-
-          router.push({
-            query: {
-              ...route.query,
-              date: selectedDate.value.toISOString(),
-            },
+      const selectedDate = computed<Dayjs>({
+        get(): Dayjs {
+          return reportsScreenStoreRefs.selectedDate.value;
+        },
+        set(value: Dayjs) {
+          reportsScreenStore.$patch({
+            selectedDate: value,
           });
         },
-        {
-          immediate: true,
-        },
-      );
+      });
+      const selectedPanel = ref<Dayjs>(reportsScreenStore.selectedDate);
 
-      watch(
-        selectedPanel,
-        () => {
-          fetchReportsForMonth(selectedPanel.value);
-          fetchStatsForMonth(selectedPanel.value);
-        },
-        {
-          immediate: true,
-        },
-      );
+      const events = computed(() => {
+        return monthReportsStoreRefs.reports.value.map((report) => report.date * 1000);
+      });
 
-      watch(
-        reportStoreRefs.report,
-        (value, oldValue) => {
-          if ((!!value && !oldValue) || (!!oldValue && !value)) {
-            fetchReportsForMonth(selectedPanel.value);
-          }
+      function setSelectedDateReportToDayReport() {
+        const selectedDateReport = monthReportsStoreRefs.reports.value.find((item) => {
+          return dayjs(item.date * 1000).isSame(selectedDate.value, 'day');
+        });
 
-          fetchStatsForMonth(selectedPanel.value);
-        },
-      );
+        router.push({
+          query: { report_id: selectedDateReport?.id ?? undefined },
+        });
+      }
+
+      onBeforeMount(() => {
+        monthLaborCalendarStore.fetchLaborCalendarForPeriod(selectedDate.value, 'month');
+        monthStatsStore.fetchStatsForPeriod(selectedDate.value, 'month');
+        monthReportsStore.fetchReportListForTimePeriod(selectedDate.value, 'month')
+          .then(setSelectedDateReportToDayReport);
+      });
+
+      watch(selectedDate, setSelectedDateReportToDayReport);
+
+      watch(selectedPanel, () => {
+        monthLaborCalendarStore.fetchLaborCalendarForPeriod(selectedDate.value, 'month');
+        monthStatsStore.fetchStatsForPeriod(selectedDate.value, 'month');
+        monthReportsStore.fetchReportListForTimePeriod(selectedDate.value, 'month')
+          .then(setSelectedDateReportToDayReport);
+      });
 
       return {
         selectedDate,
         selectedPanel,
-        reports: calendarReportStoreRefs.reports,
+        events,
       };
     },
   });

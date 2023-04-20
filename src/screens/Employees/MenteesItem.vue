@@ -1,9 +1,17 @@
 <template>
   <div class="mentees-item row-32 row--align--center">
     <div class="mentees-item-person row-12 row--align--center">
-      <div class="mentees-item-person__avatar"/>
+      <el-avatar shape="square">
+        <el-icon size="32">
+          <g-symbol
+          fill
+          :grade="-25"
+          icon="person"
+          weight="200.0"/>
+        </el-icon>
+      </el-avatar>
 
-      <div class="mentees-item-person__bio section">
+      <div class="mentees-item-person__bio flex--dir--vertical flex--gap--4">
         <p class="mentees-item-person__bio-name">
           Василий Пупкин
         </p>
@@ -14,7 +22,7 @@
       </div>
     </div>
 
-    <div class="section-12 section--grow">
+    <div class="flex--dir--vertical flex--gap--16 flex--grow">
       <timeline-component
       :events="events"
       :from-date="fromDate"
@@ -42,10 +50,12 @@
   import { TTimelineEvent } from '@/components/Timeline/types';
   import TimelineComponent from '@/components/Timeline/index.vue';
   import dayjs from 'dayjs';
+  import { GSymbol } from 'vue-material-symbols';
 
   export default defineComponent({
     name: 'MenteesItem',
     components: {
+      GSymbol,
       TimelineComponent,
     },
     setup() {
@@ -229,8 +239,8 @@
   }
 
   .mentees-item-summary__text {
-    color: rgba(0 0 0 / 38%);
-    font-size: 12px;
+    color: rgba(0 0 0 / 54%);
+    font-size: 14px;
 
     margin: 0;
   }

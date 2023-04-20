@@ -4,6 +4,9 @@
       <div
       v-for="(day, index) in dayList"
       class="time-line-day"
+      :class="{
+        'time-line-day--red': [0,6].includes(day.day()),
+      }"
       :key="index">
         <p class="time-line-day__text">
           {{ day.format('DD') }}
@@ -34,10 +37,15 @@
             width: `${event.widthPercentage}%`,
             left: `${event.leftPercentage}%`
           }">
-            <icon-component
+            <el-icon
             v-if="event.type === TimelineEventTypeEnum.NO_REPORT"
-            class="time-line-event__icon"
-            icon="block"/>
+            color="var(--el-color-danger)"
+            size="24">
+              <g-symbol
+              :grade="-25"
+              icon="block"
+              weight="700.0"/>
+            </el-icon>
           </div>
         </meta-popover>
       </template>
@@ -51,14 +59,14 @@
   } from 'vue';
   import { Dayjs } from 'dayjs';
   import { TTimelineProps, TimelineEventTypeEnum } from './types';
-  import IconComponent from '@/components/Icon/index.vue';
   import MetaPopover from '@/components/Timeline/MetaPopover.vue';
+  import { GSymbol } from 'vue-material-symbols';
 
   export default defineComponent({
     name: 'TimelineComponent',
     components: {
+      GSymbol,
       MetaPopover,
-      IconComponent,
     },
     props: {
       fromDate: {
@@ -131,10 +139,16 @@
     flex: 1 1 0;
   }
 
+  .time-line-day--red {
+    .time-line-day__text {
+      color: #66bb6a;
+    }
+  }
+
   .time-line-day__text {
     color: rgba(0 0 0 / 38%);
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 700;
     line-height: 1.1;
 
     margin: 0;
@@ -161,16 +175,14 @@
 
     position: absolute;
 
+    user-select: none;
+
     background-color: transparent;
     border-radius: 4px;
   }
 
   .time-line-event--cursor--pointer {
     cursor: pointer;
-
-    .time-line-event__icon {
-      cursor: pointer;
-    }
   }
 
   .time-line-event--background--blue {

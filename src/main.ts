@@ -2,6 +2,13 @@ import '@/styles/index.scss';
 
 import { createApp } from 'vue';
 
+import store from '@/core/store';
+import router from '@/router';
+
+import App from './App.vue';
+
+import setupAxiosInterceptors from './interceptors';
+
 import { maska } from 'maska';
 import ElementPlus from 'element-plus';
 import dayjs from 'dayjs';
@@ -24,13 +31,6 @@ dayjs.locale('ru');
 dayjs.updateLocale('ru', {
   weekStart: 1,
 });
-
-import store from '@/core/store';
-import router from '@/router';
-
-import App from './App.vue';
-
-import setupAxiosInterceptors from './interceptors';
 
 createApp(App)
   .directive('mask', maska)

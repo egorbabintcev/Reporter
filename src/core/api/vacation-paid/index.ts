@@ -11,7 +11,7 @@ export default function useVacationPaidApi() {
   const vacationAdapter = useVacationPaidAdapter();
 
   async function getVacationPaid(id: TVacationPaid['id']) {
-    const response = await axios.get<{day_off: TRawVacationPaid}>(`/api/v1/vacations/${id}`);
+    const response = await axios.get<{day_off: TRawVacationPaid}>(`/api/v1/vacations_paid/${id}`);
 
     const { day_off } = response.data;
 
@@ -19,17 +19,17 @@ export default function useVacationPaidApi() {
   }
 
   async function createVacationPaid(vacation: TNewVacationPaid) {
-    const response = await axios.post<TRawCreatedVacationPaid>(`/api/v1/vacations`, vacationAdapter.convertVacationPaidToAPI(vacation));
+    const response = await axios.post<TRawCreatedVacationPaid>(`/api/v1/vacations_paid`, vacationAdapter.convertVacationPaidToAPI(vacation));
 
     return vacationAdapter.convertCreatedVacationPaidFromAPI(response.data);
   }
 
   async function updateVacationPaid(id: TVacationPaid['id'], vacation: TNewVacationPaid) {
-    await axios.put<void>(`/api/v1/vacations/${id}`, vacation);
+    await axios.put<void>(`/api/v1/vacations_paid/${id}`, vacation);
   }
 
   async function deleteVacationPaid(id: TVacationPaid['id']) {
-    await axios.delete<void>(`/api/v1/vacations/${id}`);
+    await axios.delete<void>(`/api/v1/vacations_paid/${id}`);
   }
 
   return {

@@ -6,7 +6,7 @@ import useProfileApi from '@/core/api/profile';
 const HomeScreen = () => import('@/screens/Home/index.vue');
 const ReportsScreen = () => import('@/screens/Reports/index.vue');
 const NonWorkingDaysScreen = () => import('@/screens/NonWorkingDays/index.vue');
-const MenteesScreen = () => import('@/screens/Mentees/index.vue');
+const EmployeesScreen = () => import('@/screens/Employees/index.vue');
 const AuthScreen = () => import('@/screens/Auth/index.vue');
 
 const router = createRouter({
@@ -29,9 +29,9 @@ const router = createRouter({
       },
     },
     {
-      name: 'mentees',
-      path: '/mentees',
-      component: MenteesScreen,
+      name: 'employees',
+      path: '/employees',
+      component: EmployeesScreen,
       meta: {
         authRequired: true,
       },

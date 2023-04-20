@@ -1,41 +1,25 @@
 <template>
-  <div class="mentees-screen">
-    <div
-    class="section-16 section--grow"
-    :style="{
-      zIndex: 2
-    }">
-      <mentees-item
-      v-for="index in 1"
-      :show-number="true"
-      :key="index"/>
-    </div>
-
-    <div
-    v-if="false"
-    class="grid">
-      <div
-      v-for="index in 31"
-      class="grid-col"
-      :class="{
-        'grid-col--stripped': index % 2
-      }"
-      :key="index"/>
+  <div class="employees-screen">
+    <div class="employees-screen-content">
+      <div class="section-16 section--grow">
+        <mentees-item
+        v-for="index in 10"
+        :show-number="true"
+        :key="index"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-
-  import TimelineComponent from '@/components/Timeline/index.vue';
-  import MenteesItem from './MenteesItem.vue';
   import dayjs from 'dayjs';
+
+  import MenteesItem from './MenteesItem.vue';
 
   export default defineComponent({
     name: 'MenteesScreen',
     components: {
-      TimelineComponent,
       MenteesItem,
     },
     setup() {
@@ -142,14 +126,28 @@
 </script>
 
 <style lang="scss">
-  .mentees-screen {
+  @use '@/styles/mixins' as *;
+
+  .employees-screen {
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
 
     padding: 16px;
+    overflow: hidden;
 
     position: relative;
+  }
+
+  .employees-screen-content {
+    @include scrollbar;
+
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+
+    padding-right: 18px;
+    overflow: auto;
   }
 
   .grid {

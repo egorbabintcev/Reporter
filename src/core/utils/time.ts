@@ -1,4 +1,5 @@
 import { TimeString, DateString } from '@/shared-kernel';
+import dayjs, { Dayjs } from 'dayjs';
 
 export function getTimeStringFromDate(date = new Date(0)): TimeString {
   const hrs = String(date.getUTCHours()).padStart(2, '0');
@@ -22,12 +23,12 @@ export function getDateStringFromDate(
   return `${day}.${month}.${year}`;
 }
 
-export function getDateFromTimeString(timeString: TimeString): Date {
-  const date = new Date(0);
+export function getDateFromTimeString(timeString: TimeString): Dayjs {
+  let date = dayjs(0).utc();
   const [hrs = 0, mins = 0] = timeString.split(':');
 
-  date.setUTCHours(Number(hrs));
-  date.setUTCMinutes(Number(mins));
+  date = date.hour(Number(hrs));
+  date = date.minute(Number(mins));
 
   return date;
 }

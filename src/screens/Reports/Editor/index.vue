@@ -1,63 +1,34 @@
 <template>
   <div class="reports-editor">
-    <template
-    v-if="route.query.id">
-      <ReportsEditorHeader/>
+    <reports-editor-card
+    v-if="hasReport"
+    :report-id="$route.query.report_id"/>
 
-      <ReportsEditorToolbar/>
-
-      <ReportsEditorForm/>
-    </template>
-
-    <ReportsEditorBlank
+    <reports-editor-blank
     v-else/>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, watch } from 'vue';
+  import { defineComponent, computed } from 'vue';
   import { useRoute } from 'vue-router';
 
-  import useReportApi from '@/core/api/report';
-
-  import useReportStore from '@/core/store/report';
-
-  import ReportsEditorHeader from './ReportsEditorHeader.vue';
-  import ReportsEditorToolbar from './ReportsEditorToolbar.vue';
-  import ReportsEditorForm from './ReportsEditorForm.vue';
+  import ReportsEditorCard from './ReportsEditorCard.vue';
   import ReportsEditorBlank from './ReportsEditorBlank.vue';
 
   export default defineComponent({
     name: 'ReportsEditor',
     components: {
-      ReportsEditorHeader,
-      ReportsEditorToolbar,
-      ReportsEditorForm,
+      ReportsEditorCard,
       ReportsEditorBlank,
     },
     setup() {
       const route = useRoute();
 
-      const reportApi = useReportApi();
-
-      const reportStore = useReportStore();
-
-      watch(
-        route,
-        async () => {
-          if (route.params.id) {
-            const report = await reportApi.readReport(route.params.id as string);
-
-            reportStore.setReport(report);
-          }
-        },
-        {
-          immediate: true,
-        },
-      );
+      const hasReport = computed(() => !!route.query.report_id);
 
       return {
-        route,
+        hasReport,
       };
     },
   });

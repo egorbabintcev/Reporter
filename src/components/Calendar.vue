@@ -30,7 +30,7 @@
           <template #icon>
             <el-icon size="16">
               <GSymbol
-              grade="-25.0"
+              :grade="-25"
               icon="keyboard_arrow_left"
               weight="200.0"/>
             </el-icon>
@@ -43,8 +43,8 @@
           <template #icon>
             <el-icon size="16">
               <GSymbol
-              grade="-25.0"
-              icon="keyboard_arrow_left"
+              :grade="-25"
+              icon="keyboard_arrow_right"
               weight="200.0"/>
             </el-icon>
           </template>

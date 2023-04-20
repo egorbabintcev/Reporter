@@ -5,7 +5,7 @@
       :color="iconColor"
       size="46">
         <g-symbol
-        grade="-25.0"
+        :grade="-25"
         :icon="icon"
         weight="200.0"/>
       </el-icon>
@@ -44,33 +44,64 @@
     <div class="card-bottomline">
       <div class="card__spacer"/>
 
-      <div class="card-buttons">
+      <div class="card-buttons flex--gap--8">
         <template v-if="!editMode">
           <el-button
           @click="editMode = true"
-          :icon="Edit"
-          plain/>
+          plain>
+            <template #icon>
+              <el-icon size="20">
+                <g-symbol
+                :grade="-25"
+                icon="edit_note"
+                weight="400.0"/>
+              </el-icon>
+            </template>
+          </el-button>
 
           <el-button
           @click="handleDelete"
-          :icon="Delete"
           plain
-          type="danger"/>
+          type="danger">
+            <template #icon>
+              <el-icon size="18">
+                <g-symbol
+                :grade="-25"
+                icon="delete"
+                weight="400.0"/>
+              </el-icon>
+            </template>
+          </el-button>
         </template>
 
         <template v-else>
           <el-button
           @click="handleCancel"
-          :icon="Close"
           plain
-          type="danger"/>
+          type="danger">
+            <template #icon>
+              <el-icon>
+                <g-symbol
+                :grade="-25"
+                icon="close"
+                weight="400.0"/>
+              </el-icon>
+            </template>
+          </el-button>
 
           <el-button
           @click="handleSave"
-          :icon="Check"
-          :loading="saveLoading"
           plain
-          type="success"/>
+          type="success">
+            <template #icon>
+              <el-icon>
+                <g-symbol
+                :grade="-25"
+                icon="check"
+                weight="400.0"/>
+              </el-icon>
+            </template>
+          </el-button>
         </template>
       </div>
     </div>
@@ -83,14 +114,10 @@
   } from 'vue';
   import dayjs, { Dayjs } from 'dayjs';
   import { ElMessageBox } from 'element-plus';
-  import {
-    Edit, Delete, Close, Check,
-  } from '@element-plus/icons-vue';
-  import { ElMessage } from 'element-plus';
   import { GSymbol } from 'vue-material-symbols';
 
   type TForm = {
-    type: 'vacation_paid' | 'vacation_unpaid' | 'sick_leave' | 'day_off'
+    type: 'vacations_paid' | 'vacations_unpaid' | 'sick_leave' | 'day_off'
     date: [Date, Date],
   }
 
@@ -100,12 +127,12 @@
     props: {
       data: {
         type: Object as PropType<{
-          type: 'vacation_paid' | 'vacation_unpaid' | 'sick_leave' | 'day_off'
+          type: 'vacations_paid' | 'vacations_unpaid' | 'sick_leave' | 'day_off'
           dateFrom: Dayjs
           dateTo: Dayjs
         }>,
         default: () => ({
-          type: 'vacation_paid',
+          type: 'vacations_paid',
           dateFrom: dayjs(),
           dateTo: dayjs(),
         }),
@@ -120,11 +147,11 @@
       const optionList = [
         {
           label: 'Отпуск (оплачиваемый)',
-          value: 'vacation_paid',
+          value: 'vacations_paid',
         },
         {
           label: 'Отпуск (за свой счет)',
-          value: 'vacation_unpaid',
+          value: 'vacations_unpaid',
         },
         {
           label: 'Больничный',
@@ -164,8 +191,8 @@
 
       const icon = computed(() => {
         return {
-          vacation_paid: 'beach_access',
-          vacation_unpaid: 'beach_access',
+          vacations_paid: 'beach_access',
+          vacations_unpaid: 'beach_access',
           sick_leave: 'sick',
           day_off: 'event',
         }[form.type];
@@ -173,8 +200,8 @@
 
       const iconColor = computed(() => {
         return {
-          vacation_paid: '#66bb6a',
-          vacation_unpaid: '#66bb6a',
+          vacations_paid: '#66bb6a',
+          vacations_unpaid: '#66bb6a',
           sick_leave: '#EF5350',
           day_off: '#ffa726',
         }[form.type];
@@ -200,7 +227,11 @@
       }
 
       async function handleSave() {
-        context.emit('save');
+        context.emit('save', {
+          type: form.type,
+          dateFrom: dayjs(form.date[0]),
+          dateTo: dayjs(form.date[1]),
+        });
 
         editMode.value = false;
       }
@@ -241,12 +272,6 @@
         handleSave,
         handleCancel,
         handleDelete,
-
-        // icon components
-        Edit,
-        Delete,
-        Close,
-        Check,
       };
     },
   });

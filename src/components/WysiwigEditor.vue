@@ -54,13 +54,20 @@
             previewHighlight: false,
           });
 
+          // TODO: figure out how to fix that
+
+          let isBlocked = false;
+
           editorInstance?.on('change', () => {
+            if (isBlocked) return;
             context.emit('update:modelValue', editorInstance?.getMarkdown() ?? '');
           });
 
           watch(modelValue, (value, oldValue) => {
             if (value !== oldValue && value !== editorInstance?.getMarkdown()) {
+              isBlocked = true;
               editorInstance?.setMarkdown(modelValue.value, false);
+              isBlocked = false;
             }
           });
         }

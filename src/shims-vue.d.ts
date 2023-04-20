@@ -6,12 +6,12 @@ declare module '*.vue' {
 }
 
 declare module "*.svg" {
-  const content: unknown;
+  const content: string;
   export default content;
 }
 
 
 declare module '*.png' {
-  const content: unknown;
+  const content: string;
   export default content;
 }

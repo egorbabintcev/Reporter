@@ -16,9 +16,8 @@
       </div>
 
       <el-button
-      @click="createReportHandler"
+      @click="createHandler"
       class="reports-editor-blank__button"
-      :loading="loading"
       size="large"
       type="primary">
         Добавить
@@ -28,68 +27,51 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  import { ElMessage } from 'element-plus';
+  import { defineComponent } from 'vue';
+  import { useRouter } from 'vue-router';
 
-  import useReportApi from '@/core/api/report';
-  import useReportStore from '@/core/store/report';
+  import useReportsStore from '@/store/reports';
+  import useStatsStore from '@/store/stats';
+  import useReportsScreenStore from '@/screens/Reports/useReportsScreenStore';
 
   import iconEmptyFolder from '@/assets/empty-folder-icon.png';
 
   export default defineComponent({
     name: 'ReportsEditorBlank',
     setup() {
-      const route = useRoute();
       const router = useRouter();
-      const reportApi = useReportApi();
-      const reportStore = useReportStore();
 
-      const loading = ref(false);
+      const dayReportsStore = useReportsStore('day-reports');
+      const monthReportsStore = useReportsStore('month-reports');
+      const monthStatsStore = useStatsStore('month-stats');
 
-      async function createReportHandler() {
-        loading.value = true;
+      const reportsScreenStore = useReportsScreenStore();
 
-        try {
-          const date = new Date(route.query.date as string);
-          date.setUTCMilliseconds(0);
-          date.setUTCSeconds(0);
-          date.setUTCMinutes(0);
-          date.setUTCHours(0);
+      async function createHandler() {
+        const report = await dayReportsStore.createReport({
+          display_name: '',
 
-          const report = await reportApi.createReport({
-            displayName: '',
+          date: reportsScreenStore.selectedDate.unix(),
 
-            date: date.getTime(),
+          start_time: 60 * 60 * 10,
+          end_time: 60 * 60 * 19,
+          break_time: 60 * 60 * 1,
+          work_time: 60 * 60 * 8,
 
-            startTime: 3600000 * 10,
-            endTime: 3600000 * 19,
-            workTime: 3600000 * 8,
-            breakTime: 3600000 * 1,
+          body: '',
+        });
 
-            body: '',
-          });
-
-          ElMessage.success({
-            message: 'Отчет успешно добавлен',
-          });
-
-          reportStore.setReport(await reportApi.readReport(report.id));
-
-          await router.push({
-            query: {
-              ...route.query,
-              id: report.id,
-            },
-          });
-        } finally {
-          loading.value = false;
-        }
+        await Promise.all([
+          router.push({
+            query: { report_id: report.id },
+          }),
+          monthReportsStore.fetchReportListForTimePeriod(reportsScreenStore.selectedDate, 'month'),
+          monthStatsStore.fetchStatsForPeriod(reportsScreenStore.selectedDate, 'month'),
+        ]);
       }
 
       return {
-        createReportHandler,
-        loading,
+        createHandler,
 
         iconEmptyFolder,
       };

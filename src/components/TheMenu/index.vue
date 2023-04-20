@@ -10,7 +10,7 @@
           <div class="app-menu-button">
             <el-icon size="20">
               <GSymbol
-              grade="-25.0"
+              :grade="-25"
               icon="home"
               type="rounded"
               weight="200.0"/>
@@ -26,7 +26,7 @@
           <div class="app-menu-button">
             <el-icon size="20">
               <GSymbol
-              grade="-25.0"
+              :grade="-25"
               icon="business_center"
               type="rounded"
               weight="200.0"/>
@@ -38,11 +38,13 @@
           </div>
         </el-radio-button>
 
-        <el-radio-button label="non-working-days">
+        <el-radio-button
+        disabled
+        label="non-working-days">
           <div class="app-menu-button">
             <el-icon size="20">
               <GSymbol
-              grade="-25.0"
+              :grade="-25"
               icon="cloud"
               type="rounded"
               weight="200.0"/>
@@ -54,11 +56,13 @@
           </div>
         </el-radio-button>
 
-        <el-radio-button label="employees">
+        <el-radio-button
+        disabled
+        label="employees">
           <div class="app-menu-button">
             <el-icon size="20">
               <GSymbol
-              grade="-25.0"
+              :grade="-25"
               icon="badge"
               type="rounded"
               weight="200.0"/>
@@ -78,7 +82,7 @@
       <template #icon>
         <el-icon size="20">
           <GSymbol
-          grade="-25.0"
+          :grade="-25"
           icon="logout"
           type="rounded"
           weight="200.0"/>

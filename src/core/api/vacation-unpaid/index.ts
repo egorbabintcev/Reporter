@@ -19,17 +19,17 @@ export default function useVacationUnpaidApi() {
   }
 
   async function createVacationUnpaid(vacation: TNewVacationUnpaid) {
-    const response = await axios.post<TRawCreatedVacationUnpaid>(`/api/v1/vacations`, vacationAdapter.convertVacationUnpaidToAPI(vacation));
+    const response = await axios.post<TRawCreatedVacationUnpaid>(`/api/v1/vacations_unpaid`, vacationAdapter.convertVacationUnpaidToAPI(vacation));
 
     return vacationAdapter.convertCreatedVacationUnpaidFromAPI(response.data);
   }
 
   async function updateVacationUnpaid(id: TVacationUnpaid['id'], vacation: TNewVacationUnpaid) {
-    await axios.put<void>(`/api/v1/vacations/${id}`, vacation);
+    await axios.put<void>(`/api/v1/vacations_unpaid/${id}`, vacation);
   }
 
   async function deleteVacationUnpaid(id: TVacationUnpaid['id']) {
-    await axios.delete<void>(`/api/v1/vacations/${id}`);
+    await axios.delete<void>(`/api/v1/vacations_unpaid/${id}`);
   }
 
   return {

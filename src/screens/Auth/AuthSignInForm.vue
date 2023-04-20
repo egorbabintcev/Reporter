@@ -1,7 +1,7 @@
 <template>
   <div class="auth-form">
     <form
-    @submit.prevent
+    @submit.prevent="signInHandler"
     class="auth-form__inputs">
       <div class="section-16">
         <div class="section-12">

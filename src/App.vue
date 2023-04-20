@@ -10,6 +10,8 @@
         </transition>
       </router-view>
     </div>
+
+    <bug-report-widget/>
   </div>
 </template>
 
@@ -18,11 +20,13 @@
   import { useRoute } from 'vue-router';
 
   import TheMenu from '@/components/TheMenu/index.vue';
+  import BugReportWidget from '@/components/BugReportWidget.vue';
 
   export default defineComponent({
     name: 'App',
     components: {
       TheMenu,
+      BugReportWidget,
     },
     setup() {
       const route = useRoute();

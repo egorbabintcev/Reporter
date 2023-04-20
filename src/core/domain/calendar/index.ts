@@ -1,6 +1,6 @@
 import { UniqueId, UnixTimestamp } from '@/shared-kernel';
 
-export type TCalendarEventType = 'day_off' | 'sick_leave' | 'vacation_paid' | 'vacation_unpaid'
+export type TCalendarEventType = 'day_off' | 'sick_leave' | 'vacations_paid' | 'vacations_unpaid'
 
 export type TCalendarEvent = {
   id: UniqueId
@@ -10,7 +10,7 @@ export type TCalendarEvent = {
   dateTo: UnixTimestamp
 }
 
-export type TRawCalendarEventType = 'day_off' | 'sick_leave' | 'vacation_paid' | 'vacation_unpaid'
+export type TRawCalendarEventType = 'day_off' | 'sick_leave' | 'vacations_paid' | 'vacations_unpaid'
 
 export type TRawCalendarEvent = {
   id: UniqueId

@@ -30,9 +30,17 @@
         class="non-working-days-create-card">
           <el-button
           @click="createMode = true"
-          :icon="CirclePlus"
           plain
           type="primary">
+            <template #icon>
+              <el-icon>
+                <g-symbol
+                :grade="-25"
+                icon="add_circle_outline"
+                weight="400.0"/>
+              </el-icon>
+            </template>
+
             Добавить
           </el-button>
         </div>
@@ -40,19 +48,14 @@
         <Card
         v-if="createMode"
         @cancel="createMode = false"
-        @save="createMode = false"
+        @save="createHandler"
         initial-mode="edit"/>
 
         <Card
-        :date-from="dayjs()"
-        :date-to="dayjs()"
-        :on-delete="deleteHandler"
-        type="day_off"/>
-
-        <Card
-        :date-from="dayjs()"
-        :date-to="dayjs()"
-        type="vacation_paid"/>
+        v-for="(event, index) in mappedEventList"
+        @delete="deleteHandler(event)"
+        :data="event"
+        :key="index"/>
       </div>
     </div>
   </div>
@@ -63,25 +66,34 @@
     computed, defineComponent, reactive, ref, watch,
   } from 'vue';
   import { storeToRefs } from 'pinia';
-  import dayjs from 'dayjs';
+  import dayjs, { Dayjs } from 'dayjs';
 
   import { ElMessage } from 'element-plus';
-  import { CirclePlus } from '@element-plus/icons-vue';
 
   import Card from './Card.vue';
 
-  import useSickLeaveApi from '@/core/api/sick-leave';
+  import { TCalendarEvent } from '@/core/domain/calendar';
+
   import useVacationPaidApi from '@/core/api/vacation-paid';
+  import useVacationUnpaidApi from '@/core/api/vacation-unpaid';
+  import useSickLeaveApi from '@/core/api/sick-leave';
+  import useDayOffApi from '@/core/api/day-off';
   import useCalendarApi from '@/core/api/calendar';
 
   import useCalendarStore from '@/core/store/calendar';
+  import { GSymbol } from 'vue-material-symbols';
 
   export default defineComponent({
     name: 'NonWorkingDaysScreen',
     components: {
+      GSymbol,
       Card,
     },
     setup() {
+      const vacationPaidApi = useVacationPaidApi();
+      const vacationUnpaidApi = useVacationUnpaidApi();
+      const sickLeaveApi = useSickLeaveApi();
+      const dayOffApi = useDayOffApi();
       const calendarApi = useCalendarApi();
 
       const calendarStore = useCalendarStore();
@@ -90,7 +102,7 @@
       const createMode = ref(false);
 
       const form = reactive({
-        type: ['vacation', 'sick_leave', 'day_off'],
+        type: ['vacations_paid', 'vacations_unpaid', 'sick_leave', 'day_off'],
         month: dayjs(),
       });
 
@@ -114,8 +126,12 @@
 
       const optionList = [
         {
-          label: 'Отпуск',
-          value: 'vacation',
+          label: 'Отпуск (оплачиваемый)',
+          value: 'vacations_paid',
+        },
+        {
+          label: 'Отпуск (за свой счет)',
+          value: 'vacations_unpaid',
         },
         {
           label: 'Больничный',
@@ -152,22 +168,62 @@
 
       const mappedEventList = computed(() => {
         return filteredEventList.value.map((event) => ({
+          id: event.id,
           type: event.type,
           dateFrom: dayjs(event.dateFrom),
           dateTo: dayjs(event.dateTo),
         }));
       });
 
-      function deleteHandler() {
-        return new Promise((res) => {
-          setTimeout(() => {
-            res(null);
+      async function createHandler(data: {
+        type: 'vacations_paid' | 'vacations_unpaid' | 'sick_leave' | 'day_off'
+        dateFrom: Dayjs
+        dateTo: Dayjs
+      }) {
+        switch (data.type) {
+        case 'vacations_paid':
+          await vacationPaidApi.createVacationPaid({
+            dateFrom: data.dateFrom.unix() * 1000,
+            dateTo: data.dateTo.unix() * 1000,
+            description: '',
+          });
+          break;
+        case 'vacations_unpaid':
+          await vacationUnpaidApi.createVacationUnpaid({
+            dateFrom: data.dateFrom.unix() * 1000,
+            dateTo: data.dateTo.unix() * 1000,
+            description: '',
+          });
+          break;
+        default:
+          break;
+        }
 
-            ElMessage({
-              message: 'Successfuly deleted',
-            });
-          }, 3000);
-        });
+        createMode.value = false;
+        await fetchCalendarEventList();
+      }
+
+      async function deleteHandler(event: TCalendarEvent) {
+        console.log(event.id);
+
+        switch (event.type) {
+        case 'vacations_paid':
+          await vacationPaidApi.deleteVacationPaid(event.id);
+          break;
+        case 'vacations_unpaid':
+          await vacationUnpaidApi.deleteVacationUnpaid(event.id);
+          break;
+        case 'day_off':
+          await dayOffApi.deleteDayOff(event.id);
+          break;
+        case 'sick_leave':
+          await sickLeaveApi.deleteSickLeave(event.id);
+          break;
+        default:
+          break;
+        }
+
+        await fetchCalendarEventList();
       }
 
       return {
@@ -179,11 +235,10 @@
         filteredEventList,
         mappedEventList,
 
+        createHandler,
         deleteHandler,
 
         dayjs,
-
-        CirclePlus,
       };
     },
   });
