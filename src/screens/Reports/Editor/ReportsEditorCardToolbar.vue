@@ -152,15 +152,15 @@
         password: string
         recipients: string
       }>({
-        email: localStorage.getItem('emailFormFieldEmail') ?? '',
-        password: localStorage.getItem('emailFormFieldPassword') ?? '',
-        recipients: localStorage.getItem('emailFormFieldRecipients') ?? '',
+        email: localStorage.getItem('ReporterEmailFormFieldEmail') ?? '',
+        password: localStorage.getItem('ReporterEmailFormFieldPassword') ?? '',
+        recipients: localStorage.getItem('ReporterEmailFormFieldRecipients') ?? '',
       });
 
       watch(emailForm, () => {
-        localStorage.setItem('emailFormFieldEmail', emailForm.email);
-        localStorage.setItem('emailFormFieldPassword', emailForm.password);
-        localStorage.setItem('emailFormFieldRecipients', emailForm.recipients);
+        localStorage.setItem('ReporterEmailFormFieldEmail', emailForm.email);
+        localStorage.setItem('ReporterEmailFormFieldPassword', emailForm.password);
+        localStorage.setItem('ReporterEmailFormFieldRecipients', emailForm.recipients);
       });
 
       function mailHandler() {
