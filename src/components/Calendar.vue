@@ -219,7 +219,17 @@
   }
 
   .calendar-content {
+    padding-bottom: 8px;
+  }
+
+  .calendar-content-legend {
     padding: 8px 0;
+
+    background-color: #f5f7fa;
+  }
+
+  .calendar-content-legend-day__text {
+    color: rgba(0 0 0 / 54%);
   }
 
   .calendar-content-days {
@@ -259,7 +269,7 @@
   }
 
   .calendar-content-day--transparent--semi {
-    opacity: 0.5;
+    opacity: 0.4;
   }
 
   .calendar-content-day-event {

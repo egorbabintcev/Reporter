@@ -1,5 +1,9 @@
 <template>
-  <div class="reports-screen">
+  <div
+  class="reports-screen flex--dir--horizontal flex--grow"
+  :class="{
+    'flex--dir--horizontal-reversed': sidebarPosition === 'right'
+  }">
     <reports-sidebar/>
 
     <reports-editor/>
@@ -7,7 +11,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { computed, defineComponent } from 'vue';
+  import { storeToRefs } from 'pinia';
+
+  import usePreferencesStore from '@/store/preferences';
 
   import ReportsEditor from './Editor/index.vue';
   import ReportsSidebar from './Sidebar/index.vue';
@@ -18,13 +25,21 @@
       ReportsEditor,
       ReportsSidebar,
     },
+    setup() {
+      const preferencesStore = usePreferencesStore();
+      const preferencesStoreRefs = storeToRefs(preferencesStore);
+
+      const sidebarPosition = computed(() => {
+        return preferencesStoreRefs.preferences.value.sidebarPosition;
+      });
+
+      return {
+        sidebarPosition,
+      };
+    },
   });
 </script>
 
 <style lang="scss">
-  .reports-screen {
-    display: flex;
-    flex-flow: row nowrap;
-    flex-grow: 1;
-  }
+
 </style>

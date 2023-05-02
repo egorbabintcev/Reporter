@@ -3,6 +3,11 @@
   flex-direction: row;
 }
 
+.flex--dir--horizontal-reversed {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .flex--dir--vertical {
   display: flex;
   flex-direction: column;

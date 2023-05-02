@@ -1,5 +1,9 @@
 <template>
-  <div class="reports-sidebar">
+  <div
+  class="reports-sidebar"
+  :class="{
+    'reports-sidebar--rightside': sidebarPosition === 'right',
+  }">
     <div class="section-24">
       <reports-sidebar-calendar/>
 
@@ -9,7 +13,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { computed, defineComponent } from 'vue';
+  import { storeToRefs } from 'pinia';
+
+  import usePreferencesStore from '@/store/preferences';
 
   import ReportsSidebarCalendar from './ReportsSidebarCalendar.vue';
   import ReportsSidebarStats from './ReportsSidebarStats.vue';
@@ -19,6 +26,18 @@
     components: {
       ReportsSidebarCalendar,
       ReportsSidebarStats,
+    },
+    setup() {
+      const preferencesStore = usePreferencesStore();
+      const preferencesStoreRefs = storeToRefs(preferencesStore);
+
+      const sidebarPosition = computed(() => {
+        return preferencesStoreRefs.preferences.value.sidebarPosition;
+      });
+
+      return {
+        sidebarPosition,
+      };
     },
   });
 </script>
@@ -32,5 +51,9 @@
     padding: 16px;
 
     border-right: 1px solid rgba(0 0 0 / 14%);
+  }
+
+  .reports-sidebar--rightside {
+    border-left: 1px solid rgba(0 0 0 / 14%);
   }
 </style>

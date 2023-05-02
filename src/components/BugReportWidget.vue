@@ -64,12 +64,6 @@
 </script>
 
 <style lang="scss">
-  .bug-report-widget {
-    position: fixed;
-    left: 20px;
-    bottom: 20px;
-  }
-
   .bug-report-widget__text {
     line-height: 1.3;
     text-align: left;
