@@ -1,8 +1,25 @@
 <template>
-  <CalendarComponent
-  v-model:modelValue="selectedDate"
-  @panel-change="selectedPanel = $event"
-  :events="events"/>
+  <div class="section-16">
+    <CalendarComponent
+    v-model:modelValue="selectedDate"
+    @panel-change="selectedPanel = $event"
+    :events="events"/>
+
+    <el-button
+    @click="generateAndCopyMonthReportHandler">
+      <template #icon>
+        <el-icon size="18">
+          <g-symbol
+          fill
+          :grade="-25"
+          icon="content_copy"
+          type="outlined"/>
+        </el-icon>
+      </template>
+
+      Скопировать отчет за месяц
+    </el-button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,10 +40,16 @@
   import useLaborCalendarStore from '@/store/labor-calendar';
 
   import CalendarComponent from '@/components/Calendar.vue';
+  import { GSymbol } from 'vue-material-symbols';
+  import { getTimeStringFromDate } from '@/core/utils/time';
+  import { ElMessage } from 'element-plus';
 
   export default defineComponent({
     name: 'ReportsSidebarCalendar',
-    components: { CalendarComponent },
+    components: {
+      GSymbol,
+      CalendarComponent,
+    },
     setup() {
       const router = useRouter();
 
@@ -66,6 +89,30 @@
         });
       }
 
+      async function generateAndCopyMonthReportHandler() {
+        let resultString = '';
+
+        const startOfMonth = selectedDate.value.startOf('month');
+        const endOfMonth = selectedDate.value.endOf('month');
+
+        for (let cur = startOfMonth; cur.isBefore(endOfMonth, 'day'); cur = cur.add(1, 'day')) {
+          const report = monthReportsStore.reports.find((item) => cur.isSame(item.date * 1000, 'date'));
+
+          if (report) {
+            const startTimeString = getTimeStringFromDate(new Date(report.start_time * 1000));
+            const endTimeString = getTimeStringFromDate(new Date(report.end_time * 1000));
+            const breakTimeString = getTimeStringFromDate(new Date(report.break_time * 1000));
+            resultString += `${startTimeString}\t${endTimeString}\t${breakTimeString}\n`;
+          } else {
+            resultString += '\n';
+          }
+        }
+
+        await navigator.clipboard.writeText(resultString);
+
+        ElMessage.success('Скопировано в буфер обмена');
+      }
+
       onBeforeMount(() => {
         monthLaborCalendarStore.fetchLaborCalendarForPeriod(selectedDate.value, 'month');
         monthStatsStore.fetchStatsForPeriod(selectedDate.value, 'month');
@@ -86,6 +133,8 @@
         selectedDate,
         selectedPanel,
         events,
+
+        generateAndCopyMonthReportHandler,
       };
     },
   });
