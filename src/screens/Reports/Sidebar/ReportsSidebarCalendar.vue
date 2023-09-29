@@ -43,6 +43,7 @@
   import { GSymbol } from 'vue-material-symbols';
   import { getTimeStringFromDate } from '@/core/utils/time';
   import { ElMessage } from 'element-plus';
+  import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
   export default defineComponent({
     name: 'ReportsSidebarCalendar',
@@ -95,7 +96,7 @@
         const startOfMonth = selectedDate.value.startOf('month');
         const endOfMonth = selectedDate.value.endOf('month');
 
-        for (let cur = startOfMonth; cur.isBefore(endOfMonth, 'day'); cur = cur.add(1, 'day')) {
+        for (let cur = startOfMonth; cur.isSameOrBefore(endOfMonth, 'day'); cur = cur.add(1, 'day')) {
           const report = monthReportsStore.reports.find((item) => cur.isSame(item.date * 1000, 'date'));
 
           if (report) {
