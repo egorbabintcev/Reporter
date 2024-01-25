@@ -1,66 +1,21 @@
 <template>
-  <div class="flex--dir--vertical flex--gap--16">
-    <h3 class="reports-sidebar-stats__title">
-      Статистика за выбранный месяц
-    </h3>
+  <div class="reports-sidebar-stats flex--dir--vertical flex--gap--12">
+    <p class="reports-sidebar-stats__subtitle">
+      Отработанное время (ч):
+    </p>
 
-    <div class="flex--dir--vertical flex--gap--12">
-      <div class="reports-sidebar-stats-data flex--dir--horizontal flex--gap--8 flex--align--center">
-        <strong>
-          Часов отработано:
-        </strong>
+    <p class="reports-sidebar-stats__title">
+      {{ totalWorkHours }} / {{ totalAvailableWorkHours }}
+    </p>
 
-        <span>
-          {{ totalWorkHours }} / {{ totalAvailableWorkHours }}
-        </span>
-      </div>
-
-      <!--
-      <div class="row-8">
-        <strong>
-          Среднее время начала:
-        </strong>
-
-        <span>
-          {{ averageStartTime }}
-        </span>
-      </div>
-      -->
-
-      <!--
-      <div class="row-8">
-        <strong>
-          Среднее время окончания:
-        </strong>
-
-        <span>
-          {{ averageEndTime }}
-        </span>
-      </div>
-      -->
-
-      <div class="reports-sidebar-stats-data flex--dir--horizontal flex--gap--8 flex--align--center">
-        <strong>
-          Среднее время работы:
-        </strong>
-
-        <span>
-          {{ averageWorkTime }}
-        </span>
-      </div>
-
-      <!--
-      <div class="row-8">
-        <strong>
-          Среднее время перерыва:
-        </strong>
-
-        <span>
-          {{ averageBreakTime }}
-        </span>
-      </div>
-      -->
-    </div>
+    <p class="reports-sidebar-stats__subtitle">
+      Резерв часов: <span
+      class="reports-sidebar-stats__subtitle-count"
+      :class="{
+        'reports-sidebar-stats__subtitle-count--success': hoursDiff > 0,
+        'reports-sidebar-stats__subtitle-count--danger': hoursDiff < 0,
+      }">{{ hoursDiff }}</span>
+    </p>
   </div>
 </template>
 
@@ -81,6 +36,9 @@
       const laborCalendarStore = useLaborCalendarStore('month-labor-calendar');
       const laborCalendarStoreRefs = storeToRefs(laborCalendarStore);
 
+      const currentLaborCalendarStore = useLaborCalendarStore('current-labor-calendar');
+      const currentLaborCalendarStoreRefs = storeToRefs(currentLaborCalendarStore);
+
       const totalWorkHours = computed(() => {
         if (statsStoreRefs.stats.value) {
           return Math.round(((statsStoreRefs.stats.value.hours_worked ?? 0) / 60 / 60) * 10) / 10;
@@ -95,6 +53,18 @@
         }
 
         return 0;
+      });
+
+      const currentAvailableWorkHours = computed(() => {
+        if (currentLaborCalendarStoreRefs.laborCalendar.value) {
+          return currentLaborCalendarStoreRefs.laborCalendar.value.totalWorkingDays * 8;
+        }
+
+        return 0;
+      });
+
+      const hoursDiff = computed(() => {
+        return Math.round((totalWorkHours.value - (currentAvailableWorkHours.value || totalAvailableWorkHours.value)) * 10) / 10;
       });
 
       /*
@@ -144,9 +114,11 @@
       return {
         totalWorkHours,
         totalAvailableWorkHours,
+        currentAvailableWorkHours,
         // averageStartTime,
         // averageEndTime,
         averageWorkTime,
+        hoursDiff,
         // averageBreakTime,
       };
     },
@@ -154,16 +126,33 @@
 </script>
 
 <style lang="scss">
-  .reports-sidebar-stats__title {
-    color: rgba(0 0 0 / 64%);
-    font-weight: 700;
+  .reports-sidebar-stats {
+    padding: 8px 12px;
+
+    border: 1px solid rgba(0 0 0 / 14%);
   }
 
-  .reports-sidebar-stats-data {
-    strong {
-      color: rgba(0 0 0 / 87%);
-      font-weight: 700;
-      font-size: 14px;
-    }
+  .reports-sidebar-stats__subtitle {
+    color: rgba(0 0 0 / 64%);
+    font-size: 14px;
+  }
+
+  .reports-sidebar-stats__subtitle-count {
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .reports-sidebar-stats__subtitle-count--success {
+    color: var(--el-color-success);
+  }
+
+  .reports-sidebar-stats__subtitle-count--danger {
+    color: var(--el-color-danger);
+  }
+
+  .reports-sidebar-stats__title {
+    color: rgba(0 0 0 / 87%);
+    font-weight: 500;
+    font-size: 18px;
   }
 </style>

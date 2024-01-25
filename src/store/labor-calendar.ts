@@ -16,13 +16,12 @@ export default function useLaborCalendarStore(storeId = 'labor-calendar') {
       laborCalendar: null,
     }),
     actions: {
-      // TODO: refactor this, pls)
-      async fetchLaborCalendarForPeriod(date: Dayjs, unit: OpUnitType) {
+      async fetchLaborCalendar(fromDate: Dayjs, toDate: Dayjs) {
         const url = `https://isdayoff.ru/api/getdata`;
 
         const params = {
-          date1: date.startOf(unit).format('YYYYMMDD'),
-          date2: date.endOf(unit).format('YYYYMMDD'),
+          date1: fromDate.format('YYYYMMDD'),
+          date2: toDate.format('YYYYMMDD'),
         };
 
         const response = await axios.get<string>(url, {
@@ -34,15 +33,16 @@ export default function useLaborCalendarStore(storeId = 'labor-calendar') {
           },
         });
 
-        console.log(response);
-
         this.laborCalendar = {
           totalWorkingDays: response.data
-          .split('')
-          .map(Number)
-          .filter((num) => num === 0)
-          .length,
+            .split('')
+            .map(Number)
+            .filter((num) => num === 0)
+            .length,
         };
+      },
+      async fetchLaborCalendarForPeriod(date: Dayjs, unit: OpUnitType) {
+        await this.fetchLaborCalendar(date.startOf(unit), date.endOf(unit));
       },
     },
   })();

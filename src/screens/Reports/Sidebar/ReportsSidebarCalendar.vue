@@ -60,6 +60,7 @@
       const monthStatsStore = useStatsStore('month-stats');
 
       const monthLaborCalendarStore = useLaborCalendarStore('month-labor-calendar');
+      const currentLaborCalendarStore = useLaborCalendarStore('current-labor-calendar');
 
       const reportsScreenStore = useReportsScreenStore();
       const reportsScreenStoreRefs = storeToRefs(reportsScreenStore);
@@ -115,6 +116,13 @@
       }
 
       onBeforeMount(() => {
+        const today = dayjs();
+        const endOfSelectedMonth = selectedDate.value.endOf('month');
+
+        if (today.isBefore(endOfSelectedMonth, 'day')) {
+          currentLaborCalendarStore.fetchLaborCalendar(selectedDate.value.startOf('month'), today);
+        }
+
         monthLaborCalendarStore.fetchLaborCalendarForPeriod(selectedDate.value, 'month');
         monthStatsStore.fetchStatsForPeriod(selectedDate.value, 'month');
         monthReportsStore.fetchReportListForTimePeriod(selectedDate.value, 'month')
@@ -124,6 +132,16 @@
       watch(selectedDate, setSelectedDateReportToDayReport);
 
       watch(selectedPanel, () => {
+        const today = dayjs();
+        const startOfSelectedMonth = selectedDate.value.startOf('month');
+        const endOfSelectedMonth = selectedDate.value.endOf('month');
+
+        if (today.isBefore(endOfSelectedMonth, 'day') && !today.isBefore(startOfSelectedMonth, 'day')) {
+          currentLaborCalendarStore.fetchLaborCalendar(selectedDate.value.startOf('month'), today);
+        } else {
+          currentLaborCalendarStore.$reset();
+        }
+
         monthLaborCalendarStore.fetchLaborCalendarForPeriod(selectedDate.value, 'month');
         monthStatsStore.fetchStatsForPeriod(selectedDate.value, 'month');
         monthReportsStore.fetchReportListForTimePeriod(selectedDate.value, 'month')
