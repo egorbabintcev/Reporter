@@ -2,7 +2,6 @@
   <reports-editor-card-toolbar
   @copy="copyHandler"
   @delete="deleteHandler"
-  @mail="mailHandler"
   @save="notifiedSaveHandler"/>
 
   <reports-editor-card-form
@@ -24,15 +23,12 @@
   import { ElMessage } from 'element-plus';
   import { useRouter } from 'vue-router';
 
-  import Logger from '@/core/utils/logger';
-  import { getDateFromTimeString } from '@/core/utils/time';
+  import Logger from '@/utils/logger';
+  import { getDateFromTimeString } from '@/utils/time';
 
   import useReportsStore, { parseReport } from '@/store/reports';
   import useReportsEditorStore from '@/screens/Reports/Editor/useReportsEditorStore';
   import useReportsScreenStore from '@/screens/Reports/useReportsScreenStore';
-
-  // TODO: legacy style, refactor
-  import useEmailApi from '@/core/api/email';
 
   import ReportsEditorCardToolbar from './ReportsEditorCardToolbar.vue';
   import ReportsEditorCardForm from './ReportsEditorCardForm.vue';
@@ -63,8 +59,6 @@
       const reportsEditorStoreRefs = storeToRefs(reportsEditorStore);
 
       const reportsScreenStore = useReportsScreenStore();
-
-      const emailApi = useEmailApi();
 
       async function initHandler() {
         Logger.debug(`Fetching data for report ${props.reportId}`);
@@ -234,36 +228,6 @@
         ElMessage.success('Скопировано в буфер обмена');
       }
 
-      async function mailHandler(payload: {
-        email: string
-        password: string
-        recipients: string
-      }) {
-        if (!dayReportsStore.report) return;
-
-        await saveHandler();
-
-        Logger.debug('Mail handler');
-
-        const {
-          html,
-        } = parseReport(dayReportsStore.report);
-
-        try {
-          await emailApi.sendEmail({
-            email: payload.email,
-            password: payload.password,
-            recipients: payload.recipients.split(',').map((value) => value.trim()).filter(Boolean),
-            subject: `ОТЧЕТ О РАБОТЕ ЗА ДЕНЬ ${dayjs(dayReportsStore.report.date * 1000).format('DD.MM.YYYY')}`,
-            body: html,
-          });
-
-          ElMessage.success('Отчет успешно отправлен на почту');
-        } catch {
-          ElMessage.error('Упс, при отправке что-то пошло не так');
-        }
-      }
-
       async function deleteHandler() {
         const { report } = dayReportsStore;
 
@@ -285,7 +249,6 @@
       return {
         notifiedSaveHandler,
         copyHandler,
-        mailHandler,
         deleteHandler,
 
         startTime,

@@ -43,9 +43,9 @@
   import { computed, defineComponent, reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
 
-  import { AuthSignInPayload } from '@/core/domain/auth';
-  import useAuthApi from '@/core/api/auth';
-  import useAuthStore from '@/core/store/auth';
+  import { AuthSignInPayload } from '@/_core/domain/auth';
+  import useAuthApi from '@/_core/api/auth';
+  import useAuthStore from '@/_core/store/auth';
 
   import AuthFormInput from './AuthFormInput.vue';
 

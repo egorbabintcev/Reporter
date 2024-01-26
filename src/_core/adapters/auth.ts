@@ -1,8 +1,8 @@
 import {
   AuthSignInPayload, AuthSignUpPayload,
   RawAuthSignInPayload, RawAuthSignUpPayload,
-} from '@/core/domain/auth';
-import convertObject from '@/core/utils/convertObject';
+} from '@/_core/domain/auth';
+import convertObject from '@/utils/convertObject';
 
 export default function useAuthAdapter() {
   function convertAuthSignInPayloadToAPI(payload: AuthSignInPayload): RawAuthSignInPayload {

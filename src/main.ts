@@ -2,7 +2,7 @@ import '@/styles/index.scss';
 
 import { createApp } from 'vue';
 
-import store from '@/core/store';
+import store from '@/store';
 import router from '@/router';
 
 import App from './App.vue';

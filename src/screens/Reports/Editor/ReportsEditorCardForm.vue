@@ -72,7 +72,7 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
 
-  import { timeStringFormatter } from '@/core/utils/time';
+  import { timeStringFormatter } from '@/utils/time';
 
   import WysiwigEditor from '@/components/WysiwigEditor.vue';
 

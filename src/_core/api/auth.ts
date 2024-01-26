@@ -3,8 +3,8 @@ import {
   AuthSignInPayload,
   AuthSignUpPayload,
   AuthToken,
-} from '@/core/domain/auth';
-import useAuthAdapter from '@/core/adapters/auth';
+} from '@/_core/domain/auth';
+import useAuthAdapter from '@/_core/adapters/auth';
 
 export default function useAuthApi() {
   const authAdapter = useAuthAdapter();

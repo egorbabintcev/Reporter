@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
-import useAuthStore from '@/core/store/auth';
+import useAuthStore from '@/_core/store/auth';
 
 export default function setupAxiosInterceptors() {
   const authStore = useAuthStore();

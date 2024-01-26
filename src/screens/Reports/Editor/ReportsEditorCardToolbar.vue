@@ -6,7 +6,7 @@
 
     <div class="flex--dir--horizontal flex--gap--12">
       <el-button
-      @click="saveHandler({ silent: false})"
+      @click="saveHandler"
       size="large">
         <template #icon>
           <el-icon
@@ -15,21 +15,6 @@
             fill
             :grade="-25"
             icon="save"
-            type="outlined"/>
-          </el-icon>
-        </template>
-      </el-button>
-
-      <el-button
-      @click="showMailPopup = true"
-      size="large">
-        <template #icon>
-          <el-icon
-          size="24">
-            <GSymbol
-            fill
-            :grade="-25"
-            icon="mail"
             type="outlined"/>
           </el-icon>
         </template>
@@ -67,46 +52,6 @@
         </template>
       </el-button>
     </div>
-
-    <el-dialog
-    v-model="showMailPopup"
-    align-center
-    cancel-text="Отмена"
-    centered
-    title="Отправить отчет по почте"
-    width="520">
-      <div class="section-16">
-        <el-input
-        v-model="emailForm.email"
-        placeholder="Ваша почта"
-        size="large"/>
-
-        <el-input
-        v-model="emailForm.password"
-        placeholder="Пароль"
-        show-password
-        size="large"/>
-
-        <el-input
-        v-model="emailForm.recipients"
-        placeholder="Получатели (через запятую)"
-        size="large"/>
-      </div>
-
-      <template #footer>
-        <div class="flex--dir--horizontal flex--align--center flex--justify--end flex--gap--8">
-          <el-button @click="showMailPopup = false">
-            Отмена
-          </el-button>
-
-          <el-button
-          @click="mailHandler"
-          type="primary">
-            Сохранить и отправить
-          </el-button>
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
@@ -146,29 +91,6 @@
         context.emit('save');
       }
 
-      const showMailPopup = ref<boolean>(false);
-      const emailForm = reactive<{
-        email: string
-        password: string
-        recipients: string
-      }>({
-        email: localStorage.getItem('ReporterEmailFormFieldEmail') ?? '',
-        password: localStorage.getItem('ReporterEmailFormFieldPassword') ?? '',
-        recipients: localStorage.getItem('ReporterEmailFormFieldRecipients') ?? '',
-      });
-
-      watch(emailForm, () => {
-        localStorage.setItem('ReporterEmailFormFieldEmail', emailForm.email);
-        localStorage.setItem('ReporterEmailFormFieldPassword', emailForm.password);
-        localStorage.setItem('ReporterEmailFormFieldRecipients', emailForm.recipients);
-      });
-
-      function mailHandler() {
-        context.emit('mail', emailForm);
-
-        showMailPopup.value = false;
-      }
-
       function copyHandler() {
         context.emit('copy');
       }
@@ -191,12 +113,8 @@
         titleText,
 
         saveHandler,
-        mailHandler,
         copyHandler,
         deleteHandler,
-
-        showMailPopup,
-        emailForm,
       };
     },
   });

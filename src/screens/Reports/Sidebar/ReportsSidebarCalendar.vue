@@ -41,7 +41,7 @@
 
   import CalendarComponent from '@/components/Calendar.vue';
   import { GSymbol } from 'vue-material-symbols';
-  import { getTimeStringFromDate } from '@/core/utils/time';
+  import { getTimeStringFromDate } from '@/utils/time';
   import { ElMessage } from 'element-plus';
   import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 

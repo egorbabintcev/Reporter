@@ -13,7 +13,7 @@
               :grade="-25"
               icon="home"
               type="rounded"
-              weight="200.0"/>
+              :weight="200"/>
             </el-icon>
 
             <p class="app-menu-button__text">
@@ -29,7 +29,7 @@
               :grade="-25"
               icon="business_center"
               type="rounded"
-              weight="200.0"/>
+              :weight="200"/>
             </el-icon>
 
             <p class="app-menu-button__text">
@@ -47,7 +47,7 @@
               :grade="-25"
               icon="cloud"
               type="rounded"
-              weight="200.0"/>
+              :weight="200"/>
             </el-icon>
 
             <p class="app-menu-button__text">
@@ -65,7 +65,7 @@
               :grade="-25"
               icon="badge"
               type="rounded"
-              weight="200.0"/>
+              :weight="200"/>
             </el-icon>
 
             <p class="app-menu-button__text">
@@ -85,7 +85,7 @@
           :grade="-25"
           icon="logout"
           type="rounded"
-          weight="200.0"/>
+          :weight="200"/>
         </el-icon>
       </template>
 
@@ -101,7 +101,7 @@
     watch,
   } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import useAuthStore from '@/core/store/auth';
+  import useAuthStore from '@/_core/store/auth';
 
   import { GSymbol } from 'vue-material-symbols';
 

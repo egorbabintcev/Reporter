@@ -2,7 +2,7 @@
   <div class="reports-editor">
     <reports-editor-card
     v-if="hasReport"
-    :report-id="$route.query.report_id"/>
+    :report-id="($route.query.report_id as string)"/>
 
     <reports-editor-blank
     v-else/>

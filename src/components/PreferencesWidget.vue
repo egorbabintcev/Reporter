@@ -10,7 +10,7 @@
           :grade="-25"
           icon="settings"
           type="rounded"
-          weight="400.0"/>
+          :weight="400"/>
         </el-icon>
       </template>
     </el-button>

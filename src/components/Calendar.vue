@@ -32,7 +32,7 @@
               <GSymbol
               :grade="-25"
               icon="keyboard_arrow_left"
-              weight="200.0"/>
+              :weight="200"/>
             </el-icon>
           </template>
         </el-button>
@@ -45,7 +45,7 @@
               <GSymbol
               :grade="-25"
               icon="keyboard_arrow_right"
-              weight="200.0"/>
+              :weight="200"/>
             </el-icon>
           </template>
         </el-button>

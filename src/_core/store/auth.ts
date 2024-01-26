@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { AuthToken } from '@/core/domain/auth';
+import { AuthToken } from '@/_core/domain/auth';
 
 type AuthState = {
   token: AuthToken | null

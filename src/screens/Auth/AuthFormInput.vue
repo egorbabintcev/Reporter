@@ -1,6 +1,6 @@
 <template>
   <div
-  v-bind="{ style: $attrs.style, class: $attrs.class }"
+  v-bind="bind"
   class="auth-form-input">
     <el-input
     @input="$emit('update:modelValue', $event)"
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, PropType, HTMLAttributes } from 'vue';
 
   export default defineComponent({
     name: 'AuthFormInput',
@@ -25,8 +25,13 @@
         default: () => '',
       },
       error: {
-        type: String,
-        default: () => null,
+        type: String as PropType<string | null>,
+        default: () => '',
+      },
+    },
+    computed: {
+      bind() {
+        return { style: this.$attrs.style, class: this.$attrs.class } as HTMLAttributes;
       },
     },
   });
