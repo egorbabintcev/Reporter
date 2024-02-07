@@ -3,7 +3,7 @@ import { AuthToken } from '@/_core/domain/auth';
 
 type AuthState = {
   token: AuthToken | null
-}
+};
 
 const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({

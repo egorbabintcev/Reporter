@@ -67,7 +67,7 @@
   .bug-report-widget__text {
     line-height: 1.3;
     text-align: left;
-    white-space: normal;
     word-break: normal;
+    white-space: normal;
   }
 </style>

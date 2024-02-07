@@ -84,8 +84,8 @@
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
   }
 
@@ -107,8 +107,8 @@
   }
 
   .reports-editor-blank__subtitle {
-    color: rgba(0 0 0 / 54%);
     font-size: 12px;
+    color: rgba(0 0 0 / 0.54);
   }
 
   .reports-editor-blank__button {

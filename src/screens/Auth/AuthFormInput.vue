@@ -5,7 +5,7 @@
     <el-input
     @input="$emit('update:modelValue', $event)"
     v-bind="{ ...$attrs, class: null, style: null }"
-    :model-value="modelValue"/>
+    :modelValue="modelValue"/>
 
     <p class="auth-form-input__error">
       {{ error }}
@@ -18,7 +18,6 @@
 
   export default defineComponent({
     name: 'AuthFormInput',
-    emits: ['update:modelValue'],
     props: {
       modelValue: {
         type: String,
@@ -29,6 +28,7 @@
         default: () => '',
       },
     },
+    emits: ['update:modelValue'],
     computed: {
       bind() {
         return { style: this.$attrs.style, class: this.$attrs.class } as HTMLAttributes;
@@ -47,13 +47,13 @@
   }
 
   .auth-form-input__error {
-    color: #ff4554;
-    font-size: 14px;
-    text-align: right;
-    line-height: 1;
-
     height: 14px;
     padding: 0 8px;
     margin: 0;
+
+    font-size: 14px;
+    line-height: 1;
+    color: #ff4554;
+    text-align: right;
   }
 </style>

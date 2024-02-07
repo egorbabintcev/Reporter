@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import axios from 'axios';
+import httpClient from '@/transport/http';
 
 type Profile = {
   id: string
   display_name: string
   login: string
-}
+};
 
 const useProfileStore = defineStore('profile', () => {
   const profile = ref<Profile | null>(null);
@@ -14,7 +14,7 @@ const useProfileStore = defineStore('profile', () => {
   async function fetchProfile() {
     const requestUrl = `/api/v1/profile`;
 
-    const response = await axios.get<Profile>(requestUrl);
+    const response = await httpClient.get<Profile>(requestUrl);
 
     profile.value = response.data;
   }

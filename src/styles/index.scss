@@ -1,12 +1,9 @@
-@use '~reset-css/sass/reset';
-
+@use 'node_modules/reset-css/sass/reset';
 @use '@/styles/fonts';
 @use '@/styles/sections';
 @use '@/styles/flex';
-
-@use '~element-plus/theme-chalk/src/index';
-
-@import '~@toast-ui/editor/dist/toastui-editor.css';
+@use 'node_modules/element-plus/theme-chalk/src/index';
+@use 'node_modules/@toast-ui/editor/dist/toastui-editor.css';
 
 :root {
   --el-font-family: 'Nunito', sans-serif;
@@ -23,7 +20,7 @@ textarea {
 }
 
 body {
-  font-family: 'Nunito', sans-serif !important;
+  font-family: Nunito, sans-serif !important;
 }
 
 .el-button + .el-button {

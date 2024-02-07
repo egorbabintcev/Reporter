@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import httpClient from '@/transport/http';
 import { UnixTimestamp } from '@/shared-kernel';
-import dayjs, { Dayjs, OpUnitType } from 'dayjs';
+import { Dayjs, OpUnitType } from 'dayjs';
 
 type Stats = {
   avg_hours_break: number
   avg_hours_worked: number
   avg_start_time: number
   hours_worked: number
-}
+};
 
 type State = {
   stats: Stats | null
-}
+};
 
 export default function useStatsStore(storeId = 'stats') {
   return defineStore(storeId, {
@@ -26,7 +26,7 @@ export default function useStatsStore(storeId = 'stats') {
       }) {
         const url = `/api/v1/stats`;
 
-        const response = await axios.get<Stats>(url, { params });
+        const response = await httpClient.get<Stats>(url, { params });
 
         this.stats = response.data;
       },

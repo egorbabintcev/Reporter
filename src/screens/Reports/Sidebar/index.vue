@@ -45,15 +45,15 @@
 <style lang="scss">
   .reports-sidebar {
     display: flex;
-    flex-flow: column nowrap;
     flex: 0 0 332px;
+    flex-flow: column nowrap;
 
     padding: 16px;
 
-    border-right: 1px solid rgba(0 0 0 / 14%);
+    border-right: 1px solid rgba(0 0 0 / 0.14);
   }
 
   .reports-sidebar--rightside {
-    border-left: 1px solid rgba(0 0 0 / 14%);
+    border-left: 1px solid rgba(0 0 0 / 0.14);
   }
 </style>

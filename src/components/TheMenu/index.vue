@@ -115,7 +115,7 @@
       const route = useRoute();
       const authStore = useAuthStore();
 
-      const activePage = ref(route.name);
+      const activePage = ref<string>(route.name?.toString() ?? '');
 
       watch(activePage, () => {
         if (activePage.value) {
@@ -149,7 +149,7 @@
   .app-menu {
     padding: 16px;
 
-    border-bottom: 1px solid rgba(0 0 0 / 14%);
+    border-bottom: 1px solid rgba(0 0 0 / 0.14);
   }
 
   .app-menu-button {
@@ -160,8 +160,8 @@
   }
 
   .app-menu-button__text {
-    font-size: 16px;
-
     margin: 0;
+
+    font-size: 16px;
   }
 </style>

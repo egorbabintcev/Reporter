@@ -23,7 +23,6 @@
   import { ElMessage } from 'element-plus';
   import { useRouter } from 'vue-router';
 
-  import Logger from '@/utils/logger';
   import { getDateFromTimeString } from '@/utils/time';
 
   import useReportsStore, { parseReport } from '@/store/reports';
@@ -36,15 +35,15 @@
 
   export default defineComponent({
     name: 'ReportsEditorCard',
-    components: {
-      ReportsEditorCardToolbar,
-      ReportsEditorCardForm,
-    },
     props: {
       reportId: {
         type: String as PropType<string>,
         required: true,
       },
+    },
+    components: {
+      ReportsEditorCardToolbar,
+      ReportsEditorCardForm,
     },
     setup(props) {
       const router = useRouter();
@@ -61,8 +60,6 @@
       const reportsScreenStore = useReportsScreenStore();
 
       async function initHandler() {
-        Logger.debug(`Fetching data for report ${props.reportId}`);
-
         await dayReportsStore.fetchReportById(props.reportId);
 
         const { report } = dayReportsStore;
@@ -73,8 +70,6 @@
       }
 
       onMounted(() => {
-        Logger.debug(`First mount of card for report ${props.reportId}`);
-
         initHandler();
       });
 
@@ -84,14 +79,10 @@
       });
 
       watch(() => props.reportId, () => {
-        Logger.debug(`Rerender card for report ${props.reportId}`);
-
         initHandler();
       });
 
       async function saveHandler() {
-        Logger.debug('Save handler');
-
         const { report } = dayReportsStore;
 
         if (!report) return;
@@ -202,8 +193,6 @@
         if (!dayReportsStore.report) return;
 
         await saveHandler();
-
-        Logger.debug('Copy handler');
 
         const {
           markdown,

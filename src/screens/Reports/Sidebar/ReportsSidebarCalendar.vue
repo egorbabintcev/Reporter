@@ -43,7 +43,6 @@
   import { GSymbol } from 'vue-material-symbols';
   import { getTimeStringFromDate } from '@/utils/time';
   import { ElMessage } from 'element-plus';
-  import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
   export default defineComponent({
     name: 'ReportsSidebarCalendar',
@@ -126,7 +125,8 @@
         monthLaborCalendarStore.fetchLaborCalendarForPeriod(selectedDate.value, 'month');
         monthStatsStore.fetchStatsForPeriod(selectedDate.value, 'month');
         monthReportsStore.fetchReportListForTimePeriod(selectedDate.value, 'month')
-          .then(setSelectedDateReportToDayReport);
+          .then(setSelectedDateReportToDayReport)
+          .catch(() => {});
       });
 
       watch(selectedDate, setSelectedDateReportToDayReport);
@@ -145,7 +145,8 @@
         monthLaborCalendarStore.fetchLaborCalendarForPeriod(selectedDate.value, 'month');
         monthStatsStore.fetchStatsForPeriod(selectedDate.value, 'month');
         monthReportsStore.fetchReportListForTimePeriod(selectedDate.value, 'month')
-          .then(setSelectedDateReportToDayReport);
+          .then(setSelectedDateReportToDayReport)
+          .catch(() => {});
       });
 
       return {

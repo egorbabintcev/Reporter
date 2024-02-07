@@ -2,11 +2,11 @@ import { defineStore } from 'pinia';
 
 type Preferences = {
   sidebarPosition: 'left' | 'right'
-}
+};
 
 type State = {
   preferences: Preferences
-}
+};
 
 const usePreferencesStore = defineStore('preferences', {
   state: (): State => ({

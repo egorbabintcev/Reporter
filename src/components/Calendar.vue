@@ -100,9 +100,6 @@
 
   export default defineComponent({
     name: 'CalendarComponent',
-    components: {
-      GSymbol,
-    },
     props: {
       modelValue: {
         type: Dayjs,
@@ -114,6 +111,9 @@
       },
     },
     emits: ['panel-change', 'update:modelValue'],
+    components: {
+      GSymbol,
+    },
     setup(props, context) {
       const today = ref<Dayjs>(dayjs());
       const current = ref<Dayjs>(props.modelValue);
@@ -146,7 +146,7 @@
       const dayList = computed<Dayjs[]>(() => {
         const res = [];
 
-        for (let i = 0; i < 42; i++) {
+        for (let i = 0; i < 42; i += 1) {
           res.push(
             current
               .value
@@ -174,10 +174,10 @@
 
       const monthList = computed(() => {
         const localeData = current.value.localeData();
-        const months = [];
+        const months: string[] = [];
 
-        for (let i = 0; i < 12; i++) {
-          months.push(localeData.monthsShort(current.value.month(i)));
+        for (let i = 0; i < 12; i += 1) {
+          months.push(localeData.monthsShort()[i]);
         }
 
         return months;
@@ -200,14 +200,14 @@
 
 <style lang="scss">
   .calendar {
-    border: 1px solid rgba(0 0 0 / 14%);
+    border: 1px solid rgba(0 0 0 / 0.14);
     border-radius: 6px;
   }
 
   .calendar-header {
     padding: 12px 8px;
 
-    border-bottom: 1px solid rgba(0 0 0 / 14%);
+    border-bottom: 1px solid rgba(0 0 0 / 0.14);
   }
 
   .calendar-header__year-select {
@@ -215,7 +215,7 @@
   }
 
   .calendar-header__month-select {
-    width: 80px;
+    width: 85px;
   }
 
   .calendar-content {
@@ -229,13 +229,13 @@
   }
 
   .calendar-content-legend-day__text {
-    color: rgba(0 0 0 / 54%);
+    color: rgba(0 0 0 / 0.54);
   }
 
   .calendar-content-days {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 40px);
+    grid-template-columns: repeat(7, 1fr);
   }
 
   .calendar-content-day-container {
@@ -243,25 +243,26 @@
   }
 
   .calendar-content-day {
-    font-size: 14px;
+
+    position: relative;
 
     width: 24px;
     height: 24px;
 
-    position: relative;
+    border-radius: 2px;
+
+    font-size: 14px;
 
     user-select: none;
-
-    border-radius: 2px;
 
     transition: 0.2s;
   }
 
   .calendar-content-day:not(.calendar-content-day--transparent--semi):hover,
   .calendar-content-day:not(.calendar-content-day--transparent--semi).calendar-content-day--active {
-    color: var(--el-color-white);
-
     background-color: var(--el-color-primary);
+
+    color: var(--el-color-white);
   }
 
   .calendar-content-day--bordered:not(.calendar-content-day--transparent--semi) {
@@ -273,15 +274,17 @@
   }
 
   .calendar-content-day-event {
-    width: 6px;
-    height: 6px;
 
     position: absolute;
     top: 0;
     left: 100%;
-    transform: translate(-50%, -50%);
+
+    width: 6px;
+    height: 6px;
 
     background-color: var(--el-color-success);
     border-radius: 50%;
+
+    transform: translate(-50%, -50%);
   }
 </style>

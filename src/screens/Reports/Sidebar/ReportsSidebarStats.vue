@@ -129,17 +129,17 @@
   .reports-sidebar-stats {
     padding: 8px 12px;
 
-    border: 1px solid rgba(0 0 0 / 14%);
+    border: 1px solid rgba(0 0 0 / 0.14);
   }
 
   .reports-sidebar-stats__subtitle {
-    color: rgba(0 0 0 / 64%);
     font-size: 14px;
+    color: rgba(0 0 0 / 0.64);
   }
 
   .reports-sidebar-stats__subtitle-count {
-    font-weight: 500;
     font-size: 16px;
+    font-weight: 500;
   }
 
   .reports-sidebar-stats__subtitle-count--success {
@@ -151,8 +151,8 @@
   }
 
   .reports-sidebar-stats__title {
-    color: rgba(0 0 0 / 87%);
-    font-weight: 500;
     font-size: 18px;
+    font-weight: 500;
+    color: rgba(0 0 0 / 0.87);
   }
 </style>

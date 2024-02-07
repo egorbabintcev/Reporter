@@ -11,7 +11,7 @@
           @update:model-value="$emit('update:startTime', $event)"
           class="reports-editor-form__input"
           :formatter="timeStringFormatter"
-          :model-value="startTime"
+          :modelValue="startTime"
           placeholder="__:__"
           size="large"/>
         </div>
@@ -25,7 +25,7 @@
           @update:model-value="$emit('update:endTime', $event)"
           class="reports-editor-form__input"
           :formatter="timeStringFormatter"
-          :model-value="endTime"
+          :modelValue="endTime"
           placeholder="__:__"
           size="large"/>
         </div>
@@ -39,7 +39,7 @@
           @update:model-value="$emit('update:breakTime', $event)"
           class="reports-editor-form__input"
           :formatter="timeStringFormatter"
-          :model-value="breakTime"
+          :modelValue="breakTime"
           placeholder="__:__"
           size="large"/>
         </div>
@@ -53,7 +53,7 @@
           @update:model-value="$emit('update:workTime', $event)"
           class="reports-editor-form__input"
           disabled
-          :model-value="workTime"
+          :modelValue="workTime"
           placeholder="__:__"
           size="large"/>
         </div>
@@ -62,7 +62,7 @@
       <div class="reports-editor-form-wysiwig">
         <WysiwigEditor
         @update:model-value="$emit('update:body', $event)"
-        :model-value="body"
+        :modelValue="body"
         placeholder="Напишите сюда о результатах и планах работы"/>
       </div>
     </div>
@@ -79,9 +79,6 @@
   export default defineComponent(
     {
       name: 'ReportsEditorForm',
-      components: {
-        WysiwigEditor,
-      },
       props: {
         startTime: {
           type: String as PropType<string>,
@@ -105,6 +102,9 @@
         },
       },
       emits: ['update:startTime', 'update:endTime', 'update:breakTime', 'update:workTime', 'update:body'],
+      components: {
+        WysiwigEditor,
+      },
       setup() {
         return {
           timeStringFormatter,
@@ -131,11 +131,11 @@
   }
 
   .reports-editor-form-label__text {
-    color: rgba(0 0 0 / 54%);
+    margin: 0;
+
     font-size: 14px;
     font-weight: 700;
-
-    margin: 0;
+    color: rgba(0 0 0 / 0.54);
   }
 
   .reports-editor-form__input {

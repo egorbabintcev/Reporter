@@ -9,11 +9,11 @@ type Form = {
   breakTime: string
   workTime: string
   body: string
-}
+};
 
 type State = {
   form: Form
-}
+};
 
 const useReportsEditorStore = defineStore('reports-editor', {
   state: (): State => ({

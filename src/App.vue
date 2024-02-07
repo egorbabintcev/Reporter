@@ -5,7 +5,9 @@
       v-if="showMenu"/>
 
       <router-view v-slot="{ Component }">
-        <transition mode="out-in" name="fade">
+        <transition
+        mode="out-in"
+        name="fade">
           <component :is="Component"/>
         </transition>
       </router-view>
@@ -91,12 +93,12 @@
 
   .app-widgets {
     position: fixed;
-    left: 20px;
     bottom: 20px;
+    left: 20px;
   }
 
   .app-widgets--rightside {
-    left: unset;
     right: 20px;
+    left: unset;
   }
 </style>

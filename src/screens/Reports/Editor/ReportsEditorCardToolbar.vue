@@ -58,9 +58,7 @@
 <script lang="ts">
   import {
     defineComponent,
-    ref,
-    reactive,
-    watch, computed,
+    computed,
   } from 'vue';
   import dayjs from 'dayjs';
   import { storeToRefs } from 'pinia';
@@ -71,11 +69,11 @@
 
   export default defineComponent({
     name: 'ReportsEditorToolbar',
+    emits: ['save', 'mail', 'copy', 'delete'],
     components: {
       GSymbol,
     },
-    emits: ['save', 'mail', 'copy', 'delete'],
-    setup(props, context) {
+    setup(_, context) {
       const dayReportsStore = useReportsStore('day-reports');
       const dayReportsStoreRefs = storeToRefs(dayReportsStore);
 
@@ -129,23 +127,23 @@
 
     padding: 12px 16px;
 
-    border-bottom: 1px solid rgba(0 0 0 / 14%);
+    border-bottom: 1px solid rgba(0 0 0 / 0.14);
   }
 
   .reports-editor-toolbar__title {
-    color: rgba(0 0 0 / 68%);
     font-size: 20px;
     font-weight: 600;
+    color: rgba(0 0 0 / 0.68);
   }
 
   .reports-editor-toolbar-button__icon {
-    font-size: 24px !important;
-
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
 
     width: 28px;
     height: 28px;
+
+    font-size: 24px !important;
   }
 </style>

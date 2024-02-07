@@ -27,7 +27,7 @@
 
         <el-button
         @click="signUpHandler"
-        html-type="submit"
+        htmlType="submit"
         size="large"
         type="primary">
           Зарегистрироваться
@@ -39,7 +39,9 @@
 
     <div class="auth-form__hint">
       <p class="auth-form__hint-text">
-        Уже есть учетная запись? <span @click="goToSignInHandler" class="auth-form__hint-text--link">Войти</span>
+        Уже есть учетная запись? <span
+        @click="goToSignInHandler"
+        class="auth-form__hint-text--link">Войти</span>
       </p>
     </div>
   </div>
@@ -48,6 +50,7 @@
 <script lang="ts">
   import { computed, defineComponent, reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
+  import { AxiosError } from 'axios';
 
   import { AuthSignUpPayload } from '@/_core/domain/auth';
   import useAuthApi from '@/_core/api/auth';
@@ -105,7 +108,7 @@
 
           await goToSignInHandler();
         } catch (error) {
-          if (error?.response?.status === 400) {
+          if (error instanceof AxiosError && error?.response?.status === 400) {
             formErrors.displayName = ' ';
             formErrors.username = ' ';
             formErrors.password = 'Введеные неверные данные';

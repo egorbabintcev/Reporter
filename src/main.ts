@@ -7,9 +7,6 @@ import router from '@/router';
 
 import App from './App.vue';
 
-import setupAxiosInterceptors from './interceptors';
-
-import { maska } from 'maska';
 import ElementPlus from 'element-plus';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -33,7 +30,6 @@ dayjs.updateLocale('ru', {
 });
 
 createApp(App)
-  .directive('mask', maska)
   .mixin({
     created() {
       this.console = window.console;
@@ -43,5 +39,3 @@ createApp(App)
   .use(store)
   .use(router)
   .mount('#app');
-
-setupAxiosInterceptors();

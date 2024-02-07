@@ -7,11 +7,11 @@ type TSchemeObject<T, R> = {
     callback(source: T): R[key]
     nested: TSchemeObject<T, R[key]>
   }>
-}
+};
 
 export default function convertObject<T, R>(source: T, scheme: TSchemeObject<T, R>) {
   const output: Partial<R> = {};
-  const entries = (Object.entries(cloneDeep(scheme)) as unknown as Entries<typeof scheme>);
+  const entries = Object.entries(cloneDeep(scheme)) as unknown as Entries<typeof scheme>;
 
   entries.forEach(([key, value]) => {
     if (value.key) {

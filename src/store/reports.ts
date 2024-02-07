@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import httpClient from '@/transport/http';
 import dayjs, { Dayjs, OpUnitType } from 'dayjs';
 
 import { HTMLString, UniqueId, UnixTimestamp } from '@/shared-kernel';
@@ -19,12 +19,12 @@ export type Report = {
   break_time: UnixTimestamp
 
   body: HTMLString
-}
+};
 
 type State = {
   report: Report | null
   reports: Report[]
-}
+};
 
 export default function useReportsStore(storeId = 'reports') {
   return defineStore(storeId, {
@@ -38,7 +38,7 @@ export default function useReportsStore(storeId = 'reports') {
         date_to: UnixTimestamp
       }) {
         const url = `/api/v1/reports`;
-        const response = await axios.get<{ reports: Report[] }>(url, { params });
+        const response = await httpClient.get<{ reports: Report[] }>(url, { params });
 
         this.reports = response.data.reports;
       },
@@ -52,26 +52,26 @@ export default function useReportsStore(storeId = 'reports') {
       async fetchReportById(id: Report['id']) {
         const url = `/api/v1/reports/${id}`;
 
-        const response = await axios.get<{ report: Report }>(url);
+        const response = await httpClient.get<{ report: Report }>(url);
 
         this.report = response.data.report;
       },
       async createReport(data: Omit<Report, 'id' | 'created_at' | 'creator_id'>) {
         const url = `/api/v1/reports`;
 
-        const response = await axios.post<Pick<Report, 'id'>>(url, data);
+        const response = await httpClient.post<Pick<Report, 'id'>>(url, data);
 
         return response.data;
       },
       async updateReportById(id: Report['id'], data: Omit<Report, 'id' | 'created_at' | 'creator_id'>) {
         const url = `/api/v1/reports/${id}`;
 
-        await axios.put(url, data);
+        await httpClient.put(url, data);
       },
       async deleteReportById(id: Report['id']) {
         const url = `/api/v1/reports/${id}`;
 
-        await axios.delete(url);
+        await httpClient.delete(url);
       },
     },
   })();

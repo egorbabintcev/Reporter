@@ -17,7 +17,7 @@
 
     <el-dialog
     v-model="showPreferencesPopup"
-    align-center
+    alignCenter
     centered
     title="Настройка предпочтений"
     width="580">
@@ -83,7 +83,7 @@
 
 <style lang="scss">
   .preferences-widget-popup__text {
-    color: rgba(0 0 0 / 54%);
     font-weight: 700;
+    color: rgba(0 0 0 / 0.54);
   }
 </style>
