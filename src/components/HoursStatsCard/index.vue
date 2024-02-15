@@ -64,7 +64,8 @@
     </p>
 
     <p class="hours-stats-card__title">
-      {{ currentHours }} / {{ totalQuotaHours }}
+      <span data-test-id="hours-stats-card_title_current-hours">{{ currentHours }}</span> / <span
+      data-test-id="hours-stats-card-title_total-quota">{{ totalQuotaHours }}</span>
     </p>
 
     <p class="hours-stats-card__subtitle">

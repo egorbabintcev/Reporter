@@ -193,5 +193,11 @@ module.exports = {
         'camelcase': 'off',
       },
     },
+    {
+      files: ['*.test.ts'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
   ],
 };

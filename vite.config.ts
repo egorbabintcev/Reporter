@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import path from 'path';
 
 import { defineConfig, loadEnv } from 'vite';
@@ -43,6 +45,9 @@ export default ({ mode }) => {
           secure: false,
         },
       },
+    },
+    test: {
+      environment: 'happy-dom',
     },
   });
 };
