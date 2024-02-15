@@ -95,7 +95,6 @@
     defineComponent, PropType, ref, watch,
   } from 'vue';
   import dayjs, { Dayjs } from 'dayjs';
-  import { UnixTimestamp } from '@/shared-kernel';
   import { GSymbol } from 'vue-material-symbols';
 
   export default defineComponent({
@@ -106,7 +105,7 @@
         default: () => dayjs(),
       },
       events: {
-        type: Array as PropType<UnixTimestamp[]>,
+        type: Array as PropType<number[]>,
         default: () => [],
       },
     },
