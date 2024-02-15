@@ -6,8 +6,8 @@
       <div class="section-16">
         <div class="section-12">
           <AuthFormInput
-          v-model="form.username"
-          :error="formErrors.username"
+          v-model="form.login"
+          :error="formErrors.login"
           placeholder="Логин"
           size="large"/>
 
@@ -46,9 +46,7 @@
   import { useRoute, useRouter } from 'vue-router';
   import { AxiosError } from 'axios';
 
-  import { AuthSignInPayload } from '@/_core/domain/auth';
-  import useAuthApi from '@/_core/api/auth';
-  import useAuthStore from '@/_core/store/auth';
+  import useAuthStore, { AuthSignInPayload } from '@/store/auth';
 
   import AuthFormInput from './AuthFormInput.vue';
 
@@ -61,16 +59,15 @@
       const router = useRouter();
       const route = useRoute();
 
-      const authApi = useAuthApi();
       const authStore = useAuthStore();
 
       const form = reactive<Record<keyof AuthSignInPayload, string>>({
-        username: '',
+        login: '',
         password: '',
       });
 
       const formErrors = reactive<Record<keyof AuthSignInPayload, string | null>>({
-        username: null,
+        login: null,
         password: null,
       });
 
@@ -78,23 +75,21 @@
       const isFormHasErrors = computed<boolean>(() => Object.values(formErrors).some(Boolean));
 
       function clearFormErrorsHandler() {
-        formErrors.username = null;
+        formErrors.login = null;
         formErrors.password = null;
       }
 
       async function signInHandler() {
         try {
-          const token = await authApi.signIn({
-            username: form.username,
+          await authStore.signIn({
+            login: form.login,
             password: form.password,
           });
-
-          authStore.setAuthToken(token);
 
           await router.push(String(route.query.redirect) || '/');
         } catch (error) {
           if (error instanceof AxiosError && error?.response?.status === 401) {
-            formErrors.username = ' ';
+            formErrors.login = ' ';
             formErrors.password = 'Неверный логин или пароль';
           }
         }

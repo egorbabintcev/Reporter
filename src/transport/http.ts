@@ -1,6 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-// FIXME
-import useAuthStore from '@/_core/store/auth';
+import useAuthStore from '@/store/auth';
 
 const httpClient = axios.create();
 
@@ -18,7 +17,7 @@ httpClient.interceptors.response.use((res) => res, (error: AxiosError) => {
   const authStore = useAuthStore();
 
   if (error.response?.status === 401) {
-    authStore.setAuthToken(null);
+    authStore.$reset();
   }
 
   throw error;

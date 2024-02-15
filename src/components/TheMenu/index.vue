@@ -101,9 +101,9 @@
     watch,
   } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import useAuthStore from '@/_core/store/auth';
-
   import { GSymbol } from 'vue-material-symbols';
+
+  import useAuthStore from '@/store/auth';
 
   export default defineComponent({
     name: 'TheMenu',
@@ -126,7 +126,7 @@
       });
 
       async function logoutHandler() {
-        authStore.setAuthToken(null);
+        authStore.$reset();
 
         await router.push({
           name: 'auth',

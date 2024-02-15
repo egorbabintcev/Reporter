@@ -6,14 +6,14 @@
       <div class="section-16">
         <div class="section-12">
           <AuthFormInput
-          v-model="form.displayName"
-          :error="formErrors.displayName"
+          v-model="form.display_name"
+          :error="formErrors.display_name"
           placeholder="Ваше имя"
           size="large"/>
 
           <AuthFormInput
-          v-model="form.username"
-          :error="formErrors.username"
+          v-model="form.login"
+          :error="formErrors.login"
           placeholder="Логин"
           size="large"/>
 
@@ -52,8 +52,7 @@
   import { useRoute, useRouter } from 'vue-router';
   import { AxiosError } from 'axios';
 
-  import { AuthSignUpPayload } from '@/_core/domain/auth';
-  import useAuthApi from '@/_core/api/auth';
+  import useAuthStore, { AuthSignUpPayload } from '@/store/auth';
 
   import AuthFormInput from './AuthFormInput.vue';
 
@@ -66,17 +65,17 @@
       const router = useRouter();
       const route = useRoute();
 
-      const authApi = useAuthApi();
+      const authStore = useAuthStore();
 
       const form = reactive<Record<keyof AuthSignUpPayload, string>>({
-        displayName: '',
-        username: '',
+        display_name: '',
+        login: '',
         password: '',
       });
 
       const formErrors = reactive<Record<keyof AuthSignUpPayload, string | null>>({
-        displayName: null,
-        username: null,
+        display_name: null,
+        login: null,
         password: null,
       });
 
@@ -84,8 +83,8 @@
       const isFormHasErrors = computed<boolean>(() => Object.values(formErrors).some(Boolean));
 
       function clearFormErrorsHandler() {
-        formErrors.displayName = null;
-        formErrors.username = null;
+        formErrors.display_name = null;
+        formErrors.login = null;
         formErrors.password = null;
       }
 
@@ -100,17 +99,17 @@
 
       async function signUpHandler() {
         try {
-          await authApi.signUp({
-            displayName: form.displayName,
-            username: form.username,
+          await authStore.signUp({
+            display_name: form.display_name,
+            login: form.login,
             password: form.password,
           });
 
           await goToSignInHandler();
         } catch (error) {
           if (error instanceof AxiosError && error?.response?.status === 400) {
-            formErrors.displayName = ' ';
-            formErrors.username = ' ';
+            formErrors.display_name = ' ';
+            formErrors.login = ' ';
             formErrors.password = 'Введеные неверные данные';
           }
         }

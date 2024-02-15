@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import useAuthStore from '@/_core/store/auth';
+import useAuthStore from '@/store/auth';
 import useProfileStore from '@/store/profile';
 
 const HomeScreen = () => import('@/screens/Home/index.vue');
