@@ -254,7 +254,7 @@
             email: payload.email,
             password: payload.password,
             recipients: payload.recipients.split(',').map((value) => value.trim()).filter(Boolean),
-            subject: `ОТЧЕТ О РАБОТЕ ЗА ДЕНЬ ${dayjs(dayReportsStore.report.date * 1000).format('DD.MM.YYYY')}`,
+            subject: `Отчет о работе за день ${dayjs(dayReportsStore.report.date * 1000).format('DD.MM.YYYY')}`,
             body: html,
           });
 
