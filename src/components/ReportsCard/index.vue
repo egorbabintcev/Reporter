@@ -60,8 +60,11 @@
 
       <div class="reports-card-editor">
         <reports-card-form
-        @update="updateHandler"
-        :report="report"/>
+        v-model:body="body"
+        v-model:break-time="breakTime"
+        v-model:end-time="endTime"
+        v-model:start-time="startTime"
+        v-model:work-time="workTime"/>
       </div>
     </div>
 
@@ -93,32 +96,38 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onBeforeMount, watch } from 'vue';
+  import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue';
   import { useRoute } from 'vue-router';
   import { storeToRefs } from 'pinia';
   import dayjs, { Dayjs } from 'dayjs';
   import { GSymbol } from 'vue-material-symbols';
   import { ElMessage, ElMessageBox } from 'element-plus';
 
-  import ReportsCardForm from '@/components/ReportsCard/Form.vue';
+  import ReportsCardForm from './Form.vue';
 
-  import useReportsStore, { Report, parseReport } from '@/store/reports.ts';
+  import useReportsStore, { parseReport } from '@/store/reports.ts';
 
-  import { HOUR } from '@/utils/time.ts';
+  import { getDateFromTimeString, getTimeStringFromTimestamp, HOUR } from '@/utils/time.ts';
 
   import blankImage from '@/assets/empty-folder-icon.png';
 
   export default defineComponent({
     name: 'ReportsCard',
     components: {
-      ReportsCardForm,
       GSymbol,
+      ReportsCardForm,
     },
     setup() {
       const route = useRoute();
 
       const reportsStore = useReportsStore();
       const reportsStoreRefs = storeToRefs(reportsStore);
+
+      const startTime = ref<string>('');
+      const endTime = ref<string>('');
+      const breakTime = ref<string>('');
+      const workTime = ref<string>('');
+      const body = ref<string>('');
 
       const reportId = computed<string | null>(() => {
         return route.query.report_id?.toString() || null;
@@ -144,7 +153,6 @@
 
       function saveClickHandler() {
         // Отчет сохраняется автоматически, так что эта кнопка нужна для особо волнительных
-
         ElMessage.success('Отчет сохранен');
       }
 
@@ -156,15 +164,15 @@
           html,
         } = parseReport(reportsStore.report);
 
-        const markdownBlob = new Blob([markdown], {
-          type: 'text/plain',
-        });
-
-        const htmlBlob = new Blob([html], {
-          type: 'text/html',
-        });
-
         if (navigator.clipboard.write) {
+          const markdownBlob = new Blob([markdown], {
+            type: 'text/plain',
+          });
+
+          const htmlBlob = new Blob([html], {
+            type: 'text/html',
+          });
+
           await navigator.clipboard.write([
             new window.ClipboardItem({
               [markdownBlob.type]: markdownBlob,
@@ -190,18 +198,12 @@
         );
 
         if (reportId.value) {
-          await reportsStore.deleteReportById(reportId.value);
+          await reportsStore.deleteReport({
+            report_id: reportId.value,
+          });
         }
 
         ElMessage.info('Отчет удален');
-      }
-
-      async function updateHandler(report: Report) {
-        if (!reportId.value) return;
-
-        await reportsStore.updateReportById(reportId.value, report);
-
-        reportsStore.report = report;
       }
 
       async function createClickHandler() {
@@ -222,22 +224,74 @@
 
       async function updateReportData() {
         if (reportId.value) {
-          await reportsStore.fetchReportById(reportId.value);
+          await reportsStore.getReport({
+            report_id: reportId.value,
+          });
+
+          const { report } = reportsStore;
+
+          if (report) {
+            startTime.value = getTimeStringFromTimestamp(report.start_time * 1000);
+            endTime.value = getTimeStringFromTimestamp(report.end_time * 1000);
+            breakTime.value = getTimeStringFromTimestamp(report.break_time * 1000);
+            workTime.value = getTimeStringFromTimestamp(report.work_time * 1000);
+            body.value = report.body;
+          }
         } else {
           reportsStore.report = null;
         }
       }
 
-      onBeforeMount(() => {
-        updateReportData();
+      let unwatch: () => void;
+
+      function setupWatchers() {
+        const unwatchTime = watch([startTime, endTime, breakTime, workTime], async () => {
+          if (!reportId.value) return;
+
+          await reportsStore.updateReportTime({
+            report_id: reportId.value,
+            start_time: getDateFromTimeString(startTime.value).unix(),
+            end_time: getDateFromTimeString(endTime.value).unix(),
+            break_time: getDateFromTimeString(breakTime.value).unix(),
+            work_time: getDateFromTimeString(workTime.value).unix(),
+          });
+        });
+
+        const unwatchBody = watch(body, async () => {
+          if (!reportId.value) return;
+
+          await reportsStore.updateReportBody({
+            report_id: reportId.value,
+            body: body.value,
+          });
+        });
+
+        unwatch = () => {
+          unwatchTime();
+          unwatchBody();
+        };
+      }
+
+      onBeforeMount(async () => {
+        await updateReportData();
+
+        setupWatchers();
       });
 
-      watch(reportId, () => {
-        updateReportData();
+      watch(reportId, async () => {
+        unwatch();
+
+        await updateReportData();
+
+        setupWatchers();
       });
 
       return {
-        report: reportsStoreRefs.report,
+        startTime,
+        endTime,
+        breakTime,
+        workTime,
+        body,
 
         reportId,
         reportNameText,
@@ -245,7 +299,6 @@
         saveClickHandler,
         copyClickHandler,
         deleteClickHandler,
-        updateHandler,
         createClickHandler,
 
         blankImage,

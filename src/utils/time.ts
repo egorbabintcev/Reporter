@@ -10,6 +10,12 @@ export function getTimeStringFromDate(date = new Date(0)): TimeString {
   return timeStringArr.join(':');
 }
 
+export function getTimeStringFromTimestamp(timestamp: number = 0): string {
+  const date = dayjs.duration(timestamp);
+
+  return date.format('HH:mm');
+}
+
 export function getDateStringFromDate(
   date = new Date(),
   timeZone = 'Europe/Moscow',

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import httpClient from '@/transport/http';
-import { UnixTimestamp } from '@/shared-kernel';
 import { Dayjs, OpUnitType } from 'dayjs';
 
 type Stats = {
@@ -21,8 +20,8 @@ export default function useStatsStore(storeId = 'stats') {
     }),
     actions: {
       async fetchStats(params?: {
-        from_date: UnixTimestamp
-        to_date: UnixTimestamp
+        from_date: number
+        to_date: number
       }) {
         const url = `/api/v1/stats`;
 

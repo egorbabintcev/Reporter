@@ -62,7 +62,7 @@
       });
 
       async function updateMonthData() {
-        await reportsStore.fetchReportListForTimePeriod(selectedDate.value, 'month');
+        await reportsStore.getReportsForTimePeriod(selectedDate.value, 'month');
         await statsStore.fetchStatsForPeriod(selectedDate.value, 'month');
 
         await laborCalendarStore.fetchLaborCalendarForPeriod(selectedDate.value, 'month');
@@ -127,7 +127,7 @@
       }
 
       reportsStore.$onAction((action) => {
-        if (['updateReportById', 'createReport', 'deleteReportById'].includes(action.name)) {
+        if (['createReport', 'updateReportTime', 'deleteReport'].includes(action.name)) {
           action.after(async () => {
             await updateMonthData();
             updateDayData();

@@ -1,6 +1,7 @@
 <template>
   <div class="auth-form">
     <form
+    @keydown.enter="signInHandler"
     @submit.prevent="signInHandler"
     class="auth-form__inputs">
       <div class="section-16">
@@ -15,6 +16,7 @@
           v-model="form.password"
           :error="formErrors.password"
           placeholder="Пароль"
+          showPassword
           size="large"
           type="password"/>
         </div>

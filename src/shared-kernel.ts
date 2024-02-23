@@ -1,14 +1,7 @@
-export type UniqueId = string;
-
-export type UnixTimestamp = number;
-
 export type HTMLString = string;
 
 export type TimeString = string;
 export type DateString = string;
-export type ISODateTimeString = string;
-
-export type JWTString = string;
 
 export type Entries<T> = Array<{
   [k in keyof T]: [k, T[k]]

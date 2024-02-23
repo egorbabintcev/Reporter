@@ -35,9 +35,9 @@
         <p>Время работы</p>
 
         <el-input
-        v-model="form.workTime"
         disabled
         :formatter="timeStringFormatter"
+        :modelValue="form.workTime"
         placeholder="__:__"
         readonly
         size="large"/>
@@ -49,25 +49,42 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onBeforeMount, PropType, reactive, toRefs, watch } from 'vue';
+  import { defineComponent, onBeforeMount, reactive, toRefs, watch } from 'vue';
   import { debounce } from 'lodash';
+  import dayjs from 'dayjs';
 
-  import { Report } from '@/store/reports.ts';
+  import WysiwigEditor from '@/components/WysiwigEditor.vue';
 
   import { getDateFromTimeString, timeStringFormatter } from '@/utils/time.ts';
-  import dayjs from 'dayjs';
-  import WysiwigEditor from '@/components/WysiwigEditor.vue';
 
   export default defineComponent({
     name: 'ReportsCardForm',
     props: {
-      report: {
-        type: Object as PropType<Report | null>,
-        default: null,
+      startTime: {
+        type: String,
+        default: '',
+      },
+      endTime: {
+        type: String,
+        default: '',
+      },
+      breakTime: {
+        type: String,
+        default: '',
+      },
+      workTime: {
+        type: String,
+        default: '',
+      },
+      body: {
+        type: String,
+        default: '',
       },
     },
-    emits: ['update'],
-    components: { WysiwigEditor },
+    emits: ['update:startTime', 'update:endTime', 'update:breakTime', 'update:workTime', 'update:body'],
+    components: {
+      WysiwigEditor,
+    },
     setup(props, context) {
       const propsRefs = toRefs(props);
 
@@ -80,33 +97,26 @@
       });
 
       const debouncedSave = debounce(() => {
-        context.emit('update', {
-          ...props.report,
-          start_time: getDateFromTimeString(form.startTime).unix(),
-          end_time: getDateFromTimeString(form.endTime).unix(),
-          break_time: getDateFromTimeString(form.breakTime).unix(),
-          work_time: getDateFromTimeString(form.workTime).unix(),
-          body: form.body,
-        });
+        context.emit('update:startTime', form.startTime);
+        context.emit('update:endTime', form.endTime);
+        context.emit('update:breakTime', form.breakTime);
+        context.emit('update:workTime', form.workTime);
+        context.emit('update:body', form.body);
       }, 500);
 
       function updateFormData() {
-        const { report } = props;
-
-        if (report) {
-          form.startTime = dayjs(report.start_time * 1000).utc().format('HH:mm');
-          form.endTime = dayjs(report.end_time * 1000).utc().format('HH:mm');
-          form.breakTime = dayjs(report.break_time * 1000).utc().format('HH:mm');
-          form.workTime = dayjs(report.work_time * 1000).utc().format('HH:mm');
-          form.body = report.body;
-        }
+        form.startTime = props.startTime;
+        form.endTime = props.endTime;
+        form.breakTime = props.breakTime;
+        form.workTime = props.workTime;
+        form.body = props.body;
       }
 
       onBeforeMount(() => {
         updateFormData();
       });
 
-      watch(propsRefs.report, () => {
+      watch([...Object.values(propsRefs)], () => {
         updateFormData();
       });
 

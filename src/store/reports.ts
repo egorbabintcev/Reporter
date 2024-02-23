@@ -1,79 +1,169 @@
 import { defineStore } from 'pinia';
-import httpClient from '@/transport/http';
 import dayjs, { Dayjs, OpUnitType } from 'dayjs';
-
-import { HTMLString, UniqueId, UnixTimestamp } from '@/shared-kernel';
 import MarkdownIt from 'markdown-it';
 
+import httpClient from '@/transport/http';
+import { ref } from 'vue';
+
 export type Report = {
-  id: UniqueId
-  creator_id: UniqueId
-  created_at: UnixTimestamp
+  id: string
+  creator_id: string
+  created_at: number
 
   display_name: string
 
-  date: UnixTimestamp
-  start_time: UnixTimestamp
-  end_time: UnixTimestamp
-  work_time: UnixTimestamp
-  break_time: UnixTimestamp
+  date: number
+  start_time: number
+  end_time: number
+  work_time: number
+  break_time: number
 
-  body: HTMLString
+  body: string
 };
 
-type State = {
-  report: Report | null
-  reports: Report[]
-};
+// eslint-disable-next-line @typescript-eslint/no-namespace
+namespace Api {
+  type GetReportRequest = {
+    report_id: string
+  };
+
+  type GetReportResponse = {
+    report: Report
+  };
+
+  export async function getReport(request: GetReportRequest): Promise<GetReportResponse> {
+    const requestUrl = `/api/v1/reports/${encodeURIComponent(request.report_id)}`;
+
+    const response = await httpClient.get<GetReportResponse>(requestUrl);
+
+    return response.data;
+  }
+
+  type GetReportsRequest = {
+    date_from?: number
+    date_to?: number
+  };
+
+  type GetReportsResponse = {
+    count: number
+    reports: Report[]
+  };
+
+  export async function getReports(request: GetReportsRequest): Promise<GetReportsResponse> {
+    const requestUrl = `/api/v1/reports`;
+
+    const response = await httpClient.get<GetReportsResponse>(requestUrl, {
+      params: request,
+    });
+
+    return response.data;
+  }
+
+  type CreateReportRequest = Omit<Report, 'id' | 'creator_id' | 'created_at'>;
+
+  type CreateReportResponse = Pick<Report, 'id' | 'created_at'>;
+
+  export async function createReport(request: CreateReportRequest): Promise<CreateReportResponse> {
+    const requestUrl = `/api/v1/reports`;
+
+    const response = await httpClient.post<CreateReportResponse>(requestUrl, request);
+
+    return response.data;
+  }
+
+  type UpdateReportRequest = {
+    report_id: string
+  } & Partial<Omit<Report, 'id' | 'creator_id' | 'created_at'>>;
+
+  type UpdateReportResponse = void;
+
+  export async function updateReport(request: UpdateReportRequest): Promise<UpdateReportResponse> {
+    const requestUrl = `/api/v1/reports/${encodeURIComponent(request.report_id)}`;
+
+    const response = await httpClient.put<UpdateReportResponse>(requestUrl, {
+      ...request,
+      report_id: undefined,
+    });
+
+    return response.data;
+  }
+
+  type DeleteReportRequest = {
+    report_id: string
+  };
+
+  type DeleteReportResponse = void;
+
+  export async function deleteReport(request: DeleteReportRequest): Promise<DeleteReportResponse> {
+    const requestUrl = `/api/v1/reports/${encodeURIComponent(request.report_id)}`;
+
+    const response = await httpClient.delete<DeleteReportResponse>(requestUrl);
+
+    return response.data;
+  }
+}
 
 export default function useReportsStore(storeId = 'reports') {
-  return defineStore(storeId, {
-    state: (): State => ({
-      report: null,
-      reports: [],
-    }),
-    actions: {
-      async fetchReportsList(params?: {
-        date_from: UnixTimestamp
-        date_to: UnixTimestamp
-      }) {
-        const url = `/api/v1/reports`;
-        const response = await httpClient.get<{ reports: Report[] }>(url, { params });
+  return defineStore(storeId, () => {
+    const report = ref<Report | null>(null);
+    const reports = ref<Report[]>([]);
 
-        this.reports = response.data.reports;
+    async function getReports(...args: Parameters<typeof Api.getReports>) {
+      const response = await Api.getReports(...args);
+
+      reports.value = response.reports;
+    }
+
+    async function getReportsForTimePeriod(date: Dayjs, unit: OpUnitType) {
+      await getReports({
+        date_from: date.startOf(unit).unix(),
+        date_to: date.endOf(unit).unix(),
+      });
+    }
+
+    async function getReport(...args: Parameters<typeof Api.getReport>) {
+      const response = await Api.getReport(...args);
+
+      report.value = response.report;
+    }
+
+    async function createReport(...args: Parameters<typeof Api.createReport>) {
+      await Api.createReport(...args);
+    }
+
+    type UpdateReportTimeRequest = { report_id: string } & Pick<Report, 'start_time' | 'end_time' | 'work_time' | 'break_time'>;
+
+    async function updateReportTime(request: UpdateReportTimeRequest) {
+      await Api.updateReport(request);
+    }
+
+    type UpdateReportBodyRequest = { report_id: string } & Pick<Report, 'body'>;
+
+    async function updateReportBody(request: UpdateReportBodyRequest) {
+      await Api.updateReport(request);
+    };
+
+    async function deleteReport(...args: Parameters<typeof Api.deleteReport>) {
+      await Api.deleteReport(...args);
+    }
+
+    return {
+      $reset() {
+        report.value = null;
+        reports.value = [];
       },
-      async fetchReportListForTimePeriod(date: Dayjs, unit: OpUnitType) {
-        await this.fetchReportsList({
-          date_from: date.startOf(unit).unix(),
-          date_to: date.endOf(unit).unix(),
-        });
-      },
 
-      async fetchReportById(id: Report['id']) {
-        const url = `/api/v1/reports/${id}`;
+      report,
+      reports,
 
-        const response = await httpClient.get<{ report: Report }>(url);
-
-        this.report = response.data.report;
-      },
-      async createReport(data: Omit<Report, 'id' | 'created_at' | 'creator_id'>) {
-        const url = `/api/v1/reports`;
-
-        const response = await httpClient.post<Pick<Report, 'id'>>(url, data);
-
-        return response.data;
-      },
-      async updateReportById(id: Report['id'], data: Omit<Report, 'id' | 'created_at' | 'creator_id'>) {
-        const url = `/api/v1/reports/${id}`;
-
-        await httpClient.put(url, data);
-      },
-      async deleteReportById(id: Report['id']) {
-        const url = `/api/v1/reports/${id}`;
-
-        await httpClient.delete(url);
-      },
-    },
+      getReports,
+      getReportsForTimePeriod,
+      getReport,
+      createReport,
+      updateReportTime,
+      updateReportBody,
+      deleteReport,
+    };
   })();
 }
 

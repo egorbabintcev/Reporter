@@ -8,9 +8,9 @@ import router from '@/router';
 import App from './App.vue';
 
 import ElementPlus from 'element-plus';
+
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import localeData from 'dayjs/plugin/localeData';
@@ -18,7 +18,6 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import 'dayjs/locale/ru';
 
 dayjs.extend(utc);
-dayjs.extend(timezone);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(localeData);
