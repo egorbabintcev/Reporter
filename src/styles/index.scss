@@ -1,6 +1,5 @@
 @use 'node_modules/reset-css/sass/reset';
 @use '@/styles/fonts';
-@use '@/styles/sections';
 @use '@/styles/flex';
 @use 'node_modules/element-plus/theme-chalk/src/index';
 @use 'node_modules/@toast-ui/editor/dist/toastui-editor.css';
@@ -29,6 +28,7 @@ textarea {
 
 body {
   font-family: Nunito, sans-serif !important;
+  font-size: 14px;
 }
 
 .material-symbols-outlined,

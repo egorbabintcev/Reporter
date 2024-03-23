@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import duration from 'dayjs/plugin/duration';
 import localeData from 'dayjs/plugin/localeData';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import 'dayjs/locale/ru';
@@ -20,6 +21,7 @@ import 'dayjs/locale/ru';
 dayjs.extend(utc);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
+dayjs.extend(duration);
 dayjs.extend(localeData);
 dayjs.extend(updateLocale);
 
