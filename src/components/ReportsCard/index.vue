@@ -25,6 +25,21 @@
           </el-button>
 
           <el-button
+          @click="sendClickHandler"
+          size="large">
+            <template #icon>
+              <el-icon
+              size="24">
+                <g-symbol
+                fill
+                :grade="-25"
+                icon="mail"
+                type="outlined"/>
+              </el-icon>
+            </template>
+          </el-button>
+
+          <el-button
           @click="copyClickHandler"
           size="large">
             <template #icon>
@@ -66,6 +81,11 @@
         v-model:start-time="startTime"
         v-model:work-time="workTime"/>
       </div>
+
+      <EmailPopup
+      v-model:show="showEmailPopup"
+      @close="showEmailPopup = false"
+      @confirm="confirmEmailSendHandler"/>
     </div>
 
     <div
@@ -106,14 +126,17 @@
   import ReportsCardForm from './Form.vue';
 
   import useReportsStore, { parseReport } from '@/store/reports.ts';
+  import useEmailStore from '@/store/email.ts';
 
   import { getDateFromTimeString, getTimeStringFromTimestamp, HOUR } from '@/utils/time.ts';
 
   import blankImage from '@/assets/empty-folder-icon.png';
+  import EmailPopup from '@/components/ReportsCard/EmailPopup.vue';
 
   export default defineComponent({
     name: 'ReportsCard',
     components: {
+      EmailPopup,
       GSymbol,
       ReportsCardForm,
     },
@@ -122,6 +145,9 @@
 
       const reportsStore = useReportsStore();
       const reportsStoreRefs = storeToRefs(reportsStore);
+      const emailStore = useEmailStore();
+
+      const showEmailPopup = ref<boolean>(false);
 
       const startTime = ref<string>('');
       const endTime = ref<string>('');
@@ -156,6 +182,35 @@
         ElMessage.success('Отчет сохранен');
       }
 
+      function sendClickHandler() {
+        showEmailPopup.value = true;
+      }
+
+      async function confirmEmailSendHandler(form: {
+        email: string
+        password: string
+        recipients: string
+      }) {
+        if (!reportsStore.report) return;
+
+        try {
+          const {
+            html,
+          } = parseReport(reportsStore.report);
+
+          await emailStore.sendEmail({
+            email: form.email,
+            password: form.password,
+            recipients: form.recipients.split(',').map((value) => value.trim()).filter(Boolean),
+            subject: reportNameText.value ?? '',
+            body: html,
+          });
+
+          ElMessage.success('Отчет успешно отправлен на почту');
+        } catch {
+          ElMessage.error('Упс, при отправке что-то пошло не так');
+        }
+      }
       async function copyClickHandler() {
         if (!reportsStore.report) return;
 
@@ -287,6 +342,8 @@
       });
 
       return {
+        showEmailPopup,
+
         startTime,
         endTime,
         breakTime,
@@ -297,6 +354,8 @@
         reportNameText,
 
         saveClickHandler,
+        sendClickHandler,
+        confirmEmailSendHandler,
         copyClickHandler,
         deleteClickHandler,
         createClickHandler,
