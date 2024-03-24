@@ -99,7 +99,7 @@
         });
       }
 
-      async function copyMonthReportHandler() {
+      async function clickCopyMonthTableHandler() {
         let resultString = '';
 
         const startOfMonth = selectedDate.value.startOf('month');
@@ -118,6 +118,30 @@
             resultString += `${startTimeString}\t${endTimeString}\t${breakTimeString}\n`;
           } else {
             resultString += '\t\t\n';
+          }
+        }
+
+        await navigator.clipboard.writeText(resultString);
+
+        ElMessage.success('Скопировано в буфер обмена');
+      }
+
+      async function clickCopyMonthTextHandler() {
+        let resultString = '';
+
+        const startOfMonth = selectedDate.value.startOf('month');
+        const endOfMonth = selectedDate.value.endOf('month');
+
+        for (let date = startOfMonth.date(); date <= endOfMonth.date(); date += 1) {
+          const current = startOfMonth.set('date', date);
+          const report = reportsStore.reports.find((item) => current.isSame(item.date * 1000, 'date'));
+
+          resultString += `--- ${current.format('DD.MM.YYYY')} ---\n\n`;
+
+          if (report) {
+            resultString += `${report.body.trim()}\n\n`;
+          } else {
+            resultString += 'Отчет отсутствует\n\n';
           }
         }
 
@@ -155,7 +179,8 @@
         totalQuotaTime,
         currentQuotaTime,
 
-        copyMonthReportHandler,
+        clickCopyMonthTableHandler,
+        clickCopyMonthTextHandler,
       };
     },
   });
@@ -168,18 +193,33 @@
     :events="events"/>
 
     <el-button
-    @click="copyMonthReportHandler">
+    @click="clickCopyMonthTableHandler">
       <template #icon>
         <el-icon size="18">
           <g-symbol
           fill
           :grade="-25"
-          icon="content_copy"
+          icon="table_view"
           type="outlined"/>
         </el-icon>
       </template>
 
-      Скопировать отчет за месяц
+      Скопировать в таблицу
+    </el-button>
+
+    <el-button
+    @click="clickCopyMonthTextHandler">
+      <template #icon>
+        <el-icon size="18">
+          <g-symbol
+          fill
+          :grade="-25"
+          icon="text_fields"
+          type="outlined"/>
+        </el-icon>
+      </template>
+
+      Скопировать в текст
     </el-button>
 
     <hours-stats-card

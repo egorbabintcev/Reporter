@@ -6,7 +6,7 @@
       size="large">
         <el-radio-button
         disabled
-        label="home">
+        value="home">
           <div class="app-menu-button">
             <el-icon size="20">
               <GSymbol
@@ -22,7 +22,7 @@
           </div>
         </el-radio-button>
 
-        <el-radio-button label="reports">
+        <el-radio-button value="reports">
           <div class="app-menu-button">
             <el-icon size="20">
               <GSymbol
@@ -40,7 +40,7 @@
 
         <el-radio-button
         disabled
-        label="non-working-days">
+        value="non-working-days">
           <div class="app-menu-button">
             <el-icon size="20">
               <GSymbol
@@ -58,7 +58,7 @@
 
         <el-radio-button
         disabled
-        label="employees">
+        value="employees">
           <div class="app-menu-button">
             <el-icon size="20">
               <GSymbol
