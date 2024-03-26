@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import httpClient from '@/transport/http';
 import { Dayjs, OpUnitType } from 'dayjs';
 
 type LaborCalendar = {
   totalWorkingDays: number
-}
+};
 
 type State = {
   laborCalendar: LaborCalendar | null
-}
+};
 
 export default function useLaborCalendarStore(storeId = 'labor-calendar') {
   return defineStore(storeId, {
@@ -24,7 +24,7 @@ export default function useLaborCalendarStore(storeId = 'labor-calendar') {
           date2: toDate.format('YYYYMMDD'),
         };
 
-        const response = await axios.get<string>(url, {
+        const response = await httpClient.get<string>(url, {
           params,
           responseType: 'text',
           transitional: {

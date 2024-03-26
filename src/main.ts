@@ -2,28 +2,26 @@ import '@/styles/index.scss';
 
 import { createApp } from 'vue';
 
-import store from '@/core/store';
+import store from '@/store';
 import router from '@/router';
 
 import App from './App.vue';
 
-import setupAxiosInterceptors from './interceptors';
-
-import { maska } from 'maska';
 import ElementPlus from 'element-plus';
+
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import duration from 'dayjs/plugin/duration';
 import localeData from 'dayjs/plugin/localeData';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import 'dayjs/locale/ru';
 
 dayjs.extend(utc);
-dayjs.extend(timezone);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
+dayjs.extend(duration);
 dayjs.extend(localeData);
 dayjs.extend(updateLocale);
 
@@ -33,7 +31,6 @@ dayjs.updateLocale('ru', {
 });
 
 createApp(App)
-  .directive('mask', maska)
   .mixin({
     created() {
       this.console = window.console;
@@ -43,5 +40,3 @@ createApp(App)
   .use(store)
   .use(router)
   .mount('#app');
-
-setupAxiosInterceptors();

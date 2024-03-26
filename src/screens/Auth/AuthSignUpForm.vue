@@ -6,14 +6,14 @@
       <div class="section-16">
         <div class="section-12">
           <AuthFormInput
-          v-model="form.displayName"
-          :error="formErrors.displayName"
+          v-model="form.display_name"
+          :error="formErrors.display_name"
           placeholder="Ваше имя"
           size="large"/>
 
           <AuthFormInput
-          v-model="form.username"
-          :error="formErrors.username"
+          v-model="form.login"
+          :error="formErrors.login"
           placeholder="Логин"
           size="large"/>
 
@@ -27,7 +27,7 @@
 
         <el-button
         @click="signUpHandler"
-        html-type="submit"
+        htmlType="submit"
         size="large"
         type="primary">
           Зарегистрироваться
@@ -39,7 +39,9 @@
 
     <div class="auth-form__hint">
       <p class="auth-form__hint-text">
-        Уже есть учетная запись? <span @click="goToSignInHandler" class="auth-form__hint-text--link">Войти</span>
+        Уже есть учетная запись? <span
+        @click="goToSignInHandler"
+        class="auth-form__hint-text--link">Войти</span>
       </p>
     </div>
   </div>
@@ -48,9 +50,9 @@
 <script lang="ts">
   import { computed, defineComponent, reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
+  import { AxiosError } from 'axios';
 
-  import { AuthSignUpPayload } from '@/core/domain/auth';
-  import useAuthApi from '@/core/api/auth';
+  import useAuthStore, { AuthSignUpPayload } from '@/store/auth';
 
   import AuthFormInput from './AuthFormInput.vue';
 
@@ -63,17 +65,17 @@
       const router = useRouter();
       const route = useRoute();
 
-      const authApi = useAuthApi();
+      const authStore = useAuthStore();
 
       const form = reactive<Record<keyof AuthSignUpPayload, string>>({
-        displayName: '',
-        username: '',
+        display_name: '',
+        login: '',
         password: '',
       });
 
       const formErrors = reactive<Record<keyof AuthSignUpPayload, string | null>>({
-        displayName: null,
-        username: null,
+        display_name: null,
+        login: null,
         password: null,
       });
 
@@ -81,8 +83,8 @@
       const isFormHasErrors = computed<boolean>(() => Object.values(formErrors).some(Boolean));
 
       function clearFormErrorsHandler() {
-        formErrors.displayName = null;
-        formErrors.username = null;
+        formErrors.display_name = null;
+        formErrors.login = null;
         formErrors.password = null;
       }
 
@@ -97,17 +99,17 @@
 
       async function signUpHandler() {
         try {
-          await authApi.signUp({
-            displayName: form.displayName,
-            username: form.username,
+          await authStore.signUp({
+            display_name: form.display_name,
+            login: form.login,
             password: form.password,
           });
 
           await goToSignInHandler();
         } catch (error) {
-          if (error?.response?.status === 400) {
-            formErrors.displayName = ' ';
-            formErrors.username = ' ';
+          if (error instanceof AxiosError && error?.response?.status === 400) {
+            formErrors.display_name = ' ';
+            formErrors.login = ' ';
             formErrors.password = 'Введеные неверные данные';
           }
         }

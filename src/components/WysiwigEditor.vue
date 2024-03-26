@@ -130,11 +130,12 @@
 </script>
 
 <style lang="scss">
+  /* stylelint-disable selector-class-pattern */
   .wisywig-editor {
     .toastui-editor-contents,
     .ProseMirror {
+      font-family: 'Segoe UI', Roboto, sans-serif !important;
       font-size: 16px !important;
-      font-family: 'Segoe UI', 'Roboto', sans-serif !important;
     }
 
     .toastui-editor-contents {
@@ -144,7 +145,7 @@
     }
 
     .toastui-editor-defaultUI {
-      font-family: 'Segoe UI', 'Roboto', sans-serif !important;
+      font-family: 'Segoe UI', Roboto, sans-serif !important;
     }
   }
 </style>

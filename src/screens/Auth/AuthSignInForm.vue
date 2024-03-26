@@ -1,13 +1,14 @@
 <template>
   <div class="auth-form">
     <form
+    @keydown.enter="signInHandler"
     @submit.prevent="signInHandler"
     class="auth-form__inputs">
       <div class="section-16">
         <div class="section-12">
           <AuthFormInput
-          v-model="form.username"
-          :error="formErrors.username"
+          v-model="form.login"
+          :error="formErrors.login"
           placeholder="Логин"
           size="large"/>
 
@@ -15,13 +16,14 @@
           v-model="form.password"
           :error="formErrors.password"
           placeholder="Пароль"
+          showPassword
           size="large"
           type="password"/>
         </div>
 
         <el-button
         @click="signInHandler"
-        html-type="submit"
+        htmlType="submit"
         size="large"
         type="primary">
           Войти
@@ -33,7 +35,9 @@
 
     <div class="auth-form__hint">
       <p class="auth-form__hint-text">
-        Нет учетной записи? <span @click="goToSignUpHandler" class="auth-form__hint-text--link">Зарегистрироваться</span>
+        Нет учетной записи? <span
+        @click="goToSignUpHandler"
+        class="auth-form__hint-text--link">Зарегистрироваться</span>
       </p>
     </div>
   </div>
@@ -42,10 +46,9 @@
 <script lang="ts">
   import { computed, defineComponent, reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
+  import { AxiosError } from 'axios';
 
-  import { AuthSignInPayload } from '@/core/domain/auth';
-  import useAuthApi from '@/core/api/auth';
-  import useAuthStore from '@/core/store/auth';
+  import useAuthStore, { AuthSignInPayload } from '@/store/auth';
 
   import AuthFormInput from './AuthFormInput.vue';
 
@@ -58,16 +61,15 @@
       const router = useRouter();
       const route = useRoute();
 
-      const authApi = useAuthApi();
       const authStore = useAuthStore();
 
       const form = reactive<Record<keyof AuthSignInPayload, string>>({
-        username: '',
+        login: '',
         password: '',
       });
 
       const formErrors = reactive<Record<keyof AuthSignInPayload, string | null>>({
-        username: null,
+        login: null,
         password: null,
       });
 
@@ -75,23 +77,21 @@
       const isFormHasErrors = computed<boolean>(() => Object.values(formErrors).some(Boolean));
 
       function clearFormErrorsHandler() {
-        formErrors.username = null;
+        formErrors.login = null;
         formErrors.password = null;
       }
 
       async function signInHandler() {
         try {
-          const token = await authApi.signIn({
-            username: form.username,
+          await authStore.signIn({
+            login: form.login,
             password: form.password,
           });
 
-          authStore.setAuthToken(token);
-
           await router.push(String(route.query.redirect) || '/');
         } catch (error) {
-          if (error?.response?.status === 401) {
-            formErrors.username = ' ';
+          if (error instanceof AxiosError && error?.response?.status === 401) {
+            formErrors.login = ' ';
             formErrors.password = 'Неверный логин или пароль';
           }
         }

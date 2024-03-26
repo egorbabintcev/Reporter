@@ -1,12 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import useAuthStore from '@/core/store/auth';
-import useProfileStore from '@/core/store/profile';
-import useProfileApi from '@/core/api/profile';
+import useAuthStore from '@/store/auth';
+import useProfileStore from '@/store/profile';
 
 const HomeScreen = () => import('@/screens/Home/index.vue');
 const ReportsScreen = () => import('@/screens/Reports/index.vue');
-const NonWorkingDaysScreen = () => import('@/screens/NonWorkingDays/index.vue');
-const EmployeesScreen = () => import('@/screens/Employees/index.vue');
 const AuthScreen = () => import('@/screens/Auth/index.vue');
 
 const router = createRouter({
@@ -29,22 +26,6 @@ const router = createRouter({
       },
     },
     {
-      name: 'employees',
-      path: '/employees',
-      component: EmployeesScreen,
-      meta: {
-        authRequired: true,
-      },
-    },
-    {
-      name: 'non-working-days',
-      path: '/non_working_days',
-      component: NonWorkingDaysScreen,
-      meta: {
-        authRequired: true,
-      },
-    },
-    {
       name: 'auth',
       path: '/auth',
       component: AuthScreen,
@@ -58,7 +39,7 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
   const authStore = useAuthStore();
 
   if (to.meta.authRequired && !authStore.token) {
@@ -74,13 +55,9 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.authRequired) {
       const profileStore = useProfileStore();
-      const profileApi = useProfileApi();
 
       if (profileStore.profile === null) {
-        profileApi.readProfile()
-          .then((profile) => {
-            profileStore.setProfile(profile);
-          });
+        profileStore.fetchProfile();
       }
     }
   }
