@@ -239,7 +239,8 @@
     flex-flow: column nowrap;
     gap: 16px;
 
-    width: 320px;
+    min-width: 320px;
+    max-width: 320px;
     padding: 16px;
 
     border-right: 1px solid rgba(0 0 0 / 0.14);
