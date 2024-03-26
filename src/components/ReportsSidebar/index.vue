@@ -134,6 +134,10 @@
 
         for (let date = startOfMonth.date(); date <= endOfMonth.date(); date += 1) {
           const current = startOfMonth.set('date', date);
+
+          // eslint-disable-next-line no-continue
+          if ([0, 6].includes(current.day())) continue;
+
           const report = reportsStore.reports.find((item) => current.isSame(item.date * 1000, 'date'));
 
           resultString += `--- ${current.format('DD.MM.YYYY')} ---\n\n`;
