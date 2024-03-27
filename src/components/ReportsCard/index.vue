@@ -310,6 +310,9 @@
             break_time: getDateFromTimeString(breakTime.value).unix(),
             work_time: getDateFromTimeString(workTime.value).unix(),
           });
+          reportsStore.getReport({
+            report_id: reportId.value,
+          });
         });
 
         const unwatchBody = watch(body, async () => {
@@ -318,6 +321,9 @@
           await reportsStore.updateReportBody({
             report_id: reportId.value,
             body: body.value,
+          });
+          reportsStore.getReport({
+            report_id: reportId.value,
           });
         });
 
