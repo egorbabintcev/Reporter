@@ -131,7 +131,7 @@
         await router.push({
           name: 'auth',
           query: {
-            actions: 'sign_in',
+            action: 'sign_in',
           },
         });
       }

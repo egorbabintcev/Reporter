@@ -12,6 +12,7 @@
   "dependencies": {
     "@toast-ui/editor": "^3.2.2",
     "axios": "^1.6.8",
+    "bowser": "^2.11.0",
     "dayjs": "^1.11.10",
     "element-plus": "^2.6.2",
     "lodash": "^4.17.21",

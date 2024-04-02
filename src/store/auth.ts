@@ -2,16 +2,49 @@ import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import httpClient from '@/transport/http.ts';
 
-export type AuthSignInPayload = {
-  login: string
-  password: string
-};
+// eslint-disable-next-line @typescript-eslint/no-namespace
+namespace AuthApi {
+  type SignInRequest = {
+    login: string
+    password: string
+  };
+  type SignInResponse = {
+    token: string
+  };
 
-export type AuthSignUpPayload = {
-  display_name: string
-  login: string
-  password: string
-};
+  export async function signIn(request: SignInRequest) {
+    const requestUrl = `/api/v1/sign_in`;
+
+    const response = await httpClient.post<SignInResponse>(requestUrl, request);
+
+    return response.data;
+  }
+
+  type SignUpRequest = {
+    display_name: string
+    login: string
+    password: string
+  };
+  type SignUpResponse = void;
+
+  export async function signUp(request: SignUpRequest) {
+    const requestUrl = `/api/v1/sign_up`;
+
+    await httpClient.post<SignUpResponse>(requestUrl, request);
+  }
+
+  type GetAuthProviderUrlResponse = {
+    uri: string
+  };
+
+  export async function getAuthProviderUrl() {
+    const requestUrl = `/api/v1/auth/provider`;
+
+    const response = await httpClient.post<GetAuthProviderUrlResponse>(requestUrl);
+
+    return response.data;
+  }
+}
 
 const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem('ReporterAuthToken'));
@@ -24,17 +57,20 @@ const useAuthStore = defineStore('auth', () => {
     }
   });
 
-  async function signIn(payload: AuthSignInPayload) {
-    const requestUrl = `/api/v1/sign_in`;
+  async function signIn(...args: Parameters<typeof AuthApi.signIn>) {
+    const response = await AuthApi.signIn(...args);
 
-    const response = await httpClient.post<{ token: string }>(requestUrl, payload);
-
-    token.value = response.data.token;
+    token.value = response.token;
   }
-  async function signUp(payload: AuthSignUpPayload) {
-    const requestUrl = `/api/v1/sign_up`;
 
-    await httpClient.post(requestUrl, payload);
+  async function signUp(...args: Parameters<typeof AuthApi.signUp>) {
+    await AuthApi.signUp(...args);
+  }
+
+  async function fetchAuthProviderUrl() {
+    const response = await AuthApi.getAuthProviderUrl();
+
+    return response.uri;
   }
 
   return {
@@ -46,6 +82,7 @@ const useAuthStore = defineStore('auth', () => {
 
     signIn,
     signUp,
+    fetchAuthProviderUrl,
   };
 });
 

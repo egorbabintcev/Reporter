@@ -1,10 +1,6 @@
 <template>
   <div class="auth-screen">
-    <div
-    class="auth-form__container">
-      <component
-      :is="authFormComponent"/>
-    </div>
+    <AuthForm/>
   </div>
 </template>
 
@@ -12,22 +8,20 @@
   import { computed, defineComponent } from 'vue';
   import { useRoute } from 'vue-router';
 
-  import AuthSignInForm from './AuthSignInForm.vue';
-  import AuthSignUpForm from './AuthSignUpForm.vue';
+  import AuthForm from '@/components/AuthForm/index.vue';
 
   export default defineComponent({
     name: 'AuthScreen',
+    components: {
+      AuthForm,
+    },
     setup() {
       const route = useRoute();
 
       const authAction = computed(() => (route.query.action as 'sign_in' | 'sign_up') || 'sign_in');
-      const authFormComponent = computed(() => (authAction.value === 'sign_in'
-        ? AuthSignInForm
-        : AuthSignUpForm));
 
       return {
         authAction,
-        authFormComponent,
       };
     },
   });
@@ -42,7 +36,7 @@
     justify-content: center;
   }
 
-  .auth-form__container {
+  /* .auth-form__container {
     width: 100%;
     max-width: 768px;
     min-height: 400px;
@@ -93,5 +87,5 @@
     color: #40a9ff;
 
     cursor: pointer;
-  }
+  } */
 </style>
