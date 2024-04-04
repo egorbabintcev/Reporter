@@ -41,13 +41,20 @@
       });
 
       const hoursDiffText = computed<string>(() => {
-        const hours = Math.floor(timeDiff.value / 60 / 60);
-        const minutes = Math.abs(Math.floor(timeDiff.value / 60 % 60));
+        const absTimeDiff = Math.abs(timeDiff.value);
 
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        const hours = Math.floor(absTimeDiff / 60 / 60);
+        const minutes = Math.abs(Math.floor(absTimeDiff / 60 % 60));
+
+        const timeStringText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+
+        return isNegativeHoursDiff.value
+          ? `-${timeStringText}`
+          : timeStringText;
       });
 
       return {
+        timeDiff,
         currentHours,
         totalQuotaHours,
         isNegativeHoursDiff,
