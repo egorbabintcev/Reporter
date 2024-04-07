@@ -52,13 +52,13 @@
       const totalQuotaTime = computed<number>(() => {
         const laborCalendar = laborCalendarStoreRefs.laborCalendar.value;
 
-        return (laborCalendar?.totalWorkingDays ?? 0) * 8 * 60 * 60;
+        return (laborCalendar?.workingDays ?? 0) * 8 * 60 * 60;
       });
 
       const currentQuotaTime = computed<number>(() => {
         const laborCalendar = currentLaborCalendarStoreRefs.laborCalendar.value;
 
-        return ((laborCalendar?.totalWorkingDays ?? 0) * 8 * 60 * 60) || totalQuotaTime.value;
+        return ((laborCalendar?.workingDays ?? 0) * 8 * 60 * 60) || totalQuotaTime.value;
       });
 
       async function updateMonthData() {

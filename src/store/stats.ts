@@ -1,13 +1,8 @@
 import { defineStore } from 'pinia';
-import httpClient from '@/transport/http';
 import { Dayjs, OpUnitType } from 'dayjs';
 
-type Stats = {
-  avg_hours_break: number
-  avg_hours_worked: number
-  avg_start_time: number
-  hours_worked: number
-};
+import { StatsApi } from '@/services/api.ts';
+import Stats = StatsApi.Stats;
 
 type State = {
   stats: Stats | null
@@ -19,15 +14,8 @@ export default function useStatsStore(storeId = 'stats') {
       stats: null,
     }),
     actions: {
-      async fetchStats(params?: {
-        from_date: number
-        to_date: number
-      }) {
-        const url = `/api/v1/stats`;
-
-        const response = await httpClient.get<Stats>(url, { params });
-
-        this.stats = response.data;
+      async fetchStats(...args: Parameters<typeof StatsApi.getStats>) {
+        this.stats = await StatsApi.getStats(...args);
       },
       async fetchStatsForPeriod(date: Dayjs, unit: OpUnitType) {
         await this.fetchStats({

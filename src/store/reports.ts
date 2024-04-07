@@ -1,115 +1,18 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 import dayjs, { Dayjs, OpUnitType } from 'dayjs';
 import MarkdownIt from 'markdown-it';
 
-import httpClient from '@/transport/http';
-import { ref } from 'vue';
-
-export type Report = {
-  id: string
-  creator_id: string
-  created_at: number
-
-  display_name: string
-
-  date: number
-  start_time: number
-  end_time: number
-  work_time: number
-  break_time: number
-
-  body: string
-};
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-namespace Api {
-  type GetReportRequest = {
-    report_id: string
-  };
-
-  type GetReportResponse = {
-    report: Report
-  };
-
-  export async function getReport(request: GetReportRequest): Promise<GetReportResponse> {
-    const requestUrl = `/api/v1/reports/${encodeURIComponent(request.report_id)}`;
-
-    const response = await httpClient.get<GetReportResponse>(requestUrl);
-
-    return response.data;
-  }
-
-  type GetReportsRequest = {
-    date_from?: number
-    date_to?: number
-  };
-
-  type GetReportsResponse = {
-    count: number
-    reports: Report[]
-  };
-
-  export async function getReports(request: GetReportsRequest): Promise<GetReportsResponse> {
-    const requestUrl = `/api/v1/reports`;
-
-    const response = await httpClient.get<GetReportsResponse>(requestUrl, {
-      params: request,
-    });
-
-    return response.data;
-  }
-
-  type CreateReportRequest = Omit<Report, 'id' | 'creator_id' | 'created_at'>;
-
-  type CreateReportResponse = Pick<Report, 'id' | 'created_at'>;
-
-  export async function createReport(request: CreateReportRequest): Promise<CreateReportResponse> {
-    const requestUrl = `/api/v1/reports`;
-
-    const response = await httpClient.post<CreateReportResponse>(requestUrl, request);
-
-    return response.data;
-  }
-
-  type UpdateReportRequest = {
-    report_id: string
-  } & Partial<Omit<Report, 'id' | 'creator_id' | 'created_at'>>;
-
-  type UpdateReportResponse = void;
-
-  export async function updateReport(request: UpdateReportRequest): Promise<UpdateReportResponse> {
-    const requestUrl = `/api/v1/reports/${encodeURIComponent(request.report_id)}`;
-
-    const response = await httpClient.put<UpdateReportResponse>(requestUrl, {
-      ...request,
-      report_id: undefined,
-    });
-
-    return response.data;
-  }
-
-  type DeleteReportRequest = {
-    report_id: string
-  };
-
-  type DeleteReportResponse = void;
-
-  export async function deleteReport(request: DeleteReportRequest): Promise<DeleteReportResponse> {
-    const requestUrl = `/api/v1/reports/${encodeURIComponent(request.report_id)}`;
-
-    const response = await httpClient.delete<DeleteReportResponse>(requestUrl);
-
-    return response.data;
-  }
-}
+import { ReportsApi } from '@/services/api.ts';
+import Report = ReportsApi.Report;
 
 export default function useReportsStore(storeId = 'reports') {
   return defineStore(storeId, () => {
     const report = ref<Report | null>(null);
     const reports = ref<Report[]>([]);
 
-    async function getReports(...args: Parameters<typeof Api.getReports>) {
-      const response = await Api.getReports(...args);
+    async function getReports(...args: Parameters<typeof ReportsApi.getReports>) {
+      const response = await ReportsApi.getReports(...args);
 
       reports.value = response.reports;
     }
@@ -121,30 +24,30 @@ export default function useReportsStore(storeId = 'reports') {
       });
     }
 
-    async function getReport(...args: Parameters<typeof Api.getReport>) {
-      const response = await Api.getReport(...args);
+    async function getReport(...args: Parameters<typeof ReportsApi.getReport>) {
+      const response = await ReportsApi.getReport(...args);
 
       report.value = response.report;
     }
 
-    async function createReport(...args: Parameters<typeof Api.createReport>) {
-      await Api.createReport(...args);
+    async function createReport(...args: Parameters<typeof ReportsApi.createReport>) {
+      await ReportsApi.createReport(...args);
     }
 
     type UpdateReportTimeRequest = { report_id: string } & Pick<Report, 'start_time' | 'end_time' | 'work_time' | 'break_time'>;
 
     async function updateReportTime(request: UpdateReportTimeRequest) {
-      await Api.updateReport(request);
+      await ReportsApi.updateReport(request);
     }
 
     type UpdateReportBodyRequest = { report_id: string } & Pick<Report, 'body'>;
 
     async function updateReportBody(request: UpdateReportBodyRequest) {
-      await Api.updateReport(request);
+      await ReportsApi.updateReport(request);
     };
 
-    async function deleteReport(...args: Parameters<typeof Api.deleteReport>) {
-      await Api.deleteReport(...args);
+    async function deleteReport(...args: Parameters<typeof ReportsApi.deleteReport>) {
+      await ReportsApi.deleteReport(...args);
     }
 
     return {

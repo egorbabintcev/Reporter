@@ -1,50 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
-import httpClient from '@/transport/http.ts';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
-namespace AuthApi {
-  type SignInRequest = {
-    login: string
-    password: string
-  };
-  type SignInResponse = {
-    token: string
-  };
-
-  export async function signIn(request: SignInRequest) {
-    const requestUrl = `/api/v1/sign_in`;
-
-    const response = await httpClient.post<SignInResponse>(requestUrl, request);
-
-    return response.data;
-  }
-
-  type SignUpRequest = {
-    display_name: string
-    login: string
-    password: string
-  };
-  type SignUpResponse = void;
-
-  export async function signUp(request: SignUpRequest) {
-    const requestUrl = `/api/v1/sign_up`;
-
-    await httpClient.post<SignUpResponse>(requestUrl, request);
-  }
-
-  type GetAuthProviderUrlResponse = {
-    uri: string
-  };
-
-  export async function getAuthProviderUrl() {
-    const requestUrl = `/api/v1/auth/provider`;
-
-    const response = await httpClient.post<GetAuthProviderUrlResponse>(requestUrl);
-
-    return response.data;
-  }
-}
+import { AuthApi } from '@/services/api.ts';
 
 const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem('ReporterAuthToken'));

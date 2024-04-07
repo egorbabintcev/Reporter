@@ -164,9 +164,7 @@
       Или войдите с помощью
     </p>
 
-    <el-button
-    @click="authWithTCSClickHandler"
-    disabled>
+    <el-button @click="authWithTCSClickHandler">
       <template #icon>
         <el-icon>
           <g-symbol

@@ -1,22 +1,14 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import httpClient from '@/transport/http';
 
-type Profile = {
-  id: string
-  display_name: string
-  login: string
-};
+import { ProfileApi } from '@/services/api.ts';
+import Profile = ProfileApi.Profile;
 
 const useProfileStore = defineStore('profile', () => {
   const profile = ref<Profile | null>(null);
 
   async function fetchProfile() {
-    const requestUrl = `/api/v1/profile`;
-
-    const response = await httpClient.get<Profile>(requestUrl);
-
-    profile.value = response.data;
+    profile.value = await ProfileApi.getProfile();
   }
 
   return {

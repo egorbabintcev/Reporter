@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import useAuthStore from '@/store/auth';
-import useProfileStore from '@/store/profile';
+import useProfileStore from '@/store/profile.ts';
 
 const HomeScreen = () => import('@/screens/Home/index.vue');
 const ReportsScreen = () => import('@/screens/Reports/index.vue');

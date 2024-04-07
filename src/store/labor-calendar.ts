@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
-import httpClient from '@/transport/http';
 import { Dayjs, OpUnitType } from 'dayjs';
 
+import { LaborCalendarApi } from '@/services/api.ts';
+
 type LaborCalendar = {
-  totalWorkingDays: number
+  workingDays: number
+  dayOffs: number
 };
 
 type State = {
@@ -17,28 +19,14 @@ export default function useLaborCalendarStore(storeId = 'labor-calendar') {
     }),
     actions: {
       async fetchLaborCalendar(fromDate: Dayjs, toDate: Dayjs) {
-        const url = `https://isdayoff.ru/api/getdata`;
-
-        const params = {
-          date1: fromDate.format('YYYYMMDD'),
-          date2: toDate.format('YYYYMMDD'),
-        };
-
-        const response = await httpClient.get<string>(url, {
-          params,
-          responseType: 'text',
-          transitional: {
-            silentJSONParsing: false,
-            forcedJSONParsing: false,
-          },
+        const response = await LaborCalendarApi.getLaborCalendar({
+          date_from: fromDate.unix() * 1000,
+          date_to: toDate.unix() * 1000,
         });
 
         this.laborCalendar = {
-          totalWorkingDays: response.data
-            .split('')
-            .map(Number)
-            .filter((num) => num === 0)
-            .length,
+          workingDays: response.working_days,
+          dayOffs: response.day_offs,
         };
       },
       async fetchLaborCalendarForPeriod(date: Dayjs, unit: OpUnitType) {
