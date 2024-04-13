@@ -373,8 +373,6 @@
 </script>
 
 <style lang="scss">
-  @use '@/styles/variables' as *;
-
   .reports-card {
     display: flex;
     flex-flow: column nowrap;
@@ -444,11 +442,11 @@
 
   .reports-card-blank__title {
     font-size: 16px;
-    color: $text-color-primary;
+    color: var(--text-color-primary);
   }
 
   .reports-card-blank__subtitle {
     font-size: 14px;
-    color: $text-color-secondary;
+    color: var(--text-color-secondary);
   }
 </style>

@@ -142,8 +142,6 @@
 </script>
 
 <style lang="scss">
-  @use '@/styles/variables' as *;
-
   .reports-card-form {
     display: flex;
     flex-flow: column nowrap;
@@ -168,7 +166,7 @@
 
       font-size: 14px;
       font-weight: 700;
-      color: $text-color-secondary;
+      color: var(--text-color-secondary);
     }
   }
 </style>

@@ -1,3 +1,8 @@
-$primary-color: #409eff;
-$text-color-primary: rgba(0 0 0 / 0.87);
-$text-color-secondary: rgba(0 0 0 / 0.54);
+:root {
+  --main-color-primary: #409eff;
+  --main-color-success: #67c23a;
+  --main-color-warning: #e6a23c;
+  --light-color-primary: #fff;
+  --text-color-primary: rgba(0 0 0 / 0.87);
+  --text-color-secondary: rgba(0 0 0 / 0.54);
+}
