@@ -246,11 +246,19 @@
 </template>
 
 <style lang="scss">
+  :root {
+    --calendar-weekdays-background-color: #f7f9fc;
+  }
+
+  html.dark {
+    --calendar-weekdays-background-color: #232428;
+  }
+
   .calendar {
     display: flex;
     flex-flow: column nowrap;
 
-    border: 1px solid rgba(0 0 0 / 0.14);
+    border: 1px solid var(--border-color-primary);
     border-radius: 6px;
   }
 
@@ -262,7 +270,7 @@
 
     padding: 12px 8px;
 
-    border-bottom: 1px solid rgba(0 0 0 / 0.14);
+    border-bottom: 1px solid var(--border-color-primary);
   }
 
   .calendar-selectors {
@@ -298,7 +306,7 @@
 
     padding: 8px 0;
 
-    background-color: #f5f7fa;
+    background-color: var(--calendar-weekdays-background-color);
   }
 
   .calendar-weekdays-day {

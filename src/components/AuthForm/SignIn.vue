@@ -112,14 +112,15 @@
   }
 
   .auth-form-sign-in__hint {
-    color: rgba(0 0 0 / 0.54);
+    line-height: 1.33;
+    color: var(--text-color-secondary);
     text-align: center;
 
     user-select: none;
   }
 
   .auth-form-sign-in__hint--clickable {
-    color: #409eff;
+    color: var(--main-color-primary);
 
     cursor: pointer;
   }

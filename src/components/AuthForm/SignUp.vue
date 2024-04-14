@@ -162,14 +162,14 @@
   }
 
   .auth-form-sign-up__hint {
-    color: rgba(0 0 0 / 0.54);
+    color: var(--text-color-secondary);
     text-align: center;
 
     user-select: none;
   }
 
   .auth-form-sign-up__hint--clickable {
-    color: #409eff;
+    color: var(--main-color-primary);
 
     cursor: pointer;
   }

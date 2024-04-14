@@ -4,5 +4,14 @@
   --main-color-warning: #e6a23c;
   --light-color-primary: #fff;
   --text-color-primary: rgba(0 0 0 / 0.87);
-  --text-color-secondary: rgba(0 0 0 / 0.54);
+  --text-color-secondary: rgba(0 0 0 / 0.6);
+  --border-color-primary: rgba(0 0 0 / 0.14);
+  --border-color-secondary: rgba(0 0 0 / 0.1);
+}
+
+html.dark {
+  --text-color-primary: rgba(255 255 255 / 0.87);
+  --text-color-secondary: rgba(255 255 255 / 0.6);
+  --border-color-primary: rgba(255 255 255 / 0.14);
+  --border-color-secondary: rgba(255 255 255 / 0.1);
 }

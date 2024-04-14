@@ -248,6 +248,6 @@
     max-width: 320px;
     padding: 16px;
 
-    border-right: 1px solid rgba(0 0 0 / 0.14);
+    border-right: 1px solid var(--border-color-primary);
   }
 </style>

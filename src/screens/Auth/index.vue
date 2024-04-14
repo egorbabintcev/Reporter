@@ -1,6 +1,9 @@
 <template>
   <div class="auth-screen">
     <AuthForm/>
+
+    <theme-switcher
+    class="auth-screen__theme-switcher"/>
   </div>
 </template>
 
@@ -8,11 +11,14 @@
   import { computed, defineComponent } from 'vue';
   import { useRoute } from 'vue-router';
 
+  import ThemeSwitcher from '@/components/ThemeSwitcher';
+
   import AuthForm from '@/components/AuthForm/index.vue';
 
   export default defineComponent({
     name: 'AuthScreen',
     components: {
+      ThemeSwitcher,
       AuthForm,
     },
     setup() {
@@ -29,6 +35,9 @@
 
 <style lang="scss">
   .auth-screen {
+
+    position: relative;
+
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
@@ -36,56 +45,9 @@
     justify-content: center;
   }
 
-  /* .auth-form__container {
-    width: 100%;
-    max-width: 768px;
-    min-height: 400px;
-    padding: 32px;
-
-    border: 1px solid rgba(0 0 0 / 0.14);
-    border-radius: 4px;
+  .auth-screen__theme-switcher {
+    position: absolute;
+    top: 24px;
+    right: 32px;
   }
-
-  .auth-form {
-    display: flex;
-    flex-flow: row nowrap;
-
-    height: 100%;
-  }
-
-  .auth-form__inputs {
-    display: flex;
-    flex-flow: column nowrap;
-    flex-grow: 1;
-    justify-content: center;
-    gap: 12px;
-
-    max-width: 40%;
-  }
-
-  .auth-form__separator {
-    width: 1px;
-    margin: 0 auto;
-
-    background-color: rgba(0 0 0 / 0.14);
-  }
-
-  .auth-form__hint {
-    display: flex;
-    flex-flow: column nowrap;
-    flex-grow: 1;
-    justify-content: center;
-
-    max-width: 40%;
-  }
-
-  .auth-form__hint-text {
-    color: rgba(0 0 0 / 0.54);
-  }
-
-  .auth-form__hint-text--link {
-    color: #40a9ff;
-
-    cursor: pointer;
-  } */
 </style>

@@ -76,21 +76,25 @@
       </el-radio-group>
     </div>
 
-    <el-button
-    @click="logoutHandler"
-    round>
-      <template #icon>
-        <el-icon size="20">
-          <GSymbol
-          :grade="-25"
-          icon="logout"
-          type="rounded"
-          :weight="200"/>
-        </el-icon>
-      </template>
+    <div class="app-menu-right">
+      <theme-switcher/>
 
-      Выйти
-    </el-button>
+      <el-button
+      @click="logoutHandler"
+      round>
+        <template #icon>
+          <el-icon size="20">
+            <GSymbol
+            :grade="-25"
+            icon="logout"
+            type="rounded"
+            :weight="200"/>
+          </el-icon>
+        </template>
+
+        Выйти
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -103,11 +107,14 @@
   import { useRoute, useRouter } from 'vue-router';
   import { GSymbol } from 'vue-material-symbols';
 
+  import ThemeSwitcher from '@/components/ThemeSwitcher';
+
   import useAuthStore from '@/store/auth';
 
   export default defineComponent({
     name: 'TheMenu',
     components: {
+      ThemeSwitcher,
       GSymbol,
     },
     setup() {
@@ -149,7 +156,7 @@
   .app-menu {
     padding: 16px;
 
-    border-bottom: 1px solid rgba(0 0 0 / 0.14);
+    border-bottom: 1px solid var(--border-color-primary);
   }
 
   .app-menu-button {
@@ -163,5 +170,12 @@
     margin: 0;
 
     font-size: 16px;
+  }
+
+  .app-menu-right {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 24px;
   }
 </style>

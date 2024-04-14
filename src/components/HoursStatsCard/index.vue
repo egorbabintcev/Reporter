@@ -94,18 +94,18 @@
 
     padding: 8px 12px;
 
-    border: 1px solid rgba(0 0 0 / 0.14);
+    border: 1px solid var(--border-color-primary);
   }
 
   .hours-stats-card__subtitle {
     font-size: 14px;
-    color: rgba(0 0 0 / 0.64);
+    color: var(--text-color-secondary);
   }
 
   .hours-stats-card__title {
     font-size: 18px;
     font-weight: 500;
-    color: rgba(0 0 0 / 0.87);
+    color: var(--text-color-primary);
   }
 
   .hours-stats-card__diff-text {

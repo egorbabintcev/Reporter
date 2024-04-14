@@ -71,7 +71,7 @@
     max-width: 340px;
     padding: 36px 24px;
 
-    border: 1px solid rgba(0 0 0 / 0.14);
+    border: 1px solid var(--border-color-primary);
     border-radius: 6px;
   }
 </style>

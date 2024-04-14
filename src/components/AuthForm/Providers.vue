@@ -189,9 +189,9 @@
   .auth-providers__title {
     padding-bottom: 6px;
 
-    border-bottom: 1px solid rgba(0 0 0 / 0.10);
+    border-bottom: 1px solid var(--border-color-secondary);
 
-    color: rgba(0 0 0 / 0.54);
+    color: var(--text-color-secondary);
     text-align: center;
   }
 </style>

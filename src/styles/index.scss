@@ -3,7 +3,9 @@
 @use '@/styles/fonts';
 @use '@/styles/flex';
 @use 'node_modules/element-plus/theme-chalk/src/index';
+@use 'node_modules/element-plus/theme-chalk/dark/css-vars.css';
 @use 'node_modules/@toast-ui/editor/dist/toastui-editor.css';
+@use 'node_modules/@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 
 :root {
   --el-font-family: 'Nunito', sans-serif;

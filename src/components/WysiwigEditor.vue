@@ -13,9 +13,11 @@
     ref, toRefs,
     watch,
   } from 'vue';
-  import Editor from '@toast-ui/editor';
+  import Editor, { EditorOptions } from '@toast-ui/editor';
 
   import { HTMLString } from '@/shared-kernel';
+
+  import useTheme from '@/hooks/useTheme.ts';
 
   export default defineComponent({
     name: 'WysiwigEditor',
@@ -39,9 +41,13 @@
         placeholder,
       } = toRefs(props);
 
-      onMounted(() => {
+      const { theme } = useTheme();
+
+      let isBlocked = false;
+
+      function createEditorInstance() {
         if (editorElement.value) {
-          editorInstance = new Editor({
+          const editorOptions: EditorOptions = {
             el: editorElement.value,
             height: '100%',
             initialEditType: 'markdown',
@@ -52,25 +58,39 @@
             hideModeSwitch: true,
             placeholder: placeholder.value,
             previewHighlight: false,
-          });
+          };
 
-          // TODO: figure out how to fix that
+          if (theme.value === 'dark') {
+            editorOptions.theme = 'dark';
+          }
 
-          let isBlocked = false;
+          if (editorInstance) {
+            editorInstance.destroy();
+          }
+
+          editorInstance = new Editor(editorOptions);
 
           editorInstance?.on('change', () => {
             if (isBlocked) return;
             context.emit('update:modelValue', editorInstance?.getMarkdown() ?? '');
           });
-
-          watch(modelValue, (value, oldValue) => {
-            if (value !== oldValue && value !== editorInstance?.getMarkdown()) {
-              isBlocked = true;
-              editorInstance?.setMarkdown(modelValue.value, false);
-              isBlocked = false;
-            }
-          });
         }
+      }
+
+      watch(theme, () => {
+        createEditorInstance();
+      });
+
+      watch(modelValue, (value, oldValue) => {
+        if (value !== oldValue && value !== editorInstance?.getMarkdown()) {
+          isBlocked = true;
+          editorInstance?.setMarkdown(modelValue.value, false);
+          isBlocked = false;
+        }
+      });
+
+      onMounted(() => {
+        createEditorInstance();
       });
 
       // TODO: pls, refactor naming in this shit
