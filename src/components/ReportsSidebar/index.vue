@@ -4,6 +4,7 @@
   import dayjs, { Dayjs } from 'dayjs';
   import { GSymbol } from 'vue-material-symbols';
   import { ElMessage } from 'element-plus';
+  import MarkdownIt from 'markdown-it';
 
   import CalendarComponent, { CalendarEvent } from '@/components/Calendar';
   import HoursStatsCard from '@/components/HoursStatsCard/index.vue';
@@ -132,29 +133,59 @@
       }
 
       async function clickCopyMonthTextHandler() {
-        let resultString = '';
+        let resultMarkdown = '';
+        let resultHtml = '';
 
         const startOfMonth = selectedDate.value.startOf('month');
         const endOfMonth = selectedDate.value.endOf('month');
 
+        const isWritingHtml = !!navigator.clipboard.write;
+
         for (let date = startOfMonth.date(); date <= endOfMonth.date(); date += 1) {
           const current = startOfMonth.set('date', date);
-
-          // eslint-disable-next-line no-continue
-          if ([0, 6].includes(current.day())) continue;
-
           const report = reportsStore.reports.find((item) => current.isSame(item.date * 1000, 'date'));
 
-          resultString += `--- ${current.format('DD.MM.YYYY')} ---\n\n`;
-
           if (report) {
-            resultString += `${report.body.trim()}\n\n`;
-          } else {
-            resultString += 'Отчет отсутствует\n\n';
+            const trimmedBody = report.body.trim();
+
+            if (trimmedBody.length) {
+              if (isWritingHtml) {
+                const htmlBody = MarkdownIt({
+                  breaks: true,
+                  linkify: true,
+                  html: true,
+                }).render(trimmedBody);
+
+                resultHtml += htmlBody;
+                resultHtml += '<br><br><br>';
+              }
+
+              resultMarkdown += trimmedBody;
+              resultMarkdown += '\n\n\n\n';
+            }
           }
         }
 
-        await navigator.clipboard.writeText(resultString);
+        if (navigator.clipboard.write) {
+          resultHtml = `<div style="font-family: monospace; font-size: 16px">${resultHtml}</div>`;
+
+          const markdownBlob = new Blob([resultMarkdown], {
+            type: 'text/plain',
+          });
+
+          const htmlBlob = new Blob([resultHtml], {
+            type: 'text/html',
+          });
+
+          await navigator.clipboard.write([
+            new window.ClipboardItem({
+              [markdownBlob.type]: markdownBlob,
+              [htmlBlob.type]: htmlBlob,
+            }),
+          ]);
+        } else {
+          await navigator.clipboard.writeText(resultMarkdown);
+        }
 
         ElMessage.success('Скопировано в буфер обмена');
       }
