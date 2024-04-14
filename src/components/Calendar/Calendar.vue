@@ -3,10 +3,7 @@
   import dayjs, { Dayjs } from 'dayjs';
   import { GSymbol } from 'vue-material-symbols';
 
-  type Event = {
-    date: number
-    mode?: 'success' | 'warning' | null
-  };
+  import { CalendarEvent } from './types';
 
   type Day = {
     text: string
@@ -14,7 +11,7 @@
     active: boolean
     transparent: boolean
     bordered: boolean
-    event: Event | null
+    event: CalendarEvent | null
   };
 
   export default defineComponent({
@@ -25,7 +22,7 @@
         required: true,
       },
       events: {
-        type: Array as PropType<Event[]>,
+        type: Array as PropType<CalendarEvent[]>,
         default: () => [],
       },
     },

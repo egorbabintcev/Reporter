@@ -5,7 +5,7 @@
   import { GSymbol } from 'vue-material-symbols';
   import { ElMessage } from 'element-plus';
 
-  import CalendarComponent from '@/components/Calendar';
+  import CalendarComponent, { CalendarEvent } from '@/components/Calendar';
   import HoursStatsCard from '@/components/HoursStatsCard/index.vue';
 
   import useReportsStore from '@/store/reports.ts';
@@ -37,7 +37,7 @@
       const currentLaborCalendarStore = useLaborCalendarStore('current-labor-calendar');
       const currentLaborCalendarStoreRefs = storeToRefs(currentLaborCalendarStore);
 
-      const events = computed(() => {
+      const events = computed<CalendarEvent[]>(() => {
         const reports = reportsStoreRefs.reports.value;
 
         return reports.map((report) => ({
