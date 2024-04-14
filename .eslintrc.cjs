@@ -62,6 +62,7 @@ module.exports = {
       'error',
       ...globalRestrictions,
     ],
+    'camelcase': 'off',
     // Vue Plugin ------------------------------------------------------------------------------------------------------
     'vue/max-len': 'off',
     'vue/no-v-html': 'off',
@@ -185,12 +186,6 @@ module.exports = {
       rules: {
         '@stylistic/indent': 'off',
         '@stylistic/indent-binary-ops': 'off',
-      },
-    },
-    {
-      files: ['src/store/**'],
-      rules: {
-        'camelcase': 'off',
       },
     },
   ],

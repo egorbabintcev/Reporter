@@ -44,7 +44,14 @@ export default function useReportsStore(storeId = 'reports') {
 
     async function updateReportBody(request: UpdateReportBodyRequest) {
       await ReportsApi.updateReport(request);
-    };
+
+      // Пока не придумал способа сделать лучше, пусть останется как временное решение
+      const targetReport = reports.value.find((item) => item.id === request.report_id);
+
+      if (targetReport) {
+        targetReport.body = request.body;
+      }
+    }
 
     async function deleteReport(...args: Parameters<typeof ReportsApi.deleteReport>) {
       await ReportsApi.deleteReport(...args);
