@@ -1,5 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import useAuthStore from '@/store/auth';
+import router from '@/router';
 
 const httpClient = axios.create();
 
@@ -18,6 +19,13 @@ httpClient.interceptors.response.use((res) => res, (error: AxiosError) => {
 
   if (error.response?.status === 401) {
     authStore.$reset();
+    router.push({
+      name: 'auth',
+      query: {
+        action: 'sign_in',
+        redirect: window.location.href.replace(window.location.origin, ''),
+      },
+    });
   }
 
   throw error;
