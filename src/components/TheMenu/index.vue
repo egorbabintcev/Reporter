@@ -76,6 +76,14 @@
       </el-radio-group>
     </div>
 
+    <div class="app-menu-center">
+      <p class="app-menu-badge">
+        Переезд! С 01.07.24 сервис будет доступен по адресу: <a
+        href="https://10.110.2.46"
+        target="_blank">10.110.2.46</a> <br> Данные из этого сервиса к сожалению перенесены не будут(
+      </p>
+    </div>
+
     <div class="app-menu-right">
       <theme-switcher/>
 
@@ -177,5 +185,18 @@
     flex-flow: row nowrap;
     align-items: center;
     gap: 24px;
+  }
+
+  .app-menu-badge {
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--el-color-danger);
+    text-align: center;
+
+    a {
+      font-weight: 700;
+      color: inherit;
+      text-decoration: underline;
+    }
   }
 </style>
